@@ -51,7 +51,7 @@ export class Place {
         return this.Poid; 
     }
     SetPoids(je){
-        this.Poids = je ; 
+        this.Poid = je ; 
     }
     GetTranssup(){
         return this.tsup ;
@@ -171,6 +171,23 @@ for (let k = 0; k < this.Post.length; k++) {
         // Afficher chaque élément du tableau
         console.log("la ligne [ " + k +"] a " + this.Post[k].length + "elements");
         console.log("tableau[" + k + "][" + l + "] =", this.Post[k][l]);
+    }
+}
+    }
+    AfficherPre(){
+        console.log('matrice ');
+//Nombre de colonnes (longueur d'une ligne)
+const colonnesp = this.Pre[0].length; // Supposant que toutes les lignes ont la même longueur
+const lignesp = this.Pre.length;
+// Affichage des dimensions
+
+console.log("Nombre de lignes :", lignesp);
+console.log("Nombre de colonnes :", colonnesp);
+for (let k = 0; k < this.Pre.length; k++) {
+    for (let l = 0; l < this.Pre[k].length; l++) {
+        // Afficher chaque élément du tableau
+        console.log("la ligne [ " + k +"] a " + this.Pre[k].length + "elements");
+        console.log("tableau[" + k + "][" + l + "] =", this.Pre[k][l]);
     }
 }
     }
