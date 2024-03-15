@@ -89,15 +89,10 @@ const onPaneClick = useCallback((e) => {
     y: e.clientY ,
    
   })
-  
-  
+  /* 
   const _places = reactFlowInstance.getNodes().filter(p => p.type === 'place')
   const _transitions = reactFlowInstance.getNodes().filter(p => p.type === 'transition')
-
-   // const placeLabel = _places.length === 0 ? '1' : String(_places.length + 1)
-  //const transitionLabel = _transitions.length === 0 ? '1' : String(_transitions.length + 1)
-
-  
+      */
   if (SelectedTool === 'place') {
     let i1 = getId1() ;
       const element = {
@@ -109,7 +104,8 @@ const onPaneClick = useCallback((e) => {
       setNodes((nds) => nds.concat(element))
       dispatch(addElement({type:element.type,element}))
       reseau.creeplace();
-      reseau.Afficherplaces()
+      reseau.Afficherplaces();
+     // reseau.Afficherplaces()
   }
   if (SelectedTool === 'transition') {
     let i2 = getId2() ;
@@ -124,7 +120,7 @@ const onPaneClick = useCallback((e) => {
       setNodes((nds) => nds.concat(element))
       dispatch(addElement({type:element.type,element}))
       reseau.creetrans()
-      reseau.Affichertrans()
+     reseau.Affichertrans()
   }
   if (SelectedTool === 'timed-transition') {
     let i2 = getId2() ;
@@ -143,6 +139,7 @@ const onPaneClick = useCallback((e) => {
       setNodes((nds) => nds.concat(element))
       dispatch(addElement({type:element.type,element}))
       reseau.creetransTimed()
+      reseau.Affichertrans();
   }
 }, [reactFlowInstance, nodes, SelectedTool, setNodes, dispatch])
 
@@ -154,12 +151,62 @@ const MarkerType = {
   Circle: 'circle',
 };
 
+const integreArc = (type,params) => {
+  const longueurtrans = transitions.length;
+     let i = 0;
+     let Sourcetrouvtrans = false;
+while(( i < longueurtrans)&&(Sourcetrouvtrans===false)) {
+ if ((transitions[i].id)===params.source){Sourcetrouvtrans=true}
+ i++;
+}
+let ist=i-1;
+let j = 0;
+const longueurplaces = places.length;
 
+     let Sourcetrouvplaces = false;
+while(( j < longueurplaces)&&(Sourcetrouvplaces===false)) {
+ if ((places[j].id)===params.source){Sourcetrouvplaces=true}
+ j++;
+}
+let isp =0;
+isp= j-1;
+
+let k =0;
+let Targettrouvplaces = false;
+while(( k< longueurplaces)&&(Targettrouvplaces===false)) {
+ if ((places[k].id)===params.target){Targettrouvplaces=true}
+ k++;
+}
+let itp=k-1;
+let l = 0;
+let Targettrouvtrans = false;
+while(( l < longueurtrans)&&(Targettrouvtrans===false)) {
+  if ((transitions[l].id)===params.target){Targettrouvtrans=true}
+  l++;
+ }
+ let itt=l-1;
+ //console.log('targetran');
+ ///console.log(Targettrouvtrans);
+ //console.log('sourceplace');
+// console.log(Sourcetrouvplaces);
+ 
+ if((Targettrouvtrans===true)&&(Sourcetrouvplaces===true) ){
+  reseau.Addpre(isp,itt,1,type);
+  console.log('pre p t');
+  reseau.AfficherPre();
+ }
+ if((Sourcetrouvtrans===true)&&(Targettrouvplaces)){
+  reseau.Addpost(itp,ist,1,type);
+  console.log('post t p');
+  reseau.AfficherPost();
+ }
+}
 const onConnect = useCallback((params) => {
   const sourceType = reactFlowInstance.getNode(params.source).type
   const targetType = reactFlowInstance.getNode(params.target).type
 
- 
+ console.log("sourceType = "+sourceType)
+ console.log("targetType = "+targetType)
   if (sourceType !== targetType ) {
 
     if (SelectedTool === 'arc') {
@@ -170,8 +217,7 @@ const onConnect = useCallback((params) => {
           source: String(params.source),
           target: String(params.target),
           label: '1',
-          data : {
-           
+          data : {           
           poid : '1' ,
           },         
           markerEnd: {type: MarkerType.ArrowClosed,
@@ -180,35 +226,79 @@ const onConnect = useCallback((params) => {
             color: '#118C7E', 
                                 }
       }
+      console.log("sourve = "+element.source)
       setEdges((eds) => eds.concat(element))
       dispatch(addElement({type:element.type,element}))
+      integreArc(false,params)
   } 
  else {
-  if (SelectedTool === 'arcinhibe') {
+if (SelectedTool === 'arcinhibe') {
+  if ((sourceType === 'place' ) && (targetType === 'transition')){
+    console.log("here")
     const element = {
-        id: getId3()  ,
-        type: 'straight',
-        type2 : 'arc',
-        animated : true ,
-        source: String(params.source),
-        target: String(params.target),
-        label: '1',
-        data : {
-        
-        poid : '1' ,
-        }, 
-        markerEnd: {type: MarkerType.ArrowClosed,
-          width: 20,
-          height: 20,
-          color: '#118C7E', 
-                              } 
-       /* markerEnd: {
-          type: MarkerType.Circle, 
-         // marker: 'url(#circle)',
-        }*/
-    }
-    setEdges((eds) => eds.concat(element))
-    dispatch(addElement({type:element.type,element}))
+      id: getId3()  ,
+      type: 'straight',
+      type2 : 'arc',
+      source: String(params.source),
+      target: String(params.target),
+      label: '1',
+      data : {       
+      poid : '1' ,
+      },         
+      markerEnd: "circleMarker"
+  } 
+  //////////
+  // Create the SVG element
+const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+
+// Create the defs element
+const defs = document.createElementNS("http://www.w3.org/2000/svg", "defs");
+
+// Create the marker element
+const marker = document.createElementNS("http://www.w3.org/2000/svg", "marker");
+marker.setAttribute("id", "circleMarker");
+marker.setAttribute("markerWidth", "8");
+marker.setAttribute("markerHeight", "8");
+marker.setAttribute("refX", "8");
+marker.setAttribute("refY", "4");
+marker.setAttribute("orient", "auto");
+// Create the circle element inside the marker
+const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+circle.setAttribute("cx", "4");
+circle.setAttribute("cy", "4");
+circle.setAttribute("r","4");
+circle.setAttribute("fill", "black");
+//circle.setAttribute("stroke", "black");
+
+
+// Append the circle to the marker, and marker to the defs
+marker.appendChild(circle);
+defs.appendChild(marker);
+
+// Create the line element
+const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+line.setAttribute("x1", "50");
+line.setAttribute("y1", "50");
+line.setAttribute("x2", "150");
+line.setAttribute("y2", "150");
+line.setAttribute("marker-end", "url(#circleMarker)");
+
+// Append the defs and line to the SVG
+svg.appendChild(defs);
+svg.appendChild(line);
+
+// Append the SVG to the document body or any other container
+document.body.appendChild(svg);
+
+
+ ////////
+  console.log('mark');
+   console.log(element.markerEnd);
+
+   setEdges((eds) => eds.concat(element))
+   dispatch(addElement({type:element.type,element}))
+   integreArc(true,params)
+  }
 } 
 }
 }
@@ -276,9 +366,7 @@ const onNodeClick = useCallback((event, node) => {
         {
           id: getidtokens(),
           type: 'group',
-          //data: { label: 'Child Node 1' },
           style : {
-
           borderRadius: '50%' ,
           width: '8px'  ,
           height: '8px'  ,
@@ -638,6 +726,8 @@ const onNodeClick = useCallback((event, node) => {
 
   }
 ,[SelectedTool, dispatch,setNodes,nodes,reactFlowInstance,useEffect])
+
+
 const onEdgeClick = useCallback((event, edge) => {
   if (SelectedTool === 'pointer') {
       dispatch(setElementToModify(edge))
@@ -655,13 +745,43 @@ const onUpdateEl = useCallback((element) => {
           let index = 0
           eds.forEach((e,i) => {
               if (e.id === element.id) {
-                  index = i
+                  index = i                 
               }
           })
           eds.splice(index,1,element)
           return eds
       })
+      reseau.AfficherPre();
+      let p = element.source[0]
+      console.log("p = "+p)
+      let t = element.target[0]
+      console.log("t = "+t)
+      if( (p === 'P') && (t === 'T')){
+       let  Idplace = parseInt(element.source.slice(1));
+       let  Idtrans = parseInt(element.target.slice(1));
+       let type = reseau.Pre[Idplace][Idtrans].type ;
+       console.log("type = "+type)
+       reseau.Addpre(Idplace,Idtrans,element.label,type)/// je doit regler ça , il doit dependre de element 
+      }
+      reseau.AfficherPre();
+      if( (p === 'T') && (t === 'P')){
+        let  Idplace = parseInt(element.target.slice(1));
+        let  Idtrans = parseInt(element.source.slice(1));
+        let type = reseau.Post[Idplace][Idtrans].type ;
+        console.log("type = "+type)
+        reseau.Addpost(Idplace,Idtrans,element.label,type)/// je doit regler ça , il doit dependre de element 
+      }
+      
+    
   } 
+  if(element.type === 'transition'){
+  const indice  = parseInt(element.id.slice(1)); 
+  console.log("indice = "+ indice)
+  console.log("element.data.poid = "+element.data.poid)
+  reseau.Transitions[indice].SetPoids(element.data.poid)
+  }
+  //reseau.Transitions[indice].SetPoids(2)
+   reseau.Affichertrans() ;
   dispatch(updateElement({type:element.type,element}))
   dispatch(setIsSidebarVisible(false))
   dispatch(setElementToModify({}))
@@ -671,14 +791,42 @@ const onUpdateEl = useCallback((element) => {
 
 const onDeleteEl = useCallback((element) => {
   if (element.type === 'place' || element.type === 'transition') {
+    if(element.type === 'place' ){
+      const idplace  = parseInt(element.id.slice(1)); 
+        reseau.SuppPlace(idplace)
+    }else{
+      const idtrans  = parseInt(element.id.slice(1)); 
+      console.log(" idtrans = "+idtrans)
+        reseau.SuppTrans(idtrans)
+    }
       reactFlowInstance.deleteElements({nodes:[element],edges:[]})
       setTimeout(() => {
           dispatch(addElement({type:'edges',element:reactFlowInstance.getEdges()}))
       },1000)
   } else {
       reactFlowInstance.deleteElements({nodes:[],edges:[element]})
+      reseau.AfficherPre();
+      let p = element.source[0]
+      console.log("p = "+p)
+      let t = element.target[0]
+      console.log("t = "+t)
+      if( (p === 'P') && (t === 'T')){
+       let  Idplace = parseInt(element.source.slice(1));
+       let  Idtrans = parseInt(element.target.slice(1));
+      reseau.Pre[Idplace][Idtrans] = 0 ;
+      }
+      if( (p === 'T') && (t === 'P')){
+        let  Idplace = parseInt(element.target.slice(1));
+        let  Idtrans = parseInt(element.source.slice(1));
+       reseau.Post[Idplace][Idtrans] = 0 ;
+       }
+      reseau.AfficherPre();
+
   }
+  reseau.Afficherplaces()
+  reseau.Affichertrans()
   dispatch(deleteElement({type:element.type,element : element }))
+
   dispatch(setIsSidebarVisible(false))
   dispatch(setElementToModify({}))
 },[reactFlowInstance, dispatch])
