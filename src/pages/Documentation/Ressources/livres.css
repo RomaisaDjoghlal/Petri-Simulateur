@@ -1,0 +1,93 @@
+/* livres.css */
+*{
+  margin: 0;
+  padding: 0;
+}
+.Livres-container {
+    width: 95vw;
+    height: 100vh;
+    overflow: auto;
+  }
+  
+h1.booktitle{
+  font-weight: bold;
+  font-family: 'Inter', sans-serif;
+  font-size: 1.5vw;
+  padding-top: 1vw;
+  padding-left: 3vw;
+}
+.bookbox {
+  width: 60vw;
+  margin-left: 15vw;
+  height: 4vw;
+  margin-bottom: 1.5vw;
+  background-color: rgb(42, 215, 210);
+  border-radius: 13px;
+  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  color: rgba(69, 69, 69, 0.4);
+    
+}
+.bookbox:hover {
+  background-color: rgb(42, 215, 210);
+  box-shadow: 0px 15px 20px rgb(42, 215, 210,0.4);
+  color: #fff;
+  transform: translateY(-7px);
+}
+.cont{
+  height: 20vh;
+  width: 55vw;
+  margin-left: 19vw;
+  font-size: 1.2vw;
+  font-family: 'Inter', sans-serif;
+  letter-spacing: 0.1vw;
+}
+.Livres-list {
+  
+  display: 'flex';
+  align-items: 'center';
+    margin-top: 5vw;
+  }
+  .cont a {
+    color: rgb(38, 196, 190);
+    text-decoration: none;
+    font-size: 2vw;
+    font-weight: bold;
+    margin-left: 42vw;
+    padding: 2vw;
+    font-family: 'Inter', sans-serif;
+    letter-spacing: 0.1vw;
+  }
+  .cont a:hover {
+    text-decoration: underline; /* Ajouter le soulignement au survol du lien */
+  }
+  
+  .cont .link-icon {
+    vertical-align: middle; /* Aligner l'icône verticalement avec le texte */
+    margin-top: 5px; /* Ajouter une marge à gauche de l'icône pour l'espacement */
+  }
+
+
+  /*.Livres-list {
+    list-style-type: none;
+    padding: 0;
+    text-align: center;
+    margin-right: 8vw;
+    margin-top: 10vw;
+  }
+  
+  .Livres-list li {
+    margin-bottom: 0vw;
+  }
+  
+  .Livres-list li a {
+    text-decoration: none;
+    color: #2ad7d2;
+    font-weight: bold;
+  }
+  
+  .Livres-list li a:hover {
+    text-decoration: underline; 
+  }
+  */
+  

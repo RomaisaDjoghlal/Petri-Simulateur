@@ -1,0 +1,177 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+.quiz-container{
+    width: 100vw;
+    height: 100vh;
+    
+}
+
+
+h1.grain-text-left {
+    color: black;
+    font-size: 6vh; 
+    font-family: 'Inter', sans-serif;
+    font-weight: bolder;
+    margin-left: 3.5vw;
+    margin-top: 5vh;
+} 
+h2.question{
+    font-family: "Pontano Sans", sans-serif;
+    font-size: 1.6vw;
+    font-weight: lighter;
+    text-align: center;
+}
+.question-box{
+    background-color: #2AD7D2;
+    width: 60vw;
+    height: 12vh;
+    margin-top: 5vh;
+   display: flex;
+   margin-left: 15vw;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10vh;
+    border-radius: 20px;
+} 
+.answers{
+    width: 50vw;
+   
+    height: 33vh;
+    margin-left: 20vw;
+    display: flex;
+     flex-direction: column;
+   
+    border-color: #2AD7D2;
+    border: 2px solid rgb(42, 215, 210);
+    border-radius: 2vw;
+}
+.rep{
+    margin-left: 4vw;
+    margin-top: 3.6vh;
+    gap: 3vw;
+    display: flex;
+  align-items: center;
+}
+
+button.option-btn {
+    width: 1.5vw;
+    height: 1.5vw;
+    border-radius: 100%;
+    border: 2px solid rgb(42, 215, 210);
+    cursor: pointer;
+    color: white;
+    background-color: white;
+}
+button.option-btn:hover{
+    color:rgb(42, 215, 210);
+    background-color: rgb(42, 215, 210) ;
+}
+.quiz-container .correct {
+    background: #4caf50;
+   color: #4caf50;
+  border-color: #4caf50;
+   
+}
+
+.quiz-container .wrong {
+    background: #ff4a4a;
+   color: #ff4a4a;
+    border-color: #ff4a4a;
+   
+}
+p.option-text{
+    color: black;
+    font-size: 1.3vw; 
+    font-family: "Pontano Sans", sans-serif;
+  
+}
+button.suiv {
+    margin-left: 75vw;
+    font-family: "Pontano Sans", sans-serif;
+    margin-top: 6vh;
+    padding: 1.3em 3em;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 2.5px;
+    font-weight: 500;
+    color: #000;
+    background-color: #fff;
+    border: none;
+    border-radius: 45px;
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease 0s;
+    cursor: pointer;
+    outline: none;
+    border: 2px solid rgb(42, 215, 210);
+  }
+  
+  button.suiv:hover {
+    background-color: rgb(42, 215, 210);
+    box-shadow: 0px 15px 20px rgb(42, 215, 210,0.4);
+    color: #fff;
+    transform: translateY(-7px);
+  }
+.index{
+    font-family: "Pontano Sans", sans-serif;
+    font-size: large;
+    font-size: 1.5vw;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 2vh;
+    margin-right: 10vw;
+}
+button.btn-refaire {
+    margin-left: 38vw;
+    font-family: "Pontano Sans", sans-serif;
+    margin-top: 6vh;
+    padding: 1.3em 3em;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 2.5px;
+    font-weight: 500;
+    color: #000;
+    background-color: #fff;
+    border: none;
+    border-radius: 45px;
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease 0s;
+    cursor: pointer;
+    outline: none;
+    border: 2px solid rgb(42, 215, 210);
+    
+  }
+  
+  button.btn-refaire:hover {
+    background-color: rgb(42, 215, 210);
+    box-shadow: 0px 15px 20px rgb(42, 215, 210,0.4);
+    color: #fff;
+    transform: translateY(-7px);
+  }
+
+  .msg{
+    border: 2px solid rgb(42, 215, 210);
+    width: 50vw;
+    height: 50vh;
+    margin-left: 20vw;
+    margin-top: 6vh;
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+    border-radius: 45px;
+    background-color:rgb(42, 215, 210,0.1) ;
+    text-transform: uppercase;
+    font-family: "Pontano Sans", sans-serif;
+    letter-spacing: 1.5px;
+  }
+  h2.congratulations{
+    font-size: 3vw;
+    text-align: center;
+    margin-top: 3vw;
+    font-weight: bolder;
+  }
+  h2.scr{
+    margin-top: 3vw;
+    text-align: center;
+    font-size: 1.5vw;
+  }
+

@@ -1,0 +1,122 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+h1.prop {
+    color: black;
+    font-size: 6vh; /* Specify font size unit */
+    font-family: 'Inter', sans-serif;
+    font-weight: bolder;
+    margin-left: 4vw;
+    margin-top: 7vh;
+}
+
+.page-container{
+    background-image: url(../Documentation/background.svg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    position: absolute;
+    height:100vh;
+    width:100vw;
+   /* left: 10vw;*/
+}
+
+body{
+    
+    height: 100vh;
+    overflow: hidden ;
+    z-index: 10;
+    width:80vw;
+}
+
+.content-container {
+   
+    display: flex;
+    flex-direction:column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    margin-top: 6vh;
+    grid-gap: 3vh;
+}
+
+.content_card {
+    background-color: rgba(252, 250, 250, 0.7);
+    text-align: center;
+    border: 2px solid #2AD7D2;
+    padding: 20px;
+    width: 50vw;
+    height: 11vh;
+    border-radius: 15px;
+    transition: background-color 0.3s;
+    cursor: pointer;
+}
+
+.content_card:hover {
+    background-color: rgba(42, 215, 210, 0.6);
+}
+
+.pop-up-container{
+    position: fixed;
+    top: 0;bottom: 0;right: 0;left: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding-top: 15vh;
+}
+
+.pop-up-body{
+    width: 70vw;
+    height: 70vh;
+    border: 4px solid #2AD7D2;
+    background-color: rgb(255, 255, 255);
+    border-radius: 15px;
+    margin: auto;
+}
+
+.pop-up-header{
+    width: 100%;
+    text-align: right;
+}
+
+p.titre{
+    color: black;
+    font-size: 4vh; /* Specify font size unit */
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    display: block;
+}
+
+button.exit {
+    width: 30px;
+    font-size: 6vw;
+    height: 30px;
+    background-color: white;
+    color: #000;
+    border:2px solid #2AD7D2 ;
+    border-radius: 50%;
+    font-size: 16px;
+    cursor: pointer;
+    margin-right: 0.5vw;
+    margin-top: 0.5vh;
+    justify-content: center;
+
+}
+
+button.exit:hover {
+    background-color: #2AD7D2; /* Lighter shade of blue */
+}
+h1.pop_titre{
+    color: black;
+    font-size: 7vh; /* Specify font size unit */
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    margin-left: 40%;
+}
+
+p.def{
+    color: black;
+    font-size: 3vh; /* Specify font size unit */
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    margin-left: 3%;
+    margin-right: 3%;
+}

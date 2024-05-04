@@ -1,3 +1,74 @@
+*{
+  margin: 0;
+  padding: 0;
+  border: none;
+  outline: none;
+  list-style: none;
+  box-sizing: border-box;
+}
+
+img{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 6vw;
+  height: 17vh;
+}
+
+.menubar{
+  height: 100vh;
+
+  flex-direction: column;
+  margin-top: 1.5rem;
+  display: flex;
+  gap: 4vh;
+  font-size: 1vw; /* Specify font size unit */
+  font-family: 'Inter', sans-serif;
+  font-weight: bolder;
+  position: relative;
+}
+.sidebar-header {
+  display: flex;
+  align-items: center; /* Alignement vertical des éléments */
+  gap: 0;
+  margin-top: 0;
+}
+.content{
+  background-color: white;
+}
+.btnclp{
+  margin-top: 0;
+  margin-left: 3px;
+}
+.logo-text {
+  bottom: 8px;
+  left: 50%;
+margin-top: 7vh;
+ font-weight: bolder;
+
+  font-size: 2vw;
+}
+.ant-menu-item-selected{
+ background-color: rgb(15, 169, 154,0.3) !important ;
+
+  border-radius: 0% !important;
+
+  color: rgb(15, 169, 154) !important;
+  justify-content: center !important;
+  justify-items: center !important;
+}
+.ant-menu-SubMenu-title-selected  .anticon{
+  color: rgb(15, 169, 154) !important;
+}
+.menubar .ant-menu-item:hover .anticon,
+.menubar .ant-menu-submenu-title:hover .anticon {
+    color: rgb(15, 169, 154); /* Changez la couleur selon votre préférence */
+}
+
+
+
+
+/* */
 
 .modal {
   position: absolute;
@@ -89,9 +160,89 @@
 }
 
 /* the hover */
+/* Color change on hover */
+.btn-outline-secondary:hover,
+.btn-danger:hover,
+.btn-primary:hover {
+  background-color: #eee;
+  color: #333;
+}
 
 
 
 
+/*   css des erreurs */
+
+.toastify.on{
+  transform: translate(0px, 0px);
+  left:160px;
+  /*top: 30px;*/
+ /* bottom: 50px;*/
+  /*right :300px;*/
+}
+/* Styles for the toast notification container */
+.toastify {
+  position: fixed;
+  z-index: 9999; 
+  top: 500px; 
+  
+  right: 400px; 
+  background-color: #fff; 
+  border: 1px solid #e2d7d7; 
+  border-radius: 4px; 
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 1); 
+  transition: opacity 0.3s ease; 
+}
+
+
+/* Styles for the content of the toast */
+.toastify-content {
+  display: flex;
+  align-items: center;
+  padding: 10px; /* Adjust padding as needed */
+}
+
+/* Hide the toast if it's not visible */
+.toastify-content.hidden {
+  display: none;
+}
+
+/* Styles for the close button */
+.toast-close {
+  position: absolute;
+  top: 5px; /* Adjust top position as needed */
+  right: 5px; /* Adjust right position as needed */
+  cursor: pointer;
+  font-size: 14px; /* Adjust font size as needed */
+  color: #888; /* Color of the close button */
+}
+
+/* Styles for the icons */
+.text-pending {
+  color: rgb(255, 0, 0); /* Color for pending context */
+}
+
+.text-success {
+  color: green; /* Color for success context */
+}
+
+.text-dark {
+  color: blue; /* Color for info context */
+}
+
+/* Additional styles for the content */
+.Text {
+  padding: 10px;
+  text-transform: uppercase;
+  font-weight: bold;
+
+}
+
+
+.text-msg{
+  color: #000; /* Adjust text color as needed */
+  font-family:'Arial Narrow', Arial, sans-serif;
+  font-size: 16px; 
+}
 
 

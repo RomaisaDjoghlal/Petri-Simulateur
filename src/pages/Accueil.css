@@ -1,0 +1,70 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+h1.titre{
+    color: black;
+    font-size: 6vh; /* Specify font size unit */
+    font-family: 'Inter', sans-serif;
+    font-weight: bolder;
+    margin-left: 2.5vw;
+    margin-top: 7vh;
+}
+.home-container{
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(5, 5, 5, 0.02)    ;
+    
+}
+.contenu-container{
+    display: flex;
+    align-items: center;
+    height: 80vh;
+    width: 100vw;
+    
+}
+img.design{
+    width: 55vw;
+    height: 73vh;
+    margin-top: 3vh;
+    margin-left: 1vw;
+    
+}
+.button-container{
+    margin-top: 1vh;
+    margin-left: 8vw;
+}
+button.hover-button{
+    border-radius: 100%;
+    margin-right: 1.5vw;
+    width: 1.8vw;
+    height: 3vh;
+    border-width: 20px;
+    background-color: rgba(42, 215, 210, 0.3);;
+    border-color: #2AD7D2;
+    margin-left: 0.8vw;
+    margin-top: 1.5vw;
+}
+button.hover-button:hover{
+    background-color: #2AD7D2;
+}
+.text-container{
+    margin-left: 2vw;
+    width: 35vw;
+    margin-left: 5vw;
+    
+}
+p.message{
+    font-size: 2vw;
+    font-weight: bold;
+    font-family: 'Inter', sans-serif;
+   
+}
+p.description {
+    font-size: 1.4vw;
+    font-family: 'inter', sans-serif;
+    font-weight:100;
+}
+.scrolling-text{
+    margin-bottom: 3vh;
+}

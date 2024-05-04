@@ -7,7 +7,7 @@ export const TransitionNode = ( {data }) => {
         <div className="custom-node transition">
             <Handle type="source" position={Position.Right} />
               <label htmlFor="text">{data.label}</label>
-              <label className="centered-label" htmlFor="text1">  {data.poid}  </label>
+              <label className= {data.classestyle} htmlFor="text1">  {data.poid}  </label>
             <Handle type="target" position={Position.Left} />
         </div>
     )
