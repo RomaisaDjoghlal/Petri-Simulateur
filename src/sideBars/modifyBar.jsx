@@ -2,7 +2,7 @@ import React ,  { useCallback } from 'react'
 import { X } from "react-feather"
 import { useDispatch, useSelector } from "react-redux"
 import { getElementToModify, setElementToModify, setIsSidebarVisible } from "../ReduxSlice/EditSlice"
-//import './css/utils.css'
+//hello
 import './sideBar.css'
 
 export const ModifyBar = ({isVisible, onDelete, onUpdate}) => {
