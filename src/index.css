@@ -1,4 +1,10 @@
-.main-app{
-  height: 1000px;
-  width: 1000px;
-}
+
+*{
+  margin : 0;  
+  padding: 0;
+ }
+ body{
+ height :100vh;
+ background-image: linear-gradient(#D8C7FF); 
+ font-family: 'Inter';
+ }

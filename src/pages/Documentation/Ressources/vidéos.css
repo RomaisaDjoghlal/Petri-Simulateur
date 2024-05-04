@@ -1,0 +1,58 @@
+/* vidéos.css */
+*{
+    margin: 0;
+    padding: 0;
+}
+.videos-container {
+    width: 95vw;
+    height: 100vh;
+}
+h1.title{
+    margin-top: 1.5vw;
+}
+.videos-group{
+   
+    margin-left: 15vw;
+    margin-top: 4vw;
+}
+
+button.titlebox{
+    width: 60vw;
+  height: 4vw;
+  margin-bottom: 1.5vw;
+  background-color: rgb(42, 215, 210);
+  border-radius: 13px;
+  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  color: rgba(69, 69, 69, 0.4);
+  font-weight: bold;
+  font-family: 'Inter', sans-serif;
+  font-size: 1.5vw;
+  
+}
+button.titlebox:hover {
+    background-color: rgb(42, 215, 210);
+    box-shadow: 0px 15px 20px rgb(42, 215, 210,0.4);
+    color: #fff;
+    transform: translateY(-7px);
+  }
+  .conten{
+    height: 20vh;
+    width: 55vw;
+    margin-left: 3vw;
+    font-size: 1.2vw;
+    font-family: 'Inter', sans-serif;
+    letter-spacing: 0.1vw;
+  }
+
+  .conten a {
+    color: rgb(38, 196, 190);
+    text-decoration: none;
+    font-size: 1.5vw;
+    font-weight: bold;
+    
+    margin-left: 36vw;
+    padding: 3vw;
+    font-family: 'Inter', sans-serif;
+    letter-spacing: 0.1vw;
+  }

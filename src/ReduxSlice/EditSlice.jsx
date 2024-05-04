@@ -5,8 +5,14 @@ const initialState = {
    
     isSelectable: false,
    
+    toastOpt: {
+        isVisible: false,
+        context: 'pending',
+        title: '',
+        msg: ''
+    },
    
-   /* convasOpt: {
+    convasOpt: {
         editor: {
             arcType: (localStorage.getItem('arcs') && JSON.parse(localStorage.getItem('arcs')).length ? JSON.parse(localStorage.getItem('arcs'))[0].type : 'straight')
         },
@@ -18,7 +24,8 @@ const initialState = {
             arcType: 'straight',
             nodeType: 'nodeV'
         }    
-    },*/
+    },
+    
 
     modalOpt: {
       isVisible: false,
@@ -48,6 +55,15 @@ export const  EditSlice = createSlice({
        
         setIsSelectable: (state, action) => {
             state.isSelectable = action.payload
+        },
+
+        setToastOpt: (state, action) => {
+            Object.keys(action.payload).forEach((k) => {
+                state.toastOpt[k] = action.payload[k]
+            })
+        },
+        setSelectMsg: (state, action) => {
+            state.selectMsg = action.payload
         },
         
         setModalOpt: (state, action) => {
@@ -81,34 +97,35 @@ export const  EditSlice = createSlice({
             }
         },
         
-       /* setCanvasOpt: (state, action) => {
+        setCanvasOpt: (state, action) => {
             Object.keys(action.payload.opt).forEach((k) => {
                 state.convasOpt[action.payload.target][k] = action.payload.opt[k]
             }) 
-        },*/
+        },
         setPlaceSelection: (state, action) => {
             state.placeSelection[action.payload.id] = action.payload.value
         },
-        /*settokens : (state,action) => {
-            places.forEach((p) => {
-                if (p.id === action.payload.node.id) {
-                    
-                }
-            })
-            
-         },*/
+
+        setCopiedElement: (state,action) => {
+            state.copiedElement = action.payload
+        }
+       
        
       
     }
 })
 
+
 // selectors
 export const getSelectedTool = state => state.controls.SelectedTool
+export const getSelectMsg = state => state.controls.selectMsg
 export const getIsSelectable = state => state.controls.isSelectable
 export const getToastOpt = state => state.controls.toastOpt
 export const getModalOpt = state => state.controls.modalOpt
 export const getIsSidebarVisible = state => state.controls.isSidebarVisible
 export const getElementToModify = state => state.controls.elementToModify
+export const getCanvasOpt = state => state.controls.convasOpt
+export const getCopiedElement = state => state.controls.copiedElement
 
-export const { setSelectedTool, setIsSelectable, setToastOpt, setModalOpt, setIsSidebarVisible, setElementToModify,  setPlaceSelection } = EditSlice.actions;
+export const { setSelectedTool, setSelectMsg , setIsSelectable, setToastOpt, setModalOpt, setIsSidebarVisible, setElementToModify,  setPlaceSelection , setCanvasOpt,setCopiedElement } = EditSlice.actions;
 export default EditSlice.reducer

@@ -1,0 +1,84 @@
+* {
+    margin: 0;
+    
+}
+.Doc{
+    background-image: url(./background.svg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    position: absolute;
+    height:100vh;
+    width:95vw;
+   /* left: 10vw;*/
+}
+body{
+    
+    height: 100vh;
+    overflow: hidden ;
+    z-index: 10;
+    width:80vw;
+}
+
+h1.title {
+    color: black !important;
+    font-size: 6vh; /* Specify font size unit */
+    font-family: 'Inter', sans-serif;
+    font-weight: bolder;
+    margin-left: 4vw;
+    margin-top: 7vh;
+}
+
+.sous-doc a {
+    color: inherit; /* Utilise la couleur par défaut du texte */
+    text-decoration: none; /* Supprime le soulignement par défaut */
+  }
+.sections-doc {
+   
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    margin-top: 18vh;
+    gap: 7vw;
+}
+
+section.sous-doc {
+    background-color: rgba(252, 250, 250, 0.5);
+    cursor: pointer;
+    text-align: center;
+    border: 2px solid #2AD7D2;
+    padding: 20px;
+    width: 18vw;
+    height: 37vh;
+    border-radius: 40px;
+    transition: background-color 0.3s;
+    
+}
+
+section:hover {
+    background-color: rgba(42, 215, 210, 0.6);
+}
+
+section:last-child {
+    margin-right: 0px;
+}
+
+
+h2.titre {
+    color: black;
+    font-size: 6vh; /* Specify font size unit */
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    display: block;
+}
+
+p.description {
+    color: black;
+    display: block;
+    margin-top: 5vh;
+    letter-spacing: 0.1vw;
+    font-size: 3.2vh; /* Specify font size unit */
+    font-family: 'Inter', sans-serif;
+    font-weight: light;
+}

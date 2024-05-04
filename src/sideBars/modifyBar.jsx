@@ -35,7 +35,8 @@ export const ModifyBar = ({isVisible, onDelete, onUpdate}) => {
                         <>
                         <div className="modal-header">
                             <h2 className="font-medium text-base mr-auto">Selected Element: {
-                                element.type === 'place' ? 'Place '+element.data.label : (element.type === 'transition' ? 'Transition '+element.data.label : 'Edge')
+                                //element.type === 'place' ? 'Place '+element.data.label : (element.type === 'transition' ? 'Transition '+element.data.label : 'Edge'  )
+                                element.type === 'place' ? 'Place '+element.data.label : (element.type === 'transition' ? 'Transition '+element.data.label : element.type === 'arc' ? 'Edge '  :'textUpdater' )
                                 
                             }</h2>
                              
@@ -120,6 +121,8 @@ export const ModifyBar = ({isVisible, onDelete, onUpdate}) => {
                                 ) : null*/
                             }
                         </div>
+
+                        
                         <div className="modal-footer w-full absolute bottom-0">
                         <button
                                 type="button"
@@ -135,6 +138,7 @@ export const ModifyBar = ({isVisible, onDelete, onUpdate}) => {
                                 type="button"
                                 className="btn btn-primary w-full md:w-max mb-2 md:mb-0"
                                 onClick={() => onUpdate(element)}
+                                
                             >Confirm changes</button>
                         </div>
                         </>

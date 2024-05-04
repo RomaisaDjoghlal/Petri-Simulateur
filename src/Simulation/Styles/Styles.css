@@ -35,8 +35,8 @@
 }
 .place{
   border-radius: 50%;
-  width: 35px;
-  height: 35px;
+  width: 4vw;
+  height: 4vw;
   border-color: rgb(30, 173, 175);
 }
 
@@ -56,10 +56,38 @@
 }
 .transition{
   border-radius: 5px;
-  width: 20px;
-  height: 40px;
-  border-color: rgb(0, 0, 0);
+  width: 2.5vw;
+  height: 4.5vw;
+  background-color: #000;
+  border-color: #6b7280;
 }
+.centered-label-franchit {
+  text-align: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #b8f0e5;
+  padding: 4px 8px;
+  color: #fff;
+
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+.text-updater-node {
+  height: 80px;
+  border: 1px solid #eee;
+  padding: 5px;
+  border-radius: 5px;
+  background: rgb(189, 226, 226); ;
+}
+
+.text-updater-node label {
+  display: block;
+  color: #777;
+  font-size: 12px;
+}
+
 .h-500{
   height: 600px;
 }
@@ -69,19 +97,42 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  
+  color: #fff;
+  padding: 4px 8px;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+.centered-label-timed {
+  text-align: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #000;
+  background-color: #ffffff;
   padding: 4px 8px;
   border-radius: 4px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 94.5vw;
+ /* position: fixed;*/
+  top: 0;
 
-/* Add your CSS styles here */
+  right: 0px; /* Adjust the right spacing as needed */
+ 
+}
+.inner-container {
+  
+  width: 100%;
+  height: 100vh;}
 
-
-
-/* Define grid layout */
 .grid {
   
   display: grid;
@@ -89,12 +140,26 @@
  
   grid-template-columns: repeat(10, 1fr) ; /* Divide the grid into 10 equal columns */
   gap: 5px; /* Add gap between grid items */
-  margin-top: 5px; /* Add top margin */
+  margin-top:0px; /* Add top margin */
 }
 
 /* Define column span for large screens */
 .col-span {
+  position: relative;
+ /* grid-column: span 12; /* Span 12 columns for large screens */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px;
+  list-style-type: none;
+  
+  
+  
+}
+.col-span-main {
+ 
   grid-column: span 12; /* Span 12 columns for large screens */
+  
 }
 
 /* Style the toolbar */
@@ -102,39 +167,327 @@
   display: flex; /* Display toolbar items in a row */
   justify-content: space-between; /* Spread items evenly across the toolbar */
   align-items: center; /* Center items vertically */
-  padding: 5px; /* Add padding to the toolbar */
+  padding: 3px; /* Add padding to the toolbar */
   list-style-type: none; 
   background-color: #454545; 
+  margin-top:0px;
+  height: 8vh; /* Set the desired height */
+  width: 35vw;
+  border-radius: 15px 15px 15px 15px;
+  margin-left:190px;
 }
+.main-toolbar {
+  display: flex; /* Display toolbar items in a row */
+   /* Spread items evenly across the toolbar */
+  align-items: center; /* Center items vertically */
+  padding: 3px; /* Add padding to the toolbar */
+  list-style-type: none; 
+  background-color: #454545; 
+  margin-top:0px;
+  gap: 30px;
+  height: 8vh;
+  
+}
+.soustoolbar {
+  position: relative; /* Ensure relative positioning for absolute children */
+ 
+}
+
+
 
 /* Style the toolbar item */
 .toolbar-item {
-  margin-right: 10px; /* Add space between toolbar items */
+  position: relative;
+  margin-right: 1.5vw; /* Add space between toolbar items */
+ 
+  
 }
+
+.main-toolbar1 {
+  display: flex; /* Display toolbar items in a row */
+   /* Spread items evenly across the toolbar */
+  align-items: center; /* Center items vertically */
+  padding: 3px; /* Add padding to the toolbar */
+  list-style-type: none; 
+  background-color: #454545; 
+  margin-top:0px;
+  margin-left: 20px;
+  gap: 30px;
+  height: 45px;
+}
+.soustoolbar {
+  position: relative; /* Ensure relative positioning for absolute children */
+ 
+}
+
+
+
+/* Style the toolbar item */
+.toolbar-item1 {
+  position: relative;
+  margin-right: 25px; /* Add space between toolbar items */
+ 
+  
+}
+ul.main-toolbar > .toolbar-item-redo {
+  margin-left: 3px; /* Adjust the margin-left value as needed */
+}
+.toolbar-item-undo{
+  position: relative;
+  margin-right:  3px; 
+}
+
 
 /* Style the toolbar button */
 .toolbar-button {
+  position: relative;
   display: flex; /* Display button content in a row */
   justify-content: center; /* Center content horizontally */
   align-items: center; /* Center content vertically */
-  width: 60px; /* Set button width */
-  height: 60px; /* Set button height */
+  width: 40px; /* Set button width */
+  height: 40px; /* Set button height */
   border: none; /* Remove button border */
   background-color: transparent; /* Set button background to transparent */
   cursor: pointer; /* Change cursor to pointer on hover */
   color: #ffffff;
+  
 
 }
 
 /* Style the active toolbar button */
 .toolbar-button:hover {
+  background-color: #bbbbbb74; /* Set background color for active button */
+  border-radius: 8px; /* Add border radius */
+  color: #ffffff; /* Set text color for active button */
+}
+.toolbar-button:active {
   background-color: rgb(30, 173, 175); /* Set background color for active button */
   border-radius: 8px; /* Add border radius */
   color: #ffffff; /* Set text color for active button */
 }
 
-/* Style the ReactFlow component */
+.toolbar-button1 {
+  position: relative;
+  display: flex; /* Display button content in a row */
+  justify-content: center; /* Center content horizontally */
+  align-items: center; /* Center content vertically */
+  width: 40px; /* Set button width */
+  height: 40px; /* Set button height */
+  border: none; /* Remove button border */
+  background-color: transparent; /* Set button background to transparent */
+  cursor: pointer; /* Change cursor to pointer on hover */
+  color: #ffffff;
+  
 
+}
+
+/* Style the active toolbar button */
+.toolbar-button1:hover {
+  background-color: #bbbbbb74; /* Set background color for active button */
+  border-radius: 8px; /* Add border radius */
+  color: #ffffff; /* Set text color for active button */
+}
+
+
+
+.close-button {
+  position: absolute;
+  top: 6px; /* Adjust top position as needed */
+  right: 50px; /* Adjust right position as needed */
+  width: 20px;
+  height: 20px;
+  background-color: #454545;
+  color: #ffffff;
+  border: none;
+  cursor: pointer;
+  z-index: 1; /* Ensure button is above other content */
+  display: flex;
+  border-radius: 50%;
+}
+
+/*.close-button:hover {
+  background-color: #bbbbbb74;
+ 
+}*/
+
+
+.dropdown-content {
+  position: absolute;
+  top: calc(100% + 8px); /* Adjust the vertical position */
+  left: 0;
+  background-color: #454545;
+  min-width: 100px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  padding: 12px 16px;
+  z-index: 1;
+  display: none; /* Hide by default */
+  border-radius: 10px;
+}
+
+.dropdown-content.open {
+  display: block; /* Display when open */
+}
+
+
+
+
+.big-gray-button {
+  background-color: #454545;
+  color: #000;
+  padding: 10px 10px;
+  margin-top: 8px;
+  border: none;
+  cursor: pointer;
+}
+
+.big-gray-button:hover {
+  background-color: #bbb;
+}
+
+.small-gray-button {
+  background-color:#454545;
+  color: #faf0f0;
+  padding: 5px 10px;
+  margin-top: 8px;
+  border: none;
+  cursor: pointer;
+  display: block; /* Display as block-level element */
+  width: 100%; /* Occupy full width */
+  font-size: 14px; /* Change the font size as needed */
+  font-family: Arial, sans-serif;
+  margin-left: 5px; 
+}
+
+.small-gray-button-load{
+  background-color:#454545;
+  color: #faf0f0;
+  padding: 7px 10px;
+  margin-top: 8px;
+  border: none;
+  cursor: pointer;
+  display: block; /* Display as block-level element */
+  width: 80%; /* Occupy full width */
+  font-size: 14px; /* Change the font size as needed */
+  font-family: Arial, sans-serif;
+  margin-left: 10px; 
+  
+}
+.small-gray-button-load:hover {
+  background-color: #bbbbbb74;
+  border-radius: 10px;
+}
+
+.small-gray-button:not(:last-child) {
+  margin-bottom: 8px; /* Add margin-bottom except for the last button */
+}
+
+.small-gray-button:hover {
+  background-color: #bbbbbb74;
+  border-radius: 10px;
+}
+
+.file-input-container {
+  position: relative;
+}
+
+
+
+.copypaste{
+  display : flex ;
+
+  position : relative ;
+  width: 90px;
+  height: 70px;
+  background-color:#bbbbbb74;
+  border-radius: 4px;
+  left: 20px;
+  right: 20px;
+ 
+}
+.listcp2{
+  position: relative;
+
+ left: -25px;
+ margin-top: 15px ;
+ cursor: pointer;
+}
+.listcp1{
+  position: relative;
+  left: 16px;
+ margin-top: 10px;
+ cursor: pointer;
+ margin-bottom: 30px;
+
+}
+
+.listcp1:hover,
+.listcp2:hover {
+  color:rgb(30, 173, 175);
+}
+
+
+
+.ml-4 {
+  margin-left: 1rem; /* You can adjust the left margin as needed */
+}
+
+.mr-auto {
+  margin-right: auto; /* Align to the right side of the container */
+}
+
+.font-medium {
+  font-weight: 500; /* Adjust font weight as needed */
+}
+
+.text-slate-500 {
+  color: #6b7280; /* Adjust text color as needed */
+}
+
+.text-xs {
+  font-size: 0.75rem; /* Adjust font size as needed */
+}
+
+
+
+.lg\:h-7 {
+  line-height: 1.75rem; /* Adjust line height as needed */
+}
+.box {
+  padding: 1.25rem; /* Adjust padding as needed */
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.5rem; /* Adjust margin as needed */
+}
+
+.box > div {
+  width: 2.5rem; /* Adjust width as needed */
+  height: 100%; /* Occupy full height */
+}
+
+.box > div > svg {
+  width: 100%; /* Make the SVG fill the entire container */
+  height: 100%; /* Make the SVG fill the entire container */
+}
+/* Style for the message container */
+.message-container {
+  position: absolute; /* Position the container absolutely */
+ 
+  z-index: 1; /* Ensure the message appears in front of other elements */
+  background-color: #f0f0f0; /* Set background color */
+  color: #333; /* Set text color */
+  /*padding: 10px; /* Add padding as needed */
+}
+
+/* Style for the message */
+.message-container .font-medium {
+  font-weight: bold; /* Add your desired font weight */
+}
+
+.message-container .text-slate-500 {
+  font-size: 14px; /* Add your desired font size */
+ /* margin-top: 5px; /* Adjust margin as needed */
+  line-height: 1.5; /* Adjust line height as needed */
+}
 
 
 

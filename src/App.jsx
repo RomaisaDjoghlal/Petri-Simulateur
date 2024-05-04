@@ -1,26 +1,23 @@
-import { useState } from 'react'
+import React from 'react';
 import { Provider } from 'react-redux';
 import { Store } from './ReduxSlice/Store';
-//import './Simulation/Simulater.jsx/'
+import { BrowserRouter as Router, Route } from "react-router-dom";
+
+import './App.css';
+
+import {Sidebar} from './sideBars/Sidebar' ;
 
 
-
-import { Editer } from './Simulation/Editer'
 
 
 function App() {
- // const [count, setCount] = useState(0)
-
   return (
-    <>
-   <Provider store={Store}>
-   <Editer/>
-  </Provider>,
-    
+      <Router>
+        <Sidebar/>
+        
+      </Router>
       
-      
-    </>
-  )
+  );
 }
 
-export default App
+export default App;
