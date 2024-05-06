@@ -10,7 +10,7 @@ export const MenuList = () => {
     return (      
         <Menu mode="inline" className='menubar'>
             <Menu.Item key="home" icon={<HomeOutlined style={{ fontSize: '4vh' }}/> }>
-            <Link to="/">Home</Link>
+            <Link to="/">Accueil</Link>
             </Menu.Item>
            
             <Menu.SubMenu key="simuler" icon={<MergeOutlined style={{ fontSize: '4vh' }} />} title="Simulation">

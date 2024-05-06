@@ -264,7 +264,7 @@ const handleDownloadPDF = () => {
   });
 };
 
-
+/*
 const saveGraph = (fileType) => {
         const flowData = { nodes, edges };
 
@@ -337,6 +337,42 @@ const saveGraph = (fileType) => {
 
         saveAs(blob, fileName);
       };
+*/
+
+const saveGraph = (fileType) => {
+  const filteredNodes = nodes.filter(node => node.type === 'place' || node.type === 'transition' || node.type === 'group');
+  const filteredEdges = edges.filter(edge => {
+    // Check if both source and target nodes of the edge are of type 'place' or 'transition'
+    const sourceType = filteredNodes.find(node => node.id === edge.source)?.type;
+    const targetType = filteredNodes.find(node => node.id === edge.target)?.type;
+    return sourceType && targetType;
+  });
+
+  const flowData = { nodes: filteredNodes, edges: filteredEdges };
+
+  let blob;
+  let fileName;
+
+  if (fileType === 'pdf') {
+    // Handle PDF saving
+    handleDownloadPDF();
+    fileName = 'myGraph.pdf';
+  } else if (fileType === 'json') {
+    blob = new Blob([JSON.stringify(flowData)], { type: 'application/json' });
+    fileName = 'myGraph.json';
+  } else if (fileType === 'png') {
+    // Handle PNG saving
+    saveGraphAsPng();
+    return; // Exit the function after saving PNG
+  } else {
+    console.error('Invalid file type specified.');
+    return;
+  }
+
+  saveAs(blob, fileName);
+};
+
+
 
 
       

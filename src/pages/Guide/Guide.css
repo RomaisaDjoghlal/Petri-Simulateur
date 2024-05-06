@@ -1,15 +1,19 @@
 
+*{
+  margin: 0;
+  padding: 0;
+}
 .guide-container{
     justify-content: center;
-    
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(126, 125, 125, 0.1);
 }
 .guide-image{
-    margin-top: 5vh;
+    padding-top: 10vh;
     width: 80vw;
     height: 80vh;
-    
-    margin-left: 80px;
-    background-color: aqua;
+    margin-left: 6vw;
 }
 
 button.nextbtn  {

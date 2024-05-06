@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import './Accueil.css';
 import design from './homedesign.svg';
+import { Link } from 'react-router-dom';
 
 export const Accueil = () => {
     const messages = [
@@ -34,7 +35,7 @@ export const Accueil = () => {
         <div className='home-container'>
             <h1 className='titre'>PetriSim</h1>
             <div className='contenu-container'>
-            <div className='text-container'>
+                 <div className='text-container'>
                     
                     <div className='scrolling-text'>
                         <p className='message'>{messages[currentMessageIndex]}</p>
@@ -51,6 +52,7 @@ export const Accueil = () => {
                             </button>
                         ))}
                     </div>
+                    <Link to="/simulation/editeur" ><button className='btncreer'>Créer mon réseau</button></Link>
                 </div>
                 <img src={design} className='design' alt='Design'/>
                 
