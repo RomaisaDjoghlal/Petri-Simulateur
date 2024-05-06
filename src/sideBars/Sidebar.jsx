@@ -46,6 +46,7 @@ export const Sidebar = () => {
            <Route path="/documentation/Ressources" element={<Ressources />} />
            <Route path="/documentation/Explication" element={<Explication />} />
            <Route path="/simulation/propriete" element={<Propriete />} />
+           
            <Route path="/simulation/editeur" element={<Editer />} />
            <Route path="/simulation/marquages" element={<GraphMarquage />} />
            <Route path="/guide" element={ <Guide/>} />

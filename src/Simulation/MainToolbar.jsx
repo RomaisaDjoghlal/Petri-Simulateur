@@ -38,7 +38,7 @@ import './Styles/Styles.css';
 
 import { Tooltip } from 'react-tooltip'
 
-export const MainToolbar = ({ onSaveCanvas,DeleteAllCanvas , handleLoadGraph, handleSaveGraph , undo  , redo , handlesimulationbystep ,handlesimulation , handleReInitialiserReseau ,pause}) => {
+export const MainToolbar = ({ onSaveCanvas,DeleteAllCanvas , handleLoadGraph, handleSaveGraph , undo  , redo , simulationbystep ,handlesimulation , handleReInitialiserReseau ,pause}) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isDropMenuOpen, setIsDropMenuOpen] = useState(false);
   const [selectedShape, setSelectedShape] = useState('');
@@ -319,7 +319,7 @@ export const MainToolbar = ({ onSaveCanvas,DeleteAllCanvas , handleLoadGraph, ha
                                 type="button"
                                 id="monBouton"
                                 className={'toolbar-button1'}
-                                onClick={ handlesimulationbystep}
+                                onClick={ simulationbystep}
                                 
                             > 
                                 <  AiOutlineShareAlt style={{ fontSize: '20px', strokeWidth: '0.5'}} />

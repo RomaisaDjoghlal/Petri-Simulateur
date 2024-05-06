@@ -3,6 +3,8 @@ import { useEffect, useState } from 'react'
 import './Propriete.css'
 import {props} from './Data'
 
+
+
 export const Propriete = () => {
     const [popupcont , setpopupcont] = useState([]);
     const [popuptogle , setpopuptogle] = useState(false);
@@ -37,6 +39,7 @@ export const Propriete = () => {
                         <div className="pop_up_card">
                             <h1 className='pop_titre' >{pop.type}</h1>
                             <p className='def'> {pop.definition}</p>
+                            <p className='val'> {pop.value}</p>
                         </div>
                     )
                 })}

@@ -26,9 +26,6 @@ import html2canvas from 'html2canvas';
 
 
 
-
-//localStorage.clear();
-
 let starthistory = 0 , indexhistory = -1 , hislong = 0;
 let apdatedhistoryelement = '' ;
 
@@ -72,9 +69,9 @@ const getidtext = () => {
   return `${newIdtxt}`;
 }
 
-let k = 0  , pauseRequested = false,lastIteration = 0 ;
-let prevtrans = {} ; let marquageInit = [] ;
-let tabstep = [];let tabtrans = []
+let k = 0  ,lastIteration = 0 ,  pauseRequested = false  ,stopsimul = false , index = -1;
+let prevtrans = {} , prevtrans2 = {} ; let marquageInit = [] ;
+let tabstep = [];let tabtrans = [] ; let existpause = false , pausebefor = false
 
 
 const reseau = creereseau() ;
@@ -116,35 +113,7 @@ export const Editer = () => {
   
 
 
-  //========================================
- /* const initialNodes = () => {
-    
-    if (localStorage.getItem('places') || localStorage.getItem('transitions') ||  localStorage.getItem('textUpdater')) {
-     
-        return JSON.parse(localStorage.getItem('places')).concat(JSON.parse(localStorage.getItem('transitions'))).concat(JSON.parse(localStorage.getItem('textUpdater')))
-    } else if (places.length || transitions.length) {
-        return places.concat(transitions)
-    } else {
-        return []
-    }
-  }*/
-  /*const initialNodes = () => {
-    const storedPlaces = JSON.parse(localStorage.getItem('places')) || [];
-    const storedTransitions = JSON.parse(localStorage.getItem('transitions')) || [];
-    const storedTextUpdaters = JSON.parse(localStorage.getItem('textUpdaters')) || [];
-  
-    if (storedPlaces.length || storedTransitions.length || storedTextUpdaters.length) {
-      return storedPlaces.concat(storedTransitions).concat(storedTextUpdaters);
-    } else if (places.length || transitions.length) {
-      return places.concat(transitions);
-    } else {
-      return [];
-    }
-  };*/
-
-
-
-  
+ 
   
   /*const toast1 = {
     isVisible: true,
@@ -160,215 +129,79 @@ setTimeout(() => {
 */
   
 
+const initialNodes = () => {
 
-
-
-  const initialNodes = () => {
-
-  const toast = {
-    isVisible: true,
-    context: 'pending',
-    title: 'Important !',
-    msg:'Sauvegardez votre réseau pour parcourir les pages en sécurité'
-}
-dispatch(setToastOpt(toast))
-setTimeout(() => {
-    dispatch(setToastOpt({isVisible:false}))
-}, 5000)
-
-  
-    const storedPlaces = JSON.parse(localStorage.getItem('places')) || [];
-    const storedtokens = JSON.parse(localStorage.getItem('tokens')) || [];
-
-    const storedTransitions = JSON.parse(localStorage.getItem('transitions')) || [];
-    const storedTextUpdaters = JSON.parse(localStorage.getItem('textUpdaters')) || [];
-    const storedTextUpdaterKeys = Object.keys(localStorage)
-      .filter((key) => key.startsWith('textUpdater_'));
-    
-    console.log('Found textUpdater keys:', storedTextUpdaterKeys);
-  
-    const storedTextUpdater = storedTextUpdaterKeys
-      .map((key) => {
-        const textUpdaterId = key.split('_')[2]; // Extracting the ID from the key
-        console.log("iddddtt",textUpdaterId)
-
-     
-        
-        const positionKey = `textUpdaterPosition_${textUpdaterId}`;
-       
-        const position = JSON.parse(localStorage.getItem(positionKey));
-        console.log("pos",position)
-        
-       // if (position !== null) {
-          return {
-            id: `textUpdater_${textUpdaterId}`,
-            type: 'textUpdater',
-            data: { label: `Text Updater ${textUpdaterId}`, text: localStorage.getItem(key) },
-            position: position || { x: 0, y: 0 }, // Set the initial position as per your requirement
-          };
-       // }
-        return null; // Ignore nodes with missing position data
-      })
-      .filter(node => node !== null); // Remove any null nodes
-  
-    console.log("Number of stored textUpdaters:", storedTextUpdater.length);
-  
-    if (storedPlaces.length || storedTransitions.length || storedTextUpdaters.length) {
-      return storedPlaces.concat(storedTransitions).concat(storedTextUpdaters).concat(storedtokens);
-    } else if (places.length || transitions.length) {
-      return places.concat(transitions).concat(storedtokens);
-    } else {
-      return [];
+         const toast = {
+        isVisible: true,
+        context: 'pending',
+        title: 'Important !',
+        msg:'Sauvegardez votre réseau pour parcourir les pages en sécurité'
     }
-  };
+    dispatch(setToastOpt(toast))
+    setTimeout(() => {
+        dispatch(setToastOpt({isVisible:false}))
+    }, 8000)
+
+      
+        const storedPlaces = JSON.parse(localStorage.getItem('places')) || [];
+        const storedtokens = JSON.parse(localStorage.getItem('tokens')) || [];
+
+        const storedTransitions = JSON.parse(localStorage.getItem('transitions')) || [];
+        const storedTextUpdaters = JSON.parse(localStorage.getItem('textUpdaters')) || [];
+        const storedTextUpdaterKeys = Object.keys(localStorage)
+          .filter((key) => key.startsWith('textUpdater_'));
+        
+        console.log('Found textUpdater keys:', storedTextUpdaterKeys);
+      
+        const storedTextUpdater = storedTextUpdaterKeys
+          .map((key) => {
+            const textUpdaterId = key.split('_')[2]; // Extracting the ID from the key
+            console.log("iddddtt",textUpdaterId)
+
+        
+            
+            const positionKey = `textUpdaterPosition_${textUpdaterId}`;
+          
+            const position = JSON.parse(localStorage.getItem(positionKey));
+            console.log("pos",position)
+            
+          // if (position !== null) {
+              return {
+                id: `textUpdater_${textUpdaterId}`,
+                type: 'textUpdater',
+                data: { label: `Text Updater ${textUpdaterId}`, text: localStorage.getItem(key) },
+                position: position || { x: 0, y: 0 }, // Set the initial position as per your requirement
+              };
+          // }
+            return null; // Ignore nodes with missing position data
+          })
+          .filter(node => node !== null); // Remove any null nodes
+      
+        console.log("Number of stored textUpdaters:", storedTextUpdater.length);
+      
+        if (storedPlaces.length || storedTransitions.length || storedTextUpdaters.length) {
+          return storedPlaces.concat(storedTransitions).concat(storedTextUpdaters).concat(storedtokens);
+        } else if (places.length || transitions.length) {
+          return places.concat(transitions).concat(storedtokens);
+        } else {
+          return [];
+        }
+      };
   
   
-  
-  
-  
-  //const initialEdges = localStorage.getItem('arcs') ? JSON.parse(localStorage.getItem('arcs')) : (arcs.length ? arcs : [])
-  
+
 
   const reactFlowWrapper = useRef(null)
   const [nodes, setNodes, onNodesChange ] = useNodesState(initialNodes)
 
 
- 
- 
- // const [ ,, onNodesChange] = useNodesState(initialNodes);
-  //const [nodes, setNodes, { undo, canUndo, redo, canRedo }] = useUndoable(initialNodes());
-  //const [nodes, setNodes, { undo,canRedo , canUndo, redo },onNodesChange] = useUndoable(initialNodes());
- 
-
-  
- 
-// First, destructure nodes and setNodes from useUndoable
-//const [nodes, setNodes,onNodesChange] = useNodesState(initialNodes);
-//const { undo, canUndo, redo, canRedo } = useUndoable(nodes);
-
-// Then, use the nodes and setNodes from useUndoable to initialize onNodesChange
-
-
-
-
   const initialEdges = localStorage.getItem('arcs') ? JSON.parse(localStorage.getItem('arcs')) : (arcs.length ? arcs : []);
 
-// Ensure each edge has a unique key
-/*const uniqueEdges = initialEdges.map((edge, index) => ({
-  ...edge,
-  id: index.toString(), // Use a unique identifier, such as index, if the edges don't have unique IDs
-}));
-
-// Use uniqueEdges instead of initialEdges
-const [edges, setEdges, onEdgesChange] = useEdgesState(uniqueEdges);*/
-
-  
-
-
-
-
-  
-  
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges)
   
   const [reactFlowInstance, setReactFlowInstance] = useState(null)
 
  
- 
- /* const onNodeDrag = (event, node) => {
-    
-    const { id, position } = node;
-    const updatedNodes = nodes.map(n => {
-      if (n.id === id) {
-        return { ...n, position };
-      }
-      return n;
-    });
-  
-    setNodes(updatedNodes);
-  
-    // Update edges connected to the dragged node
-    const updatedEdges = edges.map(edge => {
-      if (edge.source === id) {
-        return { ...edge, sourceHandle: position };
-      }
-      if (edge.target === id) {
-        return { ...edge, targetHandle: position };
-      }
-      return edge;
-    });
-  
-    setEdges(updatedEdges);
-  };
-  
-  const onEdgeDrag = (event, edge) => {
-    const { id, sourceHandle, targetHandle, animated, label, style } = edge;
-    const updatedEdges = edges.map(e => {
-      if (e.id === id) {
-        return { ...e, sourceHandle, targetHandle, animated, label, style };
-      }
-      return e;
-    });
-    
-    setEdges(updatedEdges);
-  };*/
-
-
-  
-  
-  
-  
-  
-  
-
-  // Function to handle custom treatment when undo is clicked
- 
-
-  /*const handleUndo = useCallback(() => {
-   
-    // Get the last undone state
-    const lastState = undo();
-    console.log('lastStatek',lastState);
-    console.log('Supprimer reseau ');
-    // Check if the last state contains nodes
-    if (lastState && lastState.length > 0) {
-      // Iterate over the last state to find place nodes and perform "Supprimer reseau" action
-      lastState.forEach(node => {
-        if (node.type === 'place') {
-        
-          const idplace = parseInt(node.id.slice(1));
-          console.log('Supprimer reseau for place node:', idplace);
-          // Perform your "Supprimer reseau" action for place nodes
-          
-          reseau.SuppPlace(idplace)
-          reseau.Afficherplaces();
-        }
-      });
-    }
-  }, [undo]);
-  
-
-
-  // Function to handle custom treatment when redo is clicked
-  const handleRedo = () => {
-    console.log("Redo clicked");
-    redo(); // Call redo function
-    // Add your custom treatment here
-  };*/
-
-
-  
-
-  
-  
- // const reactFlowInstance = useReactFlow();
-
- /* 
- const nodeTypes = {
-    place: PlaceNode,
-    transition: TransitionNode  
-  } 
- */ 
   const MemoizedPlaceNode = memo(PlaceNode);
   const MemoizedTransitionNode = memo(TransitionNode);
   const MemoizedTextUpdaterNode = memo(TextUpdaterNode);
@@ -385,232 +218,157 @@ const nodeTypes = useMemo(
 );
 
 
-
-
-
-//////SAVE //////
-/*const generatePdfBlob = (flowData) => {
-  const doc = new jsPDF();
-  doc.text('Flow Graph PDF', 10, 10);
-  // Add more content to the PDF based on your flowData
-  doc.save('myGraph.pdf');
-
-  return new Blob([doc.output()], { type: 'application/pdf' });
-};
-
-//////////UNDO////
-//const handleGraphChange = (newNodes, newEdges) => {
-  //setStateHistory([...stateHistory, { nodes, edges }]); // Add current state to history
-  //setNodes(newNodes); // Update nodes state with new nodes
-  //setEdges(newEdges); // Update edges state with new edges
-//};
-
-const previousNodesRef = useRef(null);
-
-  
-
-
-
-
-////////////////
-
-
-///////png//////////
-
-
-
-// Helper function to convert data URI to Blob
+/* Tratment sue le fichier (Exportation/Importation) */
 const dataURItoBlob = (dataURI) => {
-  const byteString = atob(dataURI.split(',')[1]);
-  const ab = new ArrayBuffer(byteString.length);
-  const ia = new Uint8Array(ab);
-  for (let i = 0; i < byteString.length; i++) {
-    ia[i] = byteString.charCodeAt(i);
-  }
-  return new Blob([ab], { type: 'image/png' });
-};
-
-
-
-
-
-
-
-const handleDownloadPDF = () => {
-  const input = document.getElementById('reactflow-background');
-  html2canvas(input).then((canvas) => {
-    const imgData = canvas.toDataURL('image/png');
-    const pdf = new jsPDF();
-    pdf.addImage(imgData, 'PNG', 0, 0);
-    pdf.save('downloaded-file.pdf');
-  });
-};*/
-
-
-
-const dataURItoBlob = (dataURI) => {
-  const byteString = atob(dataURI.split(',')[1]);
-  const ab = new ArrayBuffer(byteString.length);
-  const ia = new Uint8Array(ab);
-  for (let i = 0; i < byteString.length; i++) {
-    ia[i] = byteString.charCodeAt(i);
-  }
-  return new Blob([ab], { type: 'image/png' });
-};
-
+        const byteString = atob(dataURI.split(',')[1]);
+        const ab = new ArrayBuffer(byteString.length);
+        const ia = new Uint8Array(ab);
+        for (let i = 0; i < byteString.length; i++) {
+          ia[i] = byteString.charCodeAt(i);
+        }
+        return new Blob([ab], { type: 'image/png' });
+      };
 
 
 const saveGraphAsPng = () => {
-  // Get the container element containing the React Flow elements
-  const elementsContainer = document.querySelector('.react-flow__viewport');
+  
+      const elementsContainer = document.querySelector('.react-flow__viewport');
+      const originalBackgroundColor = elementsContainer.style.backgroundColor;
+      elementsContainer.style.backgroundColor = 'white'; 
+      html2canvas(elementsContainer).then((canvas) => {
+        const pngDataUrl = canvas.toDataURL('image/png');
+        const blob = dataURItoBlob(pngDataUrl);
+        saveAs(blob, 'elementsBackground.png');
 
-  // Store the current background color
-  const originalBackgroundColor = elementsContainer.style.backgroundColor;
-
-  // Set the background color to your desired color
-  elementsContainer.style.backgroundColor = 'white'; // Change this to your desired background color
-
-  // Capture the canvas
-  html2canvas(elementsContainer).then((canvas) => {
-    // Convert the canvas to a PNG data URL
-    const pngDataUrl = canvas.toDataURL('image/png');
-
-    // Convert the PNG data URL to a blob
-    const blob = dataURItoBlob(pngDataUrl);
-
-    // Trigger the download of the PNG image
-    saveAs(blob, 'elementsBackground.png');
-
-    // Restore the original background color
-    elementsContainer.style.backgroundColor = originalBackgroundColor;
-  });
+        elementsContainer.style.backgroundColor = originalBackgroundColor;
+      });
 };
-
-
-
-
-
-
-
-
 
 
 
 const handleDownloadPDF = () => {
-  //const input = document.getElementById('reactFlowBackground'); // Corrected the ID here
-  const elementsContainer = document.querySelector('.react-flow__viewport');
+  
+      const elementsContainer = document.querySelector('.react-flow__viewport');
+      const originalBackgroundColor = elementsContainer.style.backgroundColor;
+      elementsContainer.style.backgroundColor = 'white'; 
 
-  // Store the current background color
-  const originalBackgroundColor = elementsContainer.style.backgroundColor;
+      html2canvas(elementsContainer).then((canvas) => {
+        const imgData = canvas.toDataURL('image/png');
+        const pdf = new jsPDF();
+        const imgWidth = 210; // A4 size
+        const imgHeight = (canvas.height * imgWidth) / canvas.width;
 
-  // Set the background color to your desired color
-  elementsContainer.style.backgroundColor = 'white'; // Change this to your desired background color
-
-  html2canvas(elementsContainer).then((canvas) => {
-    const imgData = canvas.toDataURL('image/png');
-    const pdf = new jsPDF();
-    const imgWidth = 210; // A4 size
-    const imgHeight = (canvas.height * imgWidth) / canvas.width;
-
-    pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
-    pdf.save('downloaded-file.pdf');
-    elementsContainer.style.backgroundColor = originalBackgroundColor;
+        pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
+        pdf.save('downloaded-file.pdf');
+        elementsContainer.style.backgroundColor = originalBackgroundColor;
   });
 };
-
-/*const saveGraph = (fileType) => {
-  let fileName;
-  if (fileType === 'pdf') {
-    handleDownloadPDF(); // Call the handleDownloadPDF function to save as PDF
-  } else if (fileType === 'png') {
-    saveGraphAsPng(); // Call the saveGraphAsPng function to save as PNG
-  } else if (fileType === 'json') {
-    blob = new Blob([JSON.stringify(flowData)], { type: 'application/json' });
-    fileName = 'myGraph.json';
-  } else {
-    console.error('Invalid file type specified.');
-    return;}
-};*/
 
 
 const saveGraph = (fileType) => {
-  const flowData = { nodes, edges };
+        const flowData = { nodes, edges };
 
-  let blob;
-  let fileName;
+        let blob;
+        let fileName;
 
-  if (fileType === 'pdf') {
-    //blob = generatePdfBlob(flowData);
-    handleDownloadPDF(); 
-    fileName = 'myGraph.pdf';
-  } else if (fileType === 'json') {
-    blob = new Blob([JSON.stringify(flowData)], { type: 'application/json' });
-    fileName = 'myGraph.json';
-  } else if (fileType === 'png') {
-    saveGraphAsPng(); // Call the saveGraphAsPng function to save as PNG
-    return; // Exit the saveGraph function after saving PNG
-  } else {
-    console.error('Invalid file type specified.');
-    return;
-  }
-
-  saveAs(blob, fileName);
-};
-
-
-////////////////////
-
+        if (fileType === 'pdf') {
+          
+          handleDownloadPDF(); 
+          fileName = 'myGraph.pdf';
+          let toast = {}
+          toast = {
+              isVisible: true,
+              context: 'success',
+              title: 'succès!',
+              msg: 'Opération terminée avec succès. Vous avez sauvegardé votre réseau sous forme PDF !'
+            }  
+      
+        dispatch(setToastOpt(toast))
+        setTimeout(() => {
+          dispatch(setSelectedTool('place'))
+          }, 100)
+        setTimeout(() => {
+          dispatch(setToastOpt({isVisible:false}))
+        }, 10000)
 
 
+        } else if (fileType === 'json') {
+          blob = new Blob([JSON.stringify(flowData)], { type: 'application/json' });
+          fileName = 'myGraph.json';
+
+            let toast1 = {}
+          toast1 = {
+              isVisible: true,
+              context: 'success',
+              title: 'succès!',
+              msg: 'Opération terminée avec succès. Vous avez sauvegardé votre réseau sous forme JSON !'
+            }  
+      
+        dispatch(setToastOpt(toast1))
+        setTimeout(() => {
+          dispatch(setSelectedTool('place'))
+          }, 100)
+        setTimeout(() => {
+          dispatch(setToastOpt({isVisible:false}))
+        }, 10000)
+  
+        } else if (fileType === 'png') {
+          saveGraphAsPng(); 
+          let toast = {}
+          toast = {
+              isVisible: true,
+              context: 'success',
+              title: 'succès!',
+              msg: 'Opération terminée avec succès. Vous avez sauvegardé votre réseau sous forme PNG !'
+            }  
+      
+        dispatch(setToastOpt(toast))
+        setTimeout(() => {
+          dispatch(setSelectedTool('place'))
+          }, 100)
+        setTimeout(() => {
+          dispatch(setToastOpt({isVisible:false}))
+        }, 10000)
+          return; 
+        } else {
+          console.error('Invalid file type specified.');
+          return;
+        }
+
+        saveAs(blob, fileName);
+      };
+
+
+      
 ///RELOADGRAPH//////
 const loadGraph = async (file) => {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
 
-    reader.onload = (event) => {
-      try {
-        const data = JSON.parse(event.target.result);
-        resolve(data);
-      } catch (error) {
-        reject(error);
-      }
+        reader.onload = (event) => {
+          try {
+            const data = JSON.parse(event.target.result);
+            resolve(data);
+          } catch (error) {
+            reject(error);
+          }
+        };
+
+        reader.onerror = (error) => {
+          reject(error);
+        };
+
+        reader.readAsText(file);
+      });
     };
-
-    reader.onerror = (error) => {
-      reject(error);
-    };
-
-    reader.readAsText(file);
-  });
-};
-
-
-
-
-////FIN RELOAD///////
-
-
-
-
-
 
 
 const handleSaveGraph = (fileType) => {
   saveGraph(fileType);
 };
 
-
-//////FINSAVE//////
- /////RELOAD GRAPH/////
-
- //const [selectedFile, setSelectedFile] = useState(null);
- 
  const handleLoadGraph = async (event) => {
   const file = event.target.files[0];
- 
-/* if (!file) {
-    return; // If no file is selected, do nothing
-  }*/
 
   const data = await loadGraph(file);
  if (data && data.nodes && data.edges) {
@@ -619,161 +377,82 @@ const handleSaveGraph = (fileType) => {
   }
 };
 
-
-////////////////////////////
-
-
-  
-//========================================
-
-  const initializeReseau = useCallback((nodes) => {
-
-  const storedPlaces = nodes.filter(node => node.type === 'place');
-  console.log("tab",storedPlaces);
-  const storedTransitions = nodes.filter(node => node.type === 'transition');
-  const storedTokens = nodes.filter(node => node.type === 'group');
- 
-  //const newPlace = new Place(0, 0);
- // cuz i can not delete the last place because it always start from 1 in table places
- // reseau.AddPlace(newPlace);
-  
-    
-    //reseau.creeplace();
-
-   // const newPlace = new Place(placeData.id, placeData.nbjetons);
-
-
-   // reseau.AddPlace(newPlace);
-   const idTokenMap = new Array(storedPlaces.length).fill(-1);
-
-   storedPlaces.forEach(element => {
-     
-       const idd =element.id.slice(1) ;
-       idTokenMap[idd] = element.data.tokens;
-       dispatch(addElement({type:element.type,element}))
-
-   });
-   console.log("jjjj",idTokenMap )
-   
-   for (const id in idTokenMap) {
-     
-       
-       const nbjetons = idTokenMap[id] !== undefined ? idTokenMap[id] : -1;
-      
-       const newPlace = new Place(id, parseInt(nbjetons)); 
-
-       if(nbjetons==-1)
-       {
-        newPlace.SetPlacesup(true);
-       }
-       reseau.AddPlace(newPlace);
-      
-       console.log("Created place:", newPlace);
-   }
-
-   
-
-  
+/*================================================================*/
 
 
 
-  
-  console.log(" reseau.NpPlacesexist ", reseau.NpPlaces );
-  
-  storedTransitions.forEach(transitionData => {
-    reseau.creetrans();
-  });
- // reseau.Afficherplaces();
-  reseau.Affichertrans();
-  console.log('eddg',edges)
-console.log('edges.length',edges.length)
- /*if( edges.length > 0){
-for (const element of edges) {
-  console.log("eeee", element);
-  let p = element.source[0];
-  console.log("p = " + p);
-  let t = element.target[0];
-  console.log("t = " + t);
-  let type = element.markerEnd === 'circleMarker';
-  
-  if (p === 'P' && t === 'T') {
-    let Idplace = parseInt(element.source.slice(1));
-    let Idtrans = parseInt(element.target.slice(1));
-    reseau.Addpre(Idplace, Idtrans, parseInt(element.label), type);
-  }
-  
-  if (p === 'T' && t === 'P') {
-    let Idplace = parseInt(element.target.slice(1));
-    let Idtrans = parseInt(element.source.slice(1));
-    reseau.Addpost(Idplace, Idtrans, parseInt(element.label), type);
-  }
-}
- }
- /* edges.forEach(element=> {
-    console.log("eeee",element);
-    let p;
-   p = element.source[0]
-  console.log("p = "+p)
-  let t = element.target[0]
-  console.log("t = "+t)
-  let type ;
-  if(element.markerEnd === 'circleMarker'){
-     type =true ;
-  }else{ type = false  }
-  if((p === 'P') && (t === 'T')){
-   let  Idplace = parseInt(element.source.slice(1));
-   let  Idtrans = parseInt(element.target.slice(1));
-  // let type = reseau.Pre[Idplace][Idtrans].type ;
-  // console.log("type = "+type)
-   reseau.Addpre(Idplace,Idtrans,parseInt(element.label),type) /// je doit regler ça , il doit dependre de element 
-  }
- // reseau.AfficherPre();
-  if( (p === 'T') && (t === 'P')){
-    let  Idplace = parseInt(element.target.slice(1));
-    let  Idtrans = parseInt(element.source.slice(1));
-    console.log('hi')
-   // let type = reseau.Post[Idplace][Idtrans].type ;
-   // console.log("type = "+type)
-    reseau.Addpost(Idplace,Idtrans,parseInt(element.label),type) /// je doit regler ça , il doit dependre de element 
-  }
- 
+const initializeReseau = useCallback((nodes) => {
 
-  
- 
-}, []); */
+          const storedPlaces = nodes.filter(node => node.type === 'place');
+          console.log("tab",storedPlaces);
+          const storedTransitions = nodes.filter(node => node.type === 'transition');
+          const storedTokens = nodes.filter(node => node.type === 'group');
+        
+          const idTokenMap = new Array(storedPlaces.length).fill(-1);
 
+          storedPlaces.forEach(element => {
+            
+              const idd =element.id.slice(1) ;
+              idTokenMap[idd] = element.data.tokens;
+              dispatch(addElement({type:element.type,element}))
 
-edges.forEach(element => {
-  if (element && element.source && element.target) {
-    console.log("eeee", element);
-    let p = element.source[0];
-    console.log("p = " + p);
-    let t = element.target[0];
-    console.log("t = " + t);
-    let type = element.markerEnd === 'circleMarker';
-    
-    if (p === 'P' && t === 'T') {
-      let Idplace = parseInt(element.source.slice(1));
-      let Idtrans = parseInt(element.target.slice(1));
-      reseau.Addpre(Idplace, Idtrans, parseInt(element.label), type);
-    }
-    
-    if (p === 'T' && t === 'P') {
-      let Idplace = parseInt(element.target.slice(1));
-      let Idtrans = parseInt(element.source.slice(1));
-      reseau.Addpost(Idplace, Idtrans, parseInt(element.label), type);
-    }
-  } else {
-    console.log("Invalid edge element:", element);
-  }
-});
+          });
+          console.log("jjjj",idTokenMap )
+          
+          for (const id in idTokenMap) {
+            
+              
+              const nbjetons = idTokenMap[id] !== undefined ? idTokenMap[id] : -1;
+              
+              const newPlace = new Place(id, parseInt(nbjetons)); 
 
- 
-reseau.Afficherplaces();
+              if(nbjetons==-1)
+              {
+                newPlace.SetPlacesup(true);
+              }
+              reseau.AddPlace(newPlace);
+              
+              console.log("Created place:", newPlace);
+          }
 
-}, []);
+          console.log(" reseau.NpPlacesexist ", reseau.NpPlaces );
+          
+          storedTransitions.forEach(transitionData => {
+            reseau.creetrans();
+          });
 
+          reseau.Affichertrans();
+          console.log('eddg',edges)
+        console.log('edges.length',edges.length)
+        edges.forEach(element => {
+          if (element && element.source && element.target) {
+            console.log("eeee", element);
+            let p = element.source[0];
+            console.log("p = " + p);
+            let t = element.target[0];
+            console.log("t = " + t);
+            let type = element.markerEnd === 'circleMarker';
+            
+            if (p === 'P' && t === 'T') {
+              let Idplace = parseInt(element.source.slice(1));
+              let Idtrans = parseInt(element.target.slice(1));
+              reseau.Addpre(Idplace, Idtrans, parseInt(element.label), type);
+            }
+            
+            if (p === 'T' && t === 'P') {
+              let Idplace = parseInt(element.target.slice(1));
+              let Idtrans = parseInt(element.source.slice(1));
+              reseau.Addpost(Idplace, Idtrans, parseInt(element.label), type);
+            }
+          } else {
+            console.log("Invalid edge element:", element);
+          }
+        });
 
+        
+        reseau.Afficherplaces();
+
+        }, []);
 
 useEffect(() => {
   if(reseau.Transitions.length === 0 && reseau.places.length=== 0 ){
@@ -782,230 +461,125 @@ useEffect(() => {
 }, [initializeReseau]);
 
 
-console.log("placeback",reseau.places);
-console.log("transeback",reseau.Transitions);
-
-console.log("placefront",places);
-console.log("transfront",transitions);
-
-
-
- 
-console.log('pre',reseau.Pre)
-console.log('post',reseau.Post)
-
 
 
 const onPaneClick = useCallback((e) => {
-  e.preventDefault()
-  const reactFlowBounds = reactFlowWrapper.current.getBoundingClientRect()
-  const position = reactFlowInstance.screenToFlowPosition({
-    x: e.clientX ,
-    y: e.clientY ,
-   
-   
-  })
 
- 
- 
- // const existingPlaces = nodes.filter(node => node.type === 'place')
- // console.log("existingPlaces",existingPlaces);
-
-
- // const existingTransitions = nodes.filter(node => node.type === 'transition')
-  const existingTextUpdaters = nodes.filter(node => node.type === 'textUpdater')
- 
-  const placeId = places.length === 0 ? 0 : Math.max(...places.map(place => parseInt(place.id.slice(1)))) + 1
-
-  const transitionId = transitions.length === 0 ? 0 : Math.max(...transitions.map(transition => parseInt(transition.id.slice(1)))) + 1
- 
-  const textUpdaterId = existingTextUpdaters.length === 0 ? 0 : Math.max(...existingTextUpdaters.map(textUpdater => parseInt(textUpdater.id.split('_')[1]))) + 1 ;
-
-  if(SelectedTool === 'place' || SelectedTool === 'transition' || SelectedTool === 'timed-transition' || SelectedTool === 'textUpdater' )
-  {
-    const toast = {
-      isVisible: true,
-      context: 'dark',
-      title: 'Indice !',
-     // msg:'Pour ajouter un nouvel élément au réseau de Petri, cliquez sur le canevas.'
-     msg:'Pour supprimer l\'élément ou modifier ses propriétés, cliquez dessus avec le pointeur.'
-  }
-  dispatch(setToastOpt(toast))
-  setTimeout(() => {
-      dispatch(setToastOpt({isVisible:false}))
-  }, 10000)
-  }
- 
-
-if (SelectedTool === 'place') {
-  
- 
-    const element = {
-        id: `P${placeId}`,
-        type: 'place',
-        position,
-        data: { label: `P${placeId}` , tokens: '0' , Idtoken1 : '0' , Idtoken2 : '0' , Idtoken3 : '0' ,Idtoken4 : '0' , Idtoken5 : '0' },
-    }
-    setNodes((nds) => nds.concat(element))
-    console.log("ll",element);
-    dispatch(addElement({type:element.type,element}))
-    console.log("kk",places);
- 
-    reseau.creeplace();
-    reseau.Afficherplaces();
-    sethistory((history) => history.concat({effect : 'add' , elementold : '' , elementnew : element }))
-   // reseau.Afficherplaces()
-}
-if (SelectedTool === 'transition') {
- // let i2 = getId2() ;
-  let p = 1 ;
-    const element= {
-      id: `T${transitionId}`,
-        type: 'transition',
-        position,
+        e.preventDefault()
+        const reactFlowBounds = reactFlowWrapper.current.getBoundingClientRect()
+        const position = reactFlowInstance.screenToFlowPosition({
+          x: e.clientX ,
+          y: e.clientY ,
         
-        data: { label: `T${transitionId}`, poid : p , mode :'imediate' , classestyle : "centered-label"
-      },
-    }
-    setNodes((nds) => nds.concat(element))
-    dispatch(addElement({type:element.type,element}))
-    console.log("kk",transitions);
-    reseau.creetrans()
-   reseau.Affichertrans()
-   sethistory((history) => history.concat({effect : 'add' , elementold : '' , elementnew : element }))
-}
-if (SelectedTool === 'timed-transition') {
- // let i2 = getId2() ;
-     let p = 1 ;
-    const element= {
-        id: `T${transitionId}`,
-        type: 'transition',
-        position,
-        style : {
-          backgroundColor: 'grey',
-          borderRadius: '5px',
-          padding: '0.2px',
-        },
-        data: { label:  `T${transitionId}` , poid : p , mode :'timed',classestyle : "centered-label-timed" },
-    }
-    setNodes((nds) => nds.concat(element))
-    dispatch(addElement({type:element.type,element}))
-    reseau.creetransTimed()
-    reseau.Affichertrans();
-    sethistory((history) => history.concat({effect : 'add' , elementold : '' , elementnew : element }))
-}
-  if (SelectedTool === 'textUpdater') {
-   
-      const element= {
-         
-          id: `textUpdater_${textUpdaterId}`,
-          type: 'textUpdater',
-         // position: { x: position.x, y: position.y }, 
-         position,
-          
-         // data: { label: i , mode :'imediate'},
-      }
-      //const textUpdaterPositions = { ...localStorage.getItem('textUpdaterPositions') };
-      //textUpdaterPositions[textUpdaterId] = position;
-      //localStorage.setItem('textUpdaterPositions', JSON.stringify(textUpdaterPositions));
-  
-      console.log("possss",position);
-    
+        })
+        const existingTextUpdaters = nodes.filter(node => node.type === 'textUpdater')
       
-      setNodes((nds) => nds.concat(element))
-      dispatch(addElement({type:element.type,element}))
-      const positionKey = `textUpdaterPosition_${textUpdaterId}`;
-      console.log("mmm",positionKey);
-      localStorage.setItem(positionKey, JSON.stringify(position));
-    
-     
-       
-  
+        const placeId = places.length === 0 ? 0 : Math.max(...places.map(place => parseInt(place.id.slice(1)))) + 1
+
+        const transitionId = transitions.length === 0 ? 0 : Math.max(...transitions.map(transition => parseInt(transition.id.slice(1)))) + 1
       
-  }
-  
+        const textUpdaterId = existingTextUpdaters.length === 0 ? 0 : Math.max(...existingTextUpdaters.map(textUpdater => parseInt(textUpdater.id.split('_')[1]))) + 1 ;
 
-}, [reactFlowInstance, nodes, SelectedTool, setNodes, dispatch])
-
-
-
-
-
-/*const onPaneClick = useCallback((e) => {
-  e.preventDefault()
-  const reactFlowBounds = reactFlowWrapper.current.getBoundingClientRect()
-  const position = reactFlowInstance.screenToFlowPosition({
-    x: e.clientX ,
-    y: e.clientY ,
-   
-  })
-  
-  if (SelectedTool === 'place') {
-    let i1 = getId1() ;
-      const element = {
-          id:i1 ,
-          type: 'place',
-          position,
-          data: { label: i1, tokens: '0' , Idtoken1 : '0' , Idtoken2 : '0' , Idtoken3 : '0' ,Idtoken4 : '0' , Idtoken5 : '0' },
-      }
-      setNodes((nds) => nds.concat(element))
-      dispatch(addElement({type:element.type,element}))
-      reseau.creeplace();
-      reseau.Afficherplaces();
-     // reseau.Afficherplaces()
-  }
-  if (SelectedTool === 'transition') {
-    let i2 = getId2() ;
-    let p = 1 ;
-      const element= {
-          id:i2 ,
-          type: 'transition',
-          position,
-          
-          data: { label: i2 , poid : p , mode :'imediate'},
-      }
-      setNodes((nds) => nds.concat(element))
-      dispatch(addElement({type:element.type,element}))
-      reseau.creetrans()
-     reseau.Affichertrans()
-  }
-  if (SelectedTool === 'timed-transition') {
-    let i2 = getId2() ;
-    let p = 1 ;
-      const element= {
-          id:i2 ,
-          type: 'transition',
-          position,
-          style : {
-            backgroundColor: 'red',
-            borderRadius: '5px',
-            padding: '2px',
-          },
-          data: { label: i2 , backgroundColor : 'red' , poid : p , mode :'timed' },
-      }
-      setNodes((nds) => nds.concat(element))
-      dispatch(addElement({type:element.type,element}))
-      reseau.creetransTimed()
-      reseau.Affichertrans();
-  }
-
-  if (SelectedTool === 'textUpdater') {
-    let i =  getidtext() ;
-    let p = 1 ;
-      const element= {
-          id:i ,
-          type: 'textUpdater',
-          position,
-          
-          data: { label: i , mode :'imediate'},
-      }
-      setNodes((nds) => nds.concat(element))
-      dispatch(addElement({type:element.type,element}))
+        if(SelectedTool === 'place' || SelectedTool === 'transition' || SelectedTool === 'timed-transition' || SelectedTool === 'textUpdater' )
+        {
+          const toast = {
+            isVisible: true,
+            context: 'dark',
+            title: 'Indice !',
+          msg:'Pour supprimer l\'élément ou modifier ses propriétés, cliquez dessus avec le pointeur.'
+        }
+        dispatch(setToastOpt(toast))
+        setTimeout(() => {
+            dispatch(setToastOpt({isVisible:false}))
+        }, 10000)
+        }
       
-  }
 
+      if (SelectedTool === 'place') {
+        
+      
+          const element = {
+              id: `P${placeId}`,
+              type: 'place',
+              position,
+              data: { label: `P${placeId}` , tokens: '0' , Idtoken1 : '0' , Idtoken2 : '0' , Idtoken3 : '0' ,Idtoken4 : '0' , Idtoken5 : '0' },
+          }
+          setNodes((nds) => nds.concat(element))
+          console.log("ll",element);
+          dispatch(addElement({type:element.type,element}))
+          console.log("kk",places);
+      
+          reseau.creeplace();
+          reseau.Afficherplaces();
+          sethistory((history) => history.concat({effect : 'add' , elementold : '' , elementnew : element }))
+        
+      }
+      if (SelectedTool === 'transition') {
 
-}, [reactFlowInstance, nodes, SelectedTool, setNodes, dispatch])*/
+        let p = 1 ;
+          const element= {
+            id: `T${transitionId}`,
+              type: 'transition',
+              position,
+              
+              data: { label: `T${transitionId}`, poid : p , mode :'imediate' , classestyle : "centered-label"
+            },
+          }
+          setNodes((nds) => nds.concat(element))
+          dispatch(addElement({type:element.type,element}))
+          console.log("kk",transitions);
+          reseau.creetrans()
+        reseau.Affichertrans()
+        sethistory((history) => history.concat({effect : 'add' , elementold : '' , elementnew : element }))
+      }
+      if (SelectedTool === 'timed-transition') {
+      
+          let p = 1 ;
+          const element= {
+              id: `T${transitionId}`,
+              type: 'transition',
+              position,
+              style : {
+                backgroundColor: 'grey',
+                borderRadius: '5px',
+                padding: '0.2px',
+              },
+              data: { label:  `T${transitionId}` , poid : p , mode :'timed',classestyle : "centered-label-timed" },
+          }
+          setNodes((nds) => nds.concat(element))
+          dispatch(addElement({type:element.type,element}))
+          reseau.creetransTimed()
+          reseau.Affichertrans();
+          sethistory((history) => history.concat({effect : 'add' , elementold : '' , elementnew : element }))
+      }
+        if (SelectedTool === 'textUpdater') {
+        
+            const element= {
+              
+                id: `textUpdater_${textUpdaterId}`,
+                type: 'textUpdater',
+              
+              position,
+                
+              
+            }
+            
+        
+            console.log("possss",position);
+          
+            
+            setNodes((nds) => nds.concat(element))
+            dispatch(addElement({type:element.type,element}))
+            const positionKey = `textUpdaterPosition_${textUpdaterId}`;
+            console.log("mmm",positionKey);
+            localStorage.setItem(positionKey, JSON.stringify(position));
+          
+            
+        }
+        
+
+      }, [reactFlowInstance, nodes, SelectedTool, setNodes, dispatch])
+
 
 const MarkerType = {
   ArrowClosed: 'arrowclosed',
@@ -1015,275 +589,241 @@ const MarkerType = {
 };
 
 const integreArc = (type,params) => {
- /* const longueurtrans = transitions.length;
-     let i = 0;
-     let Sourcetrouvtrans = false;
-while(( i < longueurtrans)&&(Sourcetrouvtrans===false)) {
- if ((transitions[i].id)===params.source){Sourcetrouvtrans=true}
- i++;
-}
-let ist=i-1;
-let j = 0;
-const longueurplaces = places.length;
 
-     let Sourcetrouvplaces = false;
-while(( j < longueurplaces)&&(Sourcetrouvplaces===false)) {
- if ((places[j].id)===params.source){Sourcetrouvplaces=true}
- j++;
-}
-let isp =0;
-isp= j-1;
-
-let k =0;
-let Targettrouvplaces = false;
-while(( k< longueurplaces)&&(Targettrouvplaces===false)) {
- if ((places[k].id)===params.target){Targettrouvplaces=true}
- k++;
-}
-let itp=k-1;
-let l = 0;
-let Targettrouvtrans = false;
-while(( l < longueurtrans)&&(Targettrouvtrans===false)) {
-  if ((transitions[l].id)===params.target){Targettrouvtrans=true}
-  l++;
- }
- let itt=l-1;
- //console.log('targetran');
- ///console.log(Targettrouvtrans);
- //console.log('sourceplace');
-// console.log(Sourcetrouvplaces);
- 
- if((Targettrouvtrans===true)&&(Sourcetrouvplaces===true) ){
-  reseau.Addpre(isp,itt,1,type);
-  console.log('pre p t');
-  reseau.AfficherPre();
- }
- if((Sourcetrouvtrans===true)&&(Targettrouvplaces === true )){
-  reseau.Addpost(itp,ist,1,type);
-  console.log('post t p');
-  reseau.AfficherPost();
- }*/
-
- let p = params.source[0]
-      console.log("p = "+p)
-      let t = params.target[0]
-      console.log("t = "+t)
-      if( (p === 'P') && (t === 'T')){
-       let  Idplace = parseInt(params.source.slice(1));
-       let  Idtrans = parseInt(params.target.slice(1));
-       //let type = reseau.Pre[Idplace][Idtrans].type ;
-       console.log("type = "+type)
-       reseau.Addpre(Idplace,Idtrans,1,type)/// je doit regler ça , il doit dependre de element 
-      }
-  
-      if( (p === 'T') && (t === 'P')){
-        let  Idplace = parseInt(params.target.slice(1));
-        let  Idtrans = parseInt(params.source.slice(1));
-       // let type = reseau.Post[Idplace][Idtrans].type ;
-        console.log("type = "+type)
-        reseau.Addpost(Idplace,Idtrans,1,type)/// je doit regler ça , il doit dependre de element 
-      }
-
-}
-const onConnect = useCallback((params) => {
-  const sourceType = reactFlowInstance.getNode(params.source).type
-  const targetType = reactFlowInstance.getNode(params.target).type
-
-  if  (((sourceType === 'place' ) && (targetType === 'place')) || ((sourceType === 'transition' ) && (targetType === 'transition'))){
-    console.log("affichere errro");
-      const toast = {
-                isVisible: true,
-                context: 'pending',
-                title: 'Erreur!',
-                msg: "Vous ne pouvez pas connecter deux nœuds du même type."
+      let p = params.source[0]
+            console.log("p = "+p)
+            let t = params.target[0]
+            console.log("t = "+t)
+            if( (p === 'P') && (t === 'T')){
+            let  Idplace = parseInt(params.source.slice(1));
+            let  Idtrans = parseInt(params.target.slice(1));
+            //let type = reseau.Pre[Idplace][Idtrans].type ;
+            console.log("type = "+type)
+            reseau.Addpre(Idplace,Idtrans,1,type)/// je doit regler ça , il doit dependre de element 
             }
-            dispatch(setToastOpt(toast))
-            setTimeout(() => {
-                dispatch(setToastOpt({isVisible:false}))
-            }, 10000)
+        
+            if( (p === 'T') && (t === 'P')){
+              let  Idplace = parseInt(params.target.slice(1));
+              let  Idtrans = parseInt(params.source.slice(1));
+            // let type = reseau.Post[Idplace][Idtrans].type ;
+              console.log("type = "+type)
+              reseau.Addpost(Idplace,Idtrans,1,type)/// je doit regler ça , il doit dependre de element 
+            }
+
+}
+
+
+const onConnect = useCallback((params) => {
+          const sourceType = reactFlowInstance.getNode(params.source).type
+          const targetType = reactFlowInstance.getNode(params.target).type
+
+          if  (((sourceType === 'place' ) && (targetType === 'place')) || ((sourceType === 'transition' ) && (targetType === 'transition'))){
+            console.log("affichere errro");
+              const toast = {
+                        isVisible: true,
+                        context: 'pending',
+                        title: 'Erreur!',
+                        msg: "Vous ne pouvez pas connecter deux nœuds du même type."
+                    }
+                    dispatch(setToastOpt(toast))
+                    setTimeout(() => {
+                        dispatch(setToastOpt({isVisible:false}))
+                    }, 10000)
+                }
+
+        console.log("sourceType = "+sourceType)
+        console.log("targetType = "+targetType)
+          if (sourceType !== targetType ) {
+
+            
+            const existingEdges = edges.filter(edge => edge.type === 'straight');
+            const edgeId = existingEdges.length === 0 ? 0 : Math.max(...existingEdges.map(arc => parseInt(arc.id.slice(1)))) + 1;
+
+
+
+            //const edgeId = edges.length === 0 ? '0' : String(Math.max(...edges.map(n => parseInt(n.id).slice(1))) + 1)
+            if (SelectedTool === 'arc') {
+              const element = {
+                  id: `A${edgeId}` ,
+                  type: 'straight',
+                  type2 : 'arc',
+                  source: String(params.source),
+                  target: String(params.target),
+                  label: '1',
+                  data : {           
+                  poid : '1' ,
+                  },         
+                  markerEnd: {type: MarkerType.ArrowClosed,
+                    width: 20,
+                    height: 20,
+                    color: '#118C7E', 
+                                        }
+              }
+              console.log("sourve = "+element.source)
+              setEdges((eds) => eds.concat(element))
+              dispatch(addElement({type:element.type,element}))
+              integreArc(false,params)
+              sethistory((history) => history.concat({effect : 'add' , elementold : '' , elementnew : element }))
+          } 
+        else {
+        if (SelectedTool === 'arcinhibe') {
+          if((sourceType === 'transition' ) && (targetType === 'place')){
+          const toast2 = {
+            isVisible: true,
+            context: 'pending',
+            title: 'Erreur!',
+            msg: "Vous ne pouvez pas connecter l'arc inhibé d'une Transition à une Place."
+        }
+        dispatch(setToastOpt(toast2))
+        setTimeout(() => {
+            dispatch(setToastOpt({isVisible:false}))
+        }, 40000)
         }
 
- console.log("sourceType = "+sourceType)
- console.log("targetType = "+targetType)
-  if (sourceType !== targetType ) {
+          if ((sourceType === 'place' ) && (targetType === 'transition')){
+            console.log("here")
+            const element = {
+              id: `A${edgeId}` ,
+              type: 'straight',
+              type2 : 'arc',
+              source: String(params.source),
+              target: String(params.target),
+              label: '1',
+              data : {       
+              poid : '1' ,
+              },         
+              markerEnd: "circleMarker"
+          } 
+          //////////
+          // Create the SVG element
+        const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
 
-    
-    const existingEdges = edges.filter(edge => edge.type === 'straight');
-    const edgeId = existingEdges.length === 0 ? 0 : Math.max(...existingEdges.map(arc => parseInt(arc.id.slice(1)))) + 1;
+        // Create the defs element
+        const defs = document.createElementNS("http://www.w3.org/2000/svg", "defs");
 
-
-
-     //const edgeId = edges.length === 0 ? '0' : String(Math.max(...edges.map(n => parseInt(n.id).slice(1))) + 1)
-    if (SelectedTool === 'arc') {
-      const element = {
-          id: `A${edgeId}` ,
-          type: 'straight',
-          type2 : 'arc',
-          source: String(params.source),
-          target: String(params.target),
-          label: '1',
-          data : {           
-          poid : '1' ,
-          },         
-          markerEnd: {type: MarkerType.ArrowClosed,
-            width: 20,
-            height: 20,
-            color: '#118C7E', 
-                                }
-      }
-      console.log("sourve = "+element.source)
-      setEdges((eds) => eds.concat(element))
-      dispatch(addElement({type:element.type,element}))
-      integreArc(false,params)
-      sethistory((history) => history.concat({effect : 'add' , elementold : '' , elementnew : element }))
-  } 
- else {
-if (SelectedTool === 'arcinhibe') {
-  if((sourceType === 'transition' ) && (targetType === 'place')){
-  const toast2 = {
-    isVisible: true,
-    context: 'pending',
-    title: 'Erreur!',
-    msg: "Vous ne pouvez pas connecter l'arc inhibé d'une Transition à une Place."
-}
-dispatch(setToastOpt(toast2))
-setTimeout(() => {
-    dispatch(setToastOpt({isVisible:false}))
-}, 10000)
-}
-
-  if ((sourceType === 'place' ) && (targetType === 'transition')){
-    console.log("here")
-    const element = {
-      id: `A${edgeId}` ,
-      type: 'straight',
-      type2 : 'arc',
-      source: String(params.source),
-      target: String(params.target),
-      label: '1',
-      data : {       
-      poid : '1' ,
-      },         
-      markerEnd: "circleMarker"
-  } 
-  //////////
-  // Create the SVG element
-const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-
-// Create the defs element
-const defs = document.createElementNS("http://www.w3.org/2000/svg", "defs");
-
-// Create the marker element
-const marker = document.createElementNS("http://www.w3.org/2000/svg", "marker");
-marker.setAttribute("id", "circleMarker");
-marker.setAttribute("markerWidth", "8");
-marker.setAttribute("markerHeight", "8");
-marker.setAttribute("refX", "8");
-marker.setAttribute("refY", "4");
-marker.setAttribute("orient", "auto");
-// Create the circle element inside the marker
-const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-circle.setAttribute("cx", "4");
-circle.setAttribute("cy", "4");
-circle.setAttribute("r","4");
-circle.setAttribute("fill", "black");
-//circle.setAttribute("stroke", "black");
+        // Create the marker element
+        const marker = document.createElementNS("http://www.w3.org/2000/svg", "marker");
+        marker.setAttribute("id", "circleMarker");
+        marker.setAttribute("markerWidth", "8");
+        marker.setAttribute("markerHeight", "8");
+        marker.setAttribute("refX", "8");
+        marker.setAttribute("refY", "4");
+        marker.setAttribute("orient", "auto");
+        // Create the circle element inside the marker
+        const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+        circle.setAttribute("cx", "4");
+        circle.setAttribute("cy", "4");
+        circle.setAttribute("r","4");
+        circle.setAttribute("fill", "black");
+        //circle.setAttribute("stroke", "black");
 
 
-// Append the circle to the marker, and marker to the defs
-marker.appendChild(circle);
-defs.appendChild(marker);
+        // Append the circle to the marker, and marker to the defs
+        marker.appendChild(circle);
+        defs.appendChild(marker);
 
-// Create the line element
-const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
-line.setAttribute("x1", "50");
-line.setAttribute("y1", "50");
-line.setAttribute("x2", "150");
-line.setAttribute("y2", "150");
-line.setAttribute("marker-end", "url(#circleMarker)");
+        // Create the line element
+        const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+        line.setAttribute("x1", "50");
+        line.setAttribute("y1", "50");
+        line.setAttribute("x2", "150");
+        line.setAttribute("y2", "150");
+        line.setAttribute("marker-end", "url(#circleMarker)");
 
-// Append the defs and line to the SVG
-svg.appendChild(defs);
-svg.appendChild(line);
+        // Append the defs and line to the SVG
+        svg.appendChild(defs);
+        svg.appendChild(line);
 
-// Append the SVG to the document body or any other container
-document.body.appendChild(svg);
-
-
- ////////
-  console.log('mark');
-   console.log(element.markerEnd);
-
-   setEdges((eds) => eds.concat(element))
-   dispatch(addElement({type:element.type,element}))
-   integreArc(true,params)
-  }
-
-  
-} 
-}
-}
-}, [reactFlowInstance, edges, setEdges, dispatch,SelectedTool])
+        // Append the SVG to the document body or any other container
+        document.body.appendChild(svg);
 
 
+        ////////
+          console.log('mark');
+          console.log(element.markerEnd);
 
+          setEdges((eds) => eds.concat(element))
+          dispatch(addElement({type:element.type,element}))
+          integreArc(true,params)
+          }
 
+          
+        } 
+        }
+        }
+        }, [reactFlowInstance, edges, setEdges, dispatch,SelectedTool])
 
 
 
 const deleteNodesById = (ids) => {
-  setNodes((nds) => nds.filter((n) => !ids.includes(n.id)));
+     setNodes((nds) => nds.filter((n) => !ids.includes(n.id)));
 };
 
 const ajoutToken = (node) => {
-  console.log("gggg "+ places[0].data.label)
-  console.log("hhhh "+ node.data.label)
-  let j = 0;
-  const longueurplaces = places.length;
-  
-       let trouv = false;
-  while(( j < longueurplaces)&&(trouv===false)) {
-   if ((places[j].data.label) === node.data.label){trouv=true}
-   j++;
-  }
-  j--
-  reseau.places[j].SetJetons(reseau.places[j].GetJetons()+1) ;
-  reseau.Afficherplaces();
- 
+      console.log("gggg "+ places[0].data.label)
+      console.log("hhhh "+ node.data.label)
+      let j = 0;
+      const longueurplaces = places.length;
+      
+          let trouv = false;
+      while(( j < longueurplaces)&&(trouv===false)) {
+      if ((places[j].data.label) === node.data.label){trouv=true}
+      j++;
+      }
+      j--
+      reseau.places[j].SetJetons(reseau.places[j].GetJetons()+1) ;
+      reseau.Afficherplaces();
+    
 };
 
 
 const suppToken = (node) => {
-  console.log("gggg "+ places[0].data.label)
-  console.log("hhhh "+ node.data.label)
-  let j = 0;
-  const longueurplaces = places.length;
-  
-       let trouv = false;
-  while(( j < longueurplaces)&&(trouv===false)) {
-   if ((places[j].data.label) === node.data.label){trouv=true}
-   j++;
-  }
-  j--
-  reseau.places[j].SetJetons(reseau.places[j].GetJetons()-1) ;
-  reseau.Afficherplaces();
+      console.log("gggg "+ places[0].data.label)
+      console.log("hhhh "+ node.data.label)
+      let j = 0;
+      const longueurplaces = places.length;
+      
+          let trouv = false;
+      while(( j < longueurplaces)&&(trouv===false)) {
+      if ((places[j].data.label) === node.data.label){trouv=true}
+      j++;
+      }
+      j--
+      reseau.places[j].SetJetons(reseau.places[j].GetJetons()-1) ;
+      reseau.Afficherplaces();
  
 };
 
 
 const onNodeClick = useCallback((event, node) => {
 
+ /* const toast = {
+    isVisible: true,
+    context: 'dark',
+    title: 'Indice !',
+    msg:'En cliquant sur la Place  pour ajouter le nombre voulu de jetons.'
+}
+dispatch(setToastOpt(toast))
+setTimeout(() => {
+    dispatch(setToastOpt({isVisible:false}))
+}, 10000)*/
+
   const existingNodes = nodes.filter(node => node.type === 'group')
   const nodeId = existingNodes.length === 0 ? 0 : Math.max(...existingNodes.map( token=> parseInt(token.id.slice(1)))) + 1
   
+  
+  
+
   if (SelectedTool === 'pointer') {
+  
     apdatedhistoryelement = node ;
     dispatch(setElementToModify(node))
     dispatch(setIsSidebarVisible(true))
   } else {
+     
     if( node.type === 'place'){
     if (SelectedTool === 'Add-token') {
-
+     
   
       const newTokens = parseInt(node.data.tokens) + 1;
       console.log("newTokens = " + newTokens)
@@ -1949,10 +1489,11 @@ const DeleteAllCanvas = useCallback(() => {
 
 
 const onSaveCanvas = useCallback(() => {
+
   dispatch(setSelectedTool('save'))
   dispatch(setIsSelectable(false))
-  k = 0 ; pauseRequested = false
-  lastIteration = 0 ;
+  k = 0 ;  pauseRequested = false ; stopsimul = false
+  lastIteration = 0 ; existpause = false ;pausebefor = false
   let can = marquageallowed();
   let tab = [] ;
   let arc = [] ;
@@ -1968,6 +1509,18 @@ if( can === true ){
   console.log(tab)
   console.log(' le tableau arc  ')
   console.log(arc)
+  let renitiabilite =  reseau.Renitiable(arc,tab);
+  console.log('renitiabilite',renitiabilite)
+  localStorage.setItem('renitiabilite',JSON.stringify(renitiabilite)) ;
+  let qasivivant = reseau.Reseauquasivivant(reseau.Transitions,arc)
+  console.log('qasivivant',qasivivant)
+  localStorage.setItem('qasivivant',JSON.stringify(qasivivant)) ;
+  let infini = reseau.marquageTillInfini(reseau.getmarqini()); /////// reseau if infni=vrai msg reseau infinie 
+  console.log('infini',infini);
+  localStorage.setItem('infini',JSON.stringify(infini)) ;
+  let nonbloc = reseau.nonbloc(reseau.getmarqini());
+  console.log('nonbloc',nonbloc);
+  localStorage.setItem('nonbloc',JSON.stringify(nonbloc)) ;
   localStorage.setItem('listArc',JSON.stringify(arc))
   localStorage.setItem('listMarquage',JSON.stringify(tab))
    reseau.ConstrGraphmarqre(tab,arc,tab1,arc1) ;
@@ -1983,52 +1536,9 @@ if( can === true ){
   console.log('tabstep outside',tabstep)
   console.log('tabtrans',tabtrans)
 }
- /*
-  k = 0 ; pauseRequested = false
-          lastIteration = 0 ;
-          let can = marquageallowed();
-          let tab = [] ;
-        let arc = [] ;
-        
-        if( can === true ){
-          let marquageInitiale = reseau.getmarqini() ;
-          console.log('marquage initiale ')
-          console.log(marquageInitiale)
-         
-          reseau.ConstrGraphmarq(marquageInitiale,0,tab,arc)
-          console.log(' le tableau ')
-          console.log(tab)
-          console.log(' le tableau arc  ')
-          console.log(arc)
-          localStorage.setItem('listArc',JSON.stringify(arc))
-          localStorage.setItem('listMarquage',JSON.stringify(tab))
-        
-           marquageInit = reseau.getmarqini() ;
-          console.log('avant simul')
-          tabstep = reseau.simulation(tab,arc,marquageInit,tabtrans)
-          console.log('tabstep outside',tabstep)
-          console.log('tabtrans',tabtrans)
-        }
 
-  */
+ 
   let toast = {}
-
-
-  /*dispatch(saveNet({nodes:reactFlowInstance.getNodes(),edges:reactFlowInstance.getEdges()}))
-
-  
-  const currentNodes = reactFlowInstance.getNodes().map(n => n.data.label)
-  const checkDuplicated = currentNodes.filter((n,i) => currentNodes.indexOf(n) !== i)
-  if (checkDuplicated.length) {
-      toast = {
-          isVisible: true,
-          context: 'pending',
-          title: 'Erreur !',
-          msg: "Il n'est pas possible d'avoir deux nœuds ou plus avec le même libellé ( "+checkDuplicated+" )."
-      }
-
-  } else {*/
-
 
       dispatch(saveNet({nodes:reactFlowInstance.getNodes(),edges:reactFlowInstance.getEdges()}))
       toast = {
@@ -2037,7 +1547,7 @@ if( can === true ){
           title: 'succès!',
           msg: 'Opération terminée avec succès. Vous pouvez maintenant naviguer sur les pages et garder votre réseau de Petri en sécurité !'
       }  
-  //}
+  
   dispatch(setToastOpt(toast))
   setTimeout(() => {
       dispatch(setSelectedTool('place'))
@@ -2050,7 +1560,7 @@ if( can === true ){
 },[reactFlowInstance, dispatch])
 
 
-//<TextUpdaterNode id={`textUpdater_0`} onDeleteText={onDeleteText} />
+
 
 const idToken =()=>{
 const existingNodes = nodes.filter(node => node.type === 'group')
@@ -3025,11 +2535,15 @@ const paste = () => {
         }
         */
         const button = document.getElementById("monBouton");
+
+
+
+
         
-const handlesimulationbystep = (tabstep,tabtrans,l) => {
+/*const handlesimulationbystep = (tabstep,tabtrans,l) => {
 
   if(tabstep.length===0 ) {
-  /*  const toast = {
+    const toast = {
       isVisible: true,
       context: 'pending',
       title: 'Important !',
@@ -3039,7 +2553,7 @@ const handlesimulationbystep = (tabstep,tabtrans,l) => {
   dispatch(setToastOpt(toast))
   setTimeout(() => {
       dispatch(setToastOpt({isVisible:false}))
-  }, 10000)*/
+  }, 10000)
   }
   let nbplaces = reseau.NpPlaces 
   console.log('nbplaces ',nbplaces)
@@ -3049,6 +2563,17 @@ const handlesimulationbystep = (tabstep,tabtrans,l) => {
   console.log('tabtrans en simul ',tabtrans)
   if( l < tabstep.length ){ 
     if( l> 0 ){
+      const toast = {
+        isVisible: true,
+        context: 'dark',
+        title: 'Indice !',
+       
+        msg:'Appuyez sur Réinitialiser pour revenir au réseau avant la simulation ou vous pouvez le modifier '
+    }
+    dispatch(setToastOpt(toast))
+    setTimeout(() => {
+        dispatch(setToastOpt({isVisible:false}))
+    }, 100000)
    if( tabtrans[l] !== tabtrans[l-1]){
       console.log('prevtrans',prevtrans) ;
     setNodes((prevNodes) => prevNodes.map((n) => (n.id === 'T'+tabtrans[l-1] ? prevtrans : n)));
@@ -3074,14 +2599,7 @@ const handlesimulationbystep = (tabstep,tabtrans,l) => {
     setNodes((prevNodes) => prevNodes.map((n) => (n.id === trans.id ? newtran : n)));
      prevtrans = trans ;
   }
-    /*let id = 'T'+tabtrans[l] ;
-   let trans =  nodes.find(node => node.id === id);
-   const newtran = {
-    ...trans, 
-   // position : position ,
-    data: {
-    ...trans.data,  classestyle : "centered-label-franchit",}};
-    setNodes((prevNodes) => prevNodes.map((n) => (n.id === trans.id ? newtran : n)));*/
+   
 
    for(let g = 0 ; g < nbplaces ; g++){
     console.log('tabstep[k][g]',tabstep[l][g])
@@ -3100,11 +2618,7 @@ const handlesimulationbystep = (tabstep,tabtrans,l) => {
     // setNodes((nds) =>
        // nodes.map((node) => (node.id === element.id ? { ...node, data: { ...node.data, tokens: element.data.tokens , Idtoken1 :element.data.Idtoken1 , Idtoken2 :element.data.Idtoken2 , Idtoken3 :element.data.Idtoken3, Idtoken4 :element.data.Idtoken4 , Idtoken5 :element.data.Idtoken5} } : node))
      // );
-   /*  const updatedNodes = nodes.map((node) =>
-      node.id === id  ? { ...node, data: { ...node.data, tokens: element.data.tokens , Idtoken1 :element.data.Idtoken1 , Idtoken2 :element.data.Idtoken2 , Idtoken3 :element.data.Idtoken3, Idtoken4 :element.data.Idtoken4 , Idtoken5 :element.data.Idtoken5} } : node
-    );
-    setNodes(updatedNodes);*/
-    //setNodes((nodes) => nodes.map((n) =>(n.id === node.id ? element : n)));
+   
     setNodes((prevNodes) => prevNodes.map((n) => (n.id === node.id ? element : n)));
     dispatch(updateElement({type:element.type,element}))
 
@@ -3123,46 +2637,30 @@ const handlesimulationbystep = (tabstep,tabtrans,l) => {
    // setNodes((prevNodes) => prevNodes.map((n) => (n.id === 'T'+tabtrans[l-1] ? prevtrans : n)));
   }
 }
-      /*  const handlesimulation = (tabstep) =>{
-          while( k<tabstep.length ){
-            handlesimulationbystep(tabstep,k)
-            /*useRef(() => {
-              if (nodes.length > 0) {
-                console.log('Updated nodes:', nodes);
-              }
-            },[nodes]);*/
-            //console.log('a real step');
-          //}
-          /*useEffect(() => {
-            while (k < tabstep.length) {
-              handlesimulationbystep(tabstep, k);
-              if (nodes.length > 0) {
-                console.log('Updated nodes:', nodes);
-              }
-              console.log('a real step');
-              k++;
-            }
-          }, [tabstep]);*/
+      
+     
+          
         
-        //}
+        
 
    
         
         let timeoutId ; 
         const pause = () => {
-        
-          pauseRequested = !pauseRequested;
           const toast2 = {
             isVisible: true,
             context: 'dark',
             title: 'Indice !',
            
-           msg:'Vous ne pouvez pas changer le réseau ',
+           msg:'Vous ne pouvez pas changer le réseau en pause ',
         }
         dispatch(setToastOpt(toast2))
         setTimeout(() => {
             dispatch(setToastOpt({isVisible:false}))
-        }, 10000)
+        }, 100000)
+        
+          pauseRequested = !pauseRequested;
+         
         };
 
        
@@ -3212,7 +2710,7 @@ async function faireUneIteration(l, maxIterations, tabstep){
           const handlesimulation = (tabstep) => {
           let k = 0;
           if(tabstep.length===0 || k!=0) {
-           /* const toast = {
+            const toast = {
               isVisible: true,
               context: 'pending',
               title: 'Important !',
@@ -3222,23 +2720,15 @@ async function faireUneIteration(l, maxIterations, tabstep){
           dispatch(setToastOpt(toast))
           setTimeout(() => {
               dispatch(setToastOpt({isVisible:false}))
-          }, 10000)*/
+          }, 10000)
           }
           
         else{
           //cmnt you can not change
-          faireUneIteration( k,tabstep.length, tabstep);
-        /*  const toast = {
-            isVisible: true,
-            context: 'dark',
-            title: 'Indice !',
-           
-            msg:'Appuyez sur Réinitialiser pour changer de réseau '
-        }
-        dispatch(setToastOpt(toast))
-        setTimeout(() => {
-            dispatch(setToastOpt({isVisible:false}))
-        }, 10000)*/
+        faireUneIteration( k,tabstep.length, tabstep);
+
+        
+         
         }
 
         }
@@ -3286,9 +2776,314 @@ async function faireUneIteration(l, maxIterations, tabstep){
             }
         }
         }
-        console.log(' marquageInit outside', marquageInit)
+        console.log(' marquageInit outside', marquageInit)*/
 
-        const handlesavegraph = () => {
+
+
+
+
+        const handlesimulationbystep = (tabstep,tabtrans,l) => {
+          let nbplaces = reseau.NpPlaces 
+          console.log('button clicked !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+          console.log('nbplaces ',nbplaces)
+        //for(let k= 0 ; k<tabstep.length ; k++){n
+          console.log('k = ',l)
+          console.log('nodes inside hndlsim',nodes)
+          console.log('tabtrans en simul ',tabtrans)
+          if( l < tabstep.length ){ 
+            if( l> 0 ){
+           if( tabtrans[l] !== tabtrans[l-1]){
+            console.log('tabtrans[',l-1,']',tabtrans[l-1]);
+              console.log('prevtrans',prevtrans) ;  prevtrans2 = prevtrans ;
+               index = nodes.indexOf(nodes.find(node => node.id === prevtrans.id));
+               if('T'+tabtrans[l-1] === prevtrans.id ){
+            setNodes((prevNodes) => prevNodes.map((n) => (n.id === 'T'+tabtrans[l-1] ? prevtrans : n)));}
+            let id = 'T'+tabtrans[l] ;
+           let trans =  nodes.find(node => node.id === id);
+           console.log('trans',trans);prevtrans = trans ;
+           const newtran = {
+            ...trans, 
+           // position : position ,
+            data: {
+            ...trans.data,  classestyle : "centered-label-franchit",}};
+            setNodes((prevNodes) => prevNodes.map((n) => (n.id === trans.id ? newtran : n)));
+            
+          }else{
+        
+          }}else{
+            console.log('le depart k = ',k)
+           let id = 'T'+tabtrans[l] ;
+               let trans =  nodes.find(node => node.id === id);
+              // index = nodes.indexOf(nodes.find(node => node.id === trans.id));
+        
+           const newtran = {
+            ...trans, 
+           // position : position ,
+            data: {
+            ...trans.data,  classestyle : "centered-label-franchit",}};
+            setNodes((prevNodes) => prevNodes.map((n) => (n.id === trans.id ? newtran : n)));
+             prevtrans = trans ; prevtrans2 = prevtrans ;
+          }
+            /*let id = 'T'+tabtrans[l] ;
+           let trans =  nodes.find(node => node.id === id);
+           const newtran = {
+            ...trans, 
+           // position : position ,
+            data: {
+            ...trans.data,  classestyle : "centered-label-franchit",}};
+            setNodes((prevNodes) => prevNodes.map((n) => (n.id === trans.id ? newtran : n)));*/
+        
+           for(let g = 0 ; g < nbplaces ; g++){
+            console.log('tabstep[',l,'][',g,']',tabstep[l][g])
+            if(tabstep[l][g] !== -1){
+              let idplace = 'P'+g ;
+              console.log('idplace ',idplace)
+              let node =   nodes.find(node => node.id === idplace);
+              console.log('node ',node);
+              const idsToDelete = [node.data.Idtoken1, node.data.Idtoken2,node.data.Idtoken3,node.data.Idtoken4,node.data.Idtoken5];
+              console.log(idsToDelete);
+              deleteNodesById(idsToDelete);
+             let element = drawtokens(node,tabstep[l][g].toString()) ;
+             reseau.places[g].SetJetons(tabstep[l][g]) ;
+              console.log('reseau.places',reseau.places)
+             console.log('element',element) 
+             // setNodes((nds) =>
+               // nodes.map((node) => (node.id === element.id ? { ...node, data: { ...node.data, tokens: element.data.tokens , Idtoken1 :element.data.Idtoken1 , Idtoken2 :element.data.Idtoken2 , Idtoken3 :element.data.Idtoken3, Idtoken4 :element.data.Idtoken4 , Idtoken5 :element.data.Idtoken5} } : node))
+             // );
+             /*  const updatedNodes = nodes.map((node) =>
+              node.id === id  ? { ...node, data: { ...node.data, tokens: element.data.tokens , Idtoken1 :element.data.Idtoken1 , Idtoken2 :element.data.Idtoken2 , Idtoken3 :element.data.Idtoken3, Idtoken4 :element.data.Idtoken4 , Idtoken5 :element.data.Idtoken5} } : node
+             );
+             setNodes(updatedNodes);*/
+             //setNodes((nodes) => nodes.map((n) =>(n.id === node.id ? element : n)));
+             setNodes((prevNodes) => prevNodes.map((n) => (n.id === node.id ? element : n)));
+             dispatch(updateElement({type:element.type,element}))
+        
+        //setNodes((nds) => nds.concat(element));
+         
+           // setNodes((nodes) => [...nodes, element]);
+            console.log('nodes',nodes)
+            }
+           }
+          // setNodes((prevNodes) => prevNodes.map((n) => (n.id === newtran.id ? trans : n)));
+        
+          k = incrementk(k) ;
+        
+        //}
+          }else{
+            //console.log('prevtrans',prevtrans) ;
+            // setNodes((prevNodes) => prevNodes.map((n) => (n.id === 'T'+tabtrans[l-1] ? prevtrans : n)));
+          }
+        }
+        const simulationbystep = () =>{
+          handlesimulationbystep(tabstep,tabtrans,k);
+          if (index !== -1){
+            console.log('index', index, 'prevtrans2', prevtrans2);
+          //  if(nodes.indexOf(e => e.id  === prevtrans2.id) === index){
+             if(nodes[index].id === prevtrans2.id){
+               if(prevtrans2.data.classestyle === 'centered-label-franchit' ){
+                //if(prevtrans2.data.mode === 'imediate'){
+                prevtrans2.data.classestyle = 'centered-label'
+               //}else{
+                //prevtrans2.data.classestyle == 'centered-label-timed' 
+        
+                //}
+              }
+            setNodes((prevNodes) => {
+              const newNodes = [...prevNodes]; // Create a copy of the nodes array
+              newNodes.splice(index, 1, prevtrans2); // Modify the copy
+              return newNodes; // Return the updated copy
+            });
+          }}
+        /*  let id = 'T'+tabtrans[k-1] ;
+          let trans =  nodes.find(node => node.id === id);
+          console.log('trans in faire ',trans,'existpause',existpause);
+         if(trans.data.mode === 'imediate'){
+            if(existpause === false){   delay2(1500);}
+             else { delay2(4500);}
+        }else{
+          let temps = 2 * (1 / parseInt(trans.data.poid));
+          console.log('temps ',temps)
+        if(existpause === false){    delay2(1500 * (1+temps) );}
+        else {delay2(4500 * ( 1+temps ) );} 
+        }  */
+          if(k===tabstep.length){
+            prevtrans = nodes.find(node => node.id === 'T'+tabtrans[k-1] )
+            setNodes((prevNodes) => prevNodes.map((n) => (n.id === 'T'+tabtrans[k-1] ? prevtrans : n)));
+          }
+        
+        }
+        let timeoutId ; 
+                const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+               // const [pauseRequested,setPauseRequested] = useState(false);
+                const pause = () => {
+                  existpause = true ;
+                  pauseRequested = !pauseRequested
+                  //pauseRequested = !pauseRequested;
+                  const toast2 = {
+                    isVisible: true,
+                    context: 'dark',
+                    title: 'Indice !',
+                   
+                   msg:'Vous ne pouvez pas changer le réseau ',
+                }
+                dispatch(setToastOpt(toast2))
+                setTimeout(() => {
+                    dispatch(setToastOpt({isVisible:false}))
+                }, 10000)
+                };
+        async function faireUneIteration( maxIterations, tabstep){
+          if(stopsimul === false ){
+          if (k < maxIterations) {
+            console.log('pause in faire Iter = ', pauseRequested);
+            if (pauseRequested === false) {
+              if(pausebefor === true){
+              for (let i = 0; i < nodes.length; i++) {
+                // Vérifier si l'ID correspond
+                if (nodes[i].type === 'transition') {
+                    // Mettre à jour le champ 'style'
+                     let trans =  nodes[i];
+               const newtran = {
+                ...trans, 
+               // position : position ,
+                data: {
+                ...trans.data,  classestyle : "centered-label",}};
+                setNodes((prevNodes) => prevNodes.map((n) => (n.id === trans.id ? newtran : n)));
+                
+                }
+            } pausebefor = false }
+              //await new Promise(resolve => setTimeout(resolve, 1500)); // Attendre 1.5 secondes
+              console.log('tabtrans[',k,'] in faire ',tabtrans[k])
+        
+              button.click();
+             // console.log('tabtrans[k-1]',tabtrans[k-1]);console.log('pravtrans inside faire ',prevtrans)
+              //setNodes((prevNodes) => prevNodes.map((n) => (n.id === tabtrans[k-1] ? prevtrans : n)));
+             //      setNodes((prevNodes) => prevNodes.map((n) => (n.id === 'T'+tabtrans[k-2] ? prevtrans2 : n)));
+              console.log('index out',index)
+                  let id = 'T'+tabtrans[k-1] ;
+                  let trans =  nodes.find(node => node.id === id);
+                  console.log('trans in faire ',trans,'existpause',existpause);
+                 if(trans.data.mode === 'imediate'){
+                  /*await new Promise(resolve => {
+                    timeoutId = setTimeout(resolve, 1500); // Attendre 1.5 secondes
+                }); */  if(existpause === false){             console.log('i am waiting /////////////////////////////')
+                      await delay(1500);}
+                     else {           console.log('i am waiting /////////////////////////////')
+                     await delay(4500);}
+              }else{
+                  let temps = 2 * (1 / parseInt(trans.data.poid));
+                  console.log('temps ',temps)
+                 /* await new Promise(resolve => {
+                  timeoutId = setTimeout(resolve, 1500 * (1+temps)); // Attendre 1.5 secondes
+                });*/ 
+                if(existpause === false){          console.log('i am waiting /////////////////////////////')
+                  await delay(1500 * (1+temps) );}
+                else {         console.log('i am waiting /////////////////////////////')
+                await delay(3500 * ( 1+temps ) );} 
+                }   
+              console.log('nodes inside faire Iteration ', nodes);
+              console.log("Iteration " , k);
+              lastIteration = k; // Met à jour lastIteration avec l'itération actuelle
+              return faireUneIteration( maxIterations, tabstep); // Appel récursif avec les mêmes paramètres
+            } else {
+              ///// !!!!!!!!!!!!!!!!!!! important : afficher une erreur quand le nombre des appels dans pause depasse un certain nombre 
+              //await new Promise(resolve => setTimeout(resolve, 1500)); // Attendre 1.5 secondes
+             // setTimeout(() => {
+                //return faireUneIteration( maxIterations, tabstep); // Reprendre à partir de la dernière itération où p était égal à 0
+              //}, 2000)
+              pausebefor = true ;
+              console.log('pause k = ',k,'prevtrans',prevtrans,'prevtrans2',prevtrans2,'lastIteration',lastIteration);
+              //prevtrans = nodes.find(node => node.id === 'T'+tabtrans[k-1] )
+             // setNodes((prevNodes) => prevNodes.map((n) => (n.id === 'T'+tabtrans[k-1] ? prevtrans2 : n)));
+              //prevtrans = prevtrans2 ;
+             k = lastIteration + 1 ;
+              console.log('existpause in pause ',existpause)
+              await delay(1500);
+             /* await new Promise(resolve => {
+                    timeoutId = setTimeout(resolve, 3500); });*/
+               return faireUneIteration( maxIterations, tabstep); // Reprendre à partir de la dernière itération où p était égal à 0
+            }
+          } else {
+            console.log('the end')
+            console.log('prevtrans',prevtrans) ;
+            prevtrans = nodes.find(node => node.id === 'T'+tabtrans[k-1] )
+            setNodes((prevNodes) => prevNodes.map((n) => (n.id === 'T'+tabtrans[k-1] ? prevtrans : n)));
+            return 0;
+          }}else{
+            return 0 ;
+          }
+        }
+        const handlesimulation = (tabstep) => {
+                   k = 0;
+                  if(tabstep.length===0) {
+                    const toast = {
+                      isVisible: true,
+                      context: 'pending',
+                      title: 'Important !',
+                     
+                     msg:'Sauvgarder le réseau avant la simulation pour éviter les incohérences de données'
+                  }
+                  dispatch(setToastOpt(toast))
+                  setTimeout(() => {
+                      dispatch(setToastOpt({isVisible:false}))
+                  }, 10000)
+                  }
+                  
+                else{
+                  //cmnt you can not change
+                  faireUneIteration( tabstep.length, tabstep);}
+                }
+        
+        
+                const handleReInitialiserReseau  = () =>{
+        
+                  //let placesinit = nodes.filter(node => node.type === 'place')
+                 // let nbplaces = ;
+                  prevtrans = {} ; pauseRequested = false ; index = -1 
+                 //console.log('placeinit',placesinit)
+                 stopsimul = true ;pausebefor = false ;
+                 if(marquageInit.length !== 0 ){
+                  for(let g = 0 ; g < marquageInit.length ; g++){
+                
+                    if(marquageInit[g] !== -1 ){
+                      let idplace = 'P'+g ;
+                      console.log('idplace ',idplace)
+                      let node =   nodes.find(node => node.id === idplace);
+                      console.log('node ',node);
+                      const idsToDelete = [node.data.Idtoken1, node.data.Idtoken2,node.data.Idtoken3,node.data.Idtoken4,node.data.Idtoken5];
+                      console.log(idsToDelete);
+                      deleteNodesById(idsToDelete);
+                     let element = drawtokens(node, marquageInit[g].toString()) ;
+                     reseau.places[g].SetJetons(marquageInit[g]) ;
+                      console.log('reseau.places',reseau.places)
+                     console.log('element',element) 
+                    setNodes((prevNodes) => prevNodes.map((n) => (n.id === node.id ? element : n)));
+                    dispatch(updateElement({type:element.type,element}))
+                    console.log('nodes',nodes)
+                    }
+                   }}
+                   //setNodes((prevNodes) => prevNodes.map((n) => (n.id === 'T'+tabtrans[l-1] ? prevtrans : n)));
+                   for (let i = 0; i < nodes.length; i++) {
+                    // Vérifier si l'ID correspond
+                    if (nodes[i].type === 'transition') {
+                        // Mettre à jour le champ 'style'
+                         let trans =  nodes[i];
+                   const newtran = {
+                    ...trans, 
+                   // position : position ,
+                    data: {
+                    ...trans.data,  classestyle : "centered-label",}};
+                    setNodes((prevNodes) => prevNodes.map((n) => (n.id === trans.id ? newtran : n)));
+                    
+                    }
+                }
+                }
+                console.log(' marquageInit outside', marquageInit)
+        
+        
+
+
+  const handlesavegraph = () => {
+
           k = 0 ; pauseRequested = false
           lastIteration = 0 ;
           let can = marquageallowed();
@@ -3359,7 +3154,7 @@ return (
   <div className="grid ">
       <div className="col-span-main">
     
-      <MainToolbar onSaveCanvas={onSaveCanvas}  DeleteAllCanvas={DeleteAllCanvas} handleLoadGraph= {handleLoadGraph} handleSaveGraph={handleSaveGraph} undo={undo} redo={redo} handlesavegraph={handlesavegraph} handlesimulationbystep={() => handlesimulationbystep(tabstep,tabtrans, k)}  handlesimulation={() => handlesimulation(tabtrans)} handleReInitialiserReseau ={handleReInitialiserReseau} pause={pause}/>
+      <MainToolbar onSaveCanvas={onSaveCanvas}  DeleteAllCanvas={DeleteAllCanvas} handleLoadGraph= {handleLoadGraph} handleSaveGraph={handleSaveGraph} undo={undo} redo={redo} handlesavegraph={handlesavegraph} simulationbystep={() => simulationbystep(tabstep,tabtrans, k)}  handlesimulation={() => handlesimulation(tabtrans)} handleReInitialiserReseau ={handleReInitialiserReseau} pause={pause}/>
           <ReactFlowProvider>
          
               <div id="reactFlowBackground"  style={{ height:(window.innerHeight-20-( reactFlowWrapper.current ? reactFlowWrapper.current.getBoundingClientRect().top : 0))}} ref={reactFlowWrapper}>
