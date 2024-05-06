@@ -6,6 +6,10 @@ import {props} from './Data'
 
 
 export const Propriete = () => {
+    useEffect(() => {
+        // Perform any actions you want to happen when the component is mounted or when it's re-rendered
+        console.log('Propriete component mounted or re-rendered');
+    }, []);
     const [popupcont , setpopupcont] = useState([]);
     const [popuptogle , setpopuptogle] = useState(false);
     const changecontent = (prop) => {
@@ -19,10 +23,17 @@ export const Propriete = () => {
         <h1 className='prop'>Propriétés</h1>
          <div className='content-container'>
             {
-                props.map((prop)=>{
+               /* props.map((prop)=>{
                     return(
                         <div className="content_card" onClick={()=> changecontent(prop)}>
                             <p className='titre' >{prop.type}</p>
+                        </div>
+                    )
+                })*/
+                props.map((prop) => {
+                    return (
+                        <div key={prop.index} className="content_card" onClick={() => changecontent(prop)}>
+                            <p className='titre'>{prop.type}</p>
                         </div>
                     )
                 })

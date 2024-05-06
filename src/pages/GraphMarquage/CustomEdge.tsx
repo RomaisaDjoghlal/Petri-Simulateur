@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+/*import React, { FC } from 'react';
 import { EdgeProps, getBezierPath, EdgeLabelRenderer, BaseEdge , MarkerType  } from 'reactflow';
 
 // this is a little helper component to render the actual edge label
@@ -55,7 +55,7 @@ export const CustomEdge: FC<EdgeProps> = ({
     </>
   );
 };
-
+*/
 // default CustomEdge;
 
 
@@ -65,10 +65,10 @@ export const CustomEdge: FC<EdgeProps> = ({
 
 
 
-/*
+
 
 import React, { FC } from 'react';
-import { EdgeProps, getStraightPath, EdgeLabelRenderer, BaseEdge } from 'reactflow';
+import { EdgeProps, getBezierPath, EdgeLabelRenderer, BaseEdge } from 'reactflow';
 
 export const CustomEdge: FC<EdgeProps> = ({
   id,
@@ -80,7 +80,7 @@ export const CustomEdge: FC<EdgeProps> = ({
   targetPosition,
   data,
 }) => {
-  const [edgePath, labelX, labelY] = getStraightPath({
+  const [edgePath, labelX, labelY] = getBezierPath({
     sourceX,
     sourceY,
     //sourcePosition,
@@ -97,7 +97,7 @@ export const CustomEdge: FC<EdgeProps> = ({
         <div
           style={{
             position: 'absolute',
-            transform: `translate(-240%, -40%) translate(${labelX + 100}px,${labelY+10}px)`,
+            transform: `translate(-0%, -0%) translate(${labelX - 27}px,${labelY-65}px)`,
            backgroundColor: 'white',
             padding: 10,
             borderRadius: 5,
@@ -115,7 +115,7 @@ export const CustomEdge: FC<EdgeProps> = ({
 };
 
  //default CustomEdge;
-*/
+
 /*
  import React, { FC } from 'react';
  import { EdgeProps, getStraightPath, EdgeLabelRenderer, BaseEdge } from 'reactflow';

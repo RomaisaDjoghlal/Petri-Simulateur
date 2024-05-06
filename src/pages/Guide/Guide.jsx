@@ -5,6 +5,8 @@ import Frame2 from  './Frame2.png';
 import Frame3 from './Frame3.png';
 import Frame4 from './Frame4.png';
 import Frame5 from './Frame5.png';
+import Frame6 from './Frame6.png';
+import Frame7 from './Frame7.png';
 
 // Tableau des URL des images
 const imageUrls = [
@@ -13,6 +15,8 @@ const imageUrls = [
   Frame3,
   Frame4,
   Frame5,
+  Frame6,
+  Frame7,
   // Ajoutez plus d'URLs d'images selon vos besoins
 ];
 

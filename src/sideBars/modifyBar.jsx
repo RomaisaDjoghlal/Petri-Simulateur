@@ -36,7 +36,7 @@ export const ModifyBar = ({isVisible, onDelete, onUpdate}) => {
                         <div className="modal-header">
                             <h2 className="font-medium text-base mr-auto">Selected Element: {
                                 //element.type === 'place' ? 'Place '+element.data.label : (element.type === 'transition' ? 'Transition '+element.data.label : 'Edge'  )
-                                element.type === 'place' ? 'Place '+element.data.label : (element.type === 'transition' ? 'Transition '+element.data.label : element.type === 'arc' ? 'Edge '  :'textUpdater' )
+                                element.type === 'place' ? 'Place '+element.data.label : (element.type === 'transition' ? 'Transition '+element.data.label : element.type2 === 'arc' ? 'Edge '  :'textUpdater' )
                                 
                             }</h2>
                              

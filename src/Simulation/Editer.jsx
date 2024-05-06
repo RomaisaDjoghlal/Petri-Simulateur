@@ -3,8 +3,8 @@ import React ,{ useCallback, useMemo,memo, useRef, useState , useEffect} from 'r
 import 'reactflow/dist/style.css';
 import ReactFlow, { MiniMap,addEdge, Controls, useReactFlow ,Background ,useNodesState, useEdgesState, ReactFlowProvider, MarkerType } from 'reactflow';
 import { useDispatch, useSelector } from 'react-redux';
-import { getSelectedTool,  getIsSelectable, getCanvasOpt, getIsSidebarVisible,  setSelectedTool, setElementToModify, setIsSelectable, setIsSidebarVisible, setModalOpt , setCopiedElement ,getCopiedElement ,getToastOpt ,setToastOpt } from '../ReduxSlice/EditSlice';
-import { addElement, getArcs, getPlaces, getTransitions,  updateElement , deleteElement , DeleteAll, saveNet} from '../ReduxSlice/petriSlice';
+import { getSelectedTool,  getIsSelectable, getCanvasOpt, getQuasivivant ,getIsSidebarVisible,  setSelectedTool, setElementToModify, setIsSelectable, setIsSidebarVisible, setModalOpt ,setQuasivivant, setCopiedElement ,getCopiedElement ,getToastOpt ,setToastOpt } from '../ReduxSlice/EditSlice';
+import { addElement, getArcs, getPlaces, getTransitions, updateElement , deleteElement , DeleteAll, saveNet} from '../ReduxSlice/petriSlice';
 import { MainToolbar } from './MainToolbar';
 import { creereseau } from '../Logique/integrations';
 import { Place } from '../Logique/structure';
@@ -1350,7 +1350,7 @@ const onDeleteEl = useCallback((element) => {
       setTimeout(() => {
           dispatch(addElement({type:'edges',element:reactFlowInstance.getEdges()}))
       },1000)
-  } else if (element.type === 'arc' ) {
+  } else if (element.type2 === 'arc' ) {
      console.log("delte arc")
       reactFlowInstance.deleteElements({nodes:[],edges:[element]})
       sethistory((history) => history.concat({effect : 'delete' , elementold : element , elementnew : '' }))
@@ -1514,8 +1514,26 @@ if( can === true ){
   localStorage.setItem('renitiabilite',JSON.stringify(renitiabilite)) ;
   let qasivivant = reseau.Reseauquasivivant(reseau.Transitions,arc)
   console.log('qasivivant',qasivivant)
+  //dispatch(setQuasivivant(qasivivant))
+  //let Quasiviv = useSelector(getQuasivivant()) ; console.log('quasiviv',Quasiviv)
   localStorage.setItem('qasivivant',JSON.stringify(qasivivant)) ;
-  let infini = reseau.marquageTillInfini(reseau.getmarqini()); /////// reseau if infni=vrai msg reseau infinie 
+
+  let infini = reseau.marquageTillInfini(reseau.getmarqini()); 
+
+  if(infini === true)
+    {
+      const toast = {
+        isVisible: true,
+        context: 'pending',
+        title: 'Important !',
+        msg:'Votre Réseau est infini'
+    }
+    dispatch(setToastOpt(toast))
+    setTimeout(() => {
+        dispatch(setToastOpt({isVisible:false}))
+    }, 8000)
+    }
+                         /////// reseau if infni=vrai msg reseau infinie 
   console.log('infini',infini);
   localStorage.setItem('infini',JSON.stringify(infini)) ;
   let nonbloc = reseau.nonbloc(reseau.getmarqini());
@@ -1554,7 +1572,7 @@ if( can === true ){
   }, 100)
   setTimeout(() => {
       dispatch(setToastOpt({isVisible:false}))
-  }, 10000)
+  }, 8000)
   
 
 },[reactFlowInstance, dispatch])
@@ -2783,6 +2801,21 @@ async function faireUneIteration(l, maxIterations, tabstep){
 
 
         const handlesimulationbystep = (tabstep,tabtrans,l) => {
+
+          if(tabstep.length===0 ) {
+            const toast = {
+              isVisible: true,
+              context: 'pending',
+              title: 'Important !',
+             
+             msg:'Sauvgarder le réseau avant la simulation pour éviter les incohérences de données'
+          }
+          dispatch(setToastOpt(toast))
+          setTimeout(() => {
+              dispatch(setToastOpt({isVisible:false}))
+          }, 10000)
+          }
+
           let nbplaces = reseau.NpPlaces 
           console.log('button clicked !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
           console.log('nbplaces ',nbplaces)
@@ -2790,8 +2823,20 @@ async function faireUneIteration(l, maxIterations, tabstep){
           console.log('k = ',l)
           console.log('nodes inside hndlsim',nodes)
           console.log('tabtrans en simul ',tabtrans)
+         
           if( l < tabstep.length ){ 
             if( l> 0 ){
+              const toast = {
+                isVisible: true,
+                context: 'dark',
+                title: 'Indice !',
+               
+                msg:'Appuyez sur Réinitialiser pour revenir au réseau avant la simulation ou vous pouvez le modifier '
+            }
+            dispatch(setToastOpt(toast))
+            setTimeout(() => {
+                dispatch(setToastOpt({isVisible:false}))
+            }, 100000)
            if( tabtrans[l] !== tabtrans[l-1]){
             console.log('tabtrans[',l-1,']',tabtrans[l-1]);
               console.log('prevtrans',prevtrans) ;  prevtrans2 = prevtrans ;
@@ -2881,12 +2926,12 @@ async function faireUneIteration(l, maxIterations, tabstep){
           //  if(nodes.indexOf(e => e.id  === prevtrans2.id) === index){
              if(nodes[index].id === prevtrans2.id){
                if(prevtrans2.data.classestyle === 'centered-label-franchit' ){
-                //if(prevtrans2.data.mode === 'imediate'){
+                if(prevtrans2.data.mode === 'imediate'){
                 prevtrans2.data.classestyle = 'centered-label'
-               //}else{
-                //prevtrans2.data.classestyle == 'centered-label-timed' 
+               }else{
+                prevtrans2.data.classestyle == 'centered-label-timed' 
         
-                //}
+                }
               }
             setNodes((prevNodes) => {
               const newNodes = [...prevNodes]; // Create a copy of the nodes array
@@ -2916,9 +2961,7 @@ async function faireUneIteration(l, maxIterations, tabstep){
                 const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
                // const [pauseRequested,setPauseRequested] = useState(false);
                 const pause = () => {
-                  existpause = true ;
-                  pauseRequested = !pauseRequested
-                  //pauseRequested = !pauseRequested;
+
                   const toast2 = {
                     isVisible: true,
                     context: 'dark',
@@ -2930,10 +2973,14 @@ async function faireUneIteration(l, maxIterations, tabstep){
                 setTimeout(() => {
                     dispatch(setToastOpt({isVisible:false}))
                 }, 10000)
+                  existpause = true ;
+                  pauseRequested = !pauseRequested
+                  //pauseRequested = !pauseRequested;
+                 
                 };
         async function faireUneIteration( maxIterations, tabstep){
           if(stopsimul === false ){
-          if (k < maxIterations) {
+          if (k < tabstep.length) {
             console.log('pause in faire Iter = ', pauseRequested);
             if (pauseRequested === false) {
               if(pausebefor === true){
@@ -2942,13 +2989,21 @@ async function faireUneIteration(l, maxIterations, tabstep){
                 if (nodes[i].type === 'transition') {
                     // Mettre à jour le champ 'style'
                      let trans =  nodes[i];
+               if(trans.data.mode === 'imediate'){   
                const newtran = {
                 ...trans, 
                // position : position ,
                 data: {
                 ...trans.data,  classestyle : "centered-label",}};
                 setNodes((prevNodes) => prevNodes.map((n) => (n.id === trans.id ? newtran : n)));
-                
+                }else{
+                  const newtran = {
+                    ...trans, 
+                   // position : position ,
+                    data: {
+                    ...trans.data,  classestyle : "centered-label-timed",}};
+                    setNodes((prevNodes) => prevNodes.map((n) => (n.id === trans.id ? newtran : n)));
+                }
                 }
             } pausebefor = false }
               //await new Promise(resolve => setTimeout(resolve, 1500)); // Attendre 1.5 secondes
@@ -2978,7 +3033,7 @@ async function faireUneIteration(l, maxIterations, tabstep){
                 if(existpause === false){          console.log('i am waiting /////////////////////////////')
                   await delay(1500 * (1+temps) );}
                 else {         console.log('i am waiting /////////////////////////////')
-                await delay(3500 * ( 1+temps ) );} 
+                await delay(4500 * ( 1+temps ) );} 
                 }   
               console.log('nodes inside faire Iteration ', nodes);
               console.log("Iteration " , k);
@@ -2995,7 +3050,9 @@ async function faireUneIteration(l, maxIterations, tabstep){
               //prevtrans = nodes.find(node => node.id === 'T'+tabtrans[k-1] )
              // setNodes((prevNodes) => prevNodes.map((n) => (n.id === 'T'+tabtrans[k-1] ? prevtrans2 : n)));
               //prevtrans = prevtrans2 ;
-             k = lastIteration + 1 ;
+              k = lastIteration ;
+              if(k + 1  < tabstep.length){
+             k = lastIteration + 1 ;}
               console.log('existpause in pause ',existpause)
               await delay(1500);
              /* await new Promise(resolve => {
@@ -3067,13 +3124,21 @@ async function faireUneIteration(l, maxIterations, tabstep){
                     if (nodes[i].type === 'transition') {
                         // Mettre à jour le champ 'style'
                          let trans =  nodes[i];
+                         if(trans.data.mode === 'imediate'){
                    const newtran = {
                     ...trans, 
                    // position : position ,
                     data: {
                     ...trans.data,  classestyle : "centered-label",}};
                     setNodes((prevNodes) => prevNodes.map((n) => (n.id === trans.id ? newtran : n)));
-                    
+                         }else{
+                          const newtran = {
+                            ...trans, 
+                           // position : position ,
+                            data: {
+                            ...trans.data,  classestyle : "centered-label-timed",}};
+                            setNodes((prevNodes) => prevNodes.map((n) => (n.id === trans.id ? newtran : n)));
+                         }
                     }
                 }
                 }

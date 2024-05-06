@@ -1,0 +1,86 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+.graph{
+    background-image: url(../Documentation/background.svg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    position: absolute;
+    height:100vh;
+    width:95vw;
+   /* left: 10vw;*/
+}
+body{
+    
+    height: 100vh;
+    overflow: hidden ;
+    z-index: 10;
+    width:80vw;
+}
+
+h1.titleg {
+    color: black !important;
+    font-size: 6vh; /* Specify font size unit */
+    font-family: 'Inter', sans-serif;
+    font-weight: bolder;
+    margin-left: 3vw;
+    margin-top: 6vh;
+    
+}
+
+
+.sections-graph {
+   
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    margin-top: 20vh;
+    gap: 4vw;
+}
+
+section.sous-graph {
+    background-color: rgba(252, 250, 250, 0.5);
+    cursor: pointer;
+    text-align: center;
+    border: 2px solid #2AD7D2;
+    padding: 20px;
+    width: 60vw;
+    height: 17vh;
+    border-radius: 40px;
+    transition: background-color 0.3s;
+    box-shadow: rgba(0, 0, 0, 0.9);
+}
+
+section:hover {
+    background-color: rgba(42, 215, 210, 0.9);
+}
+
+section:last-child {
+    margin-right: 0px;
+}
+
+
+h2.titreg {
+    color: black;
+    font-size: 6vh; /* Specify font size unit */
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    display: block;
+}
+.titre-graph{
+    color: black;
+    font-size: 5vh; /* Specify font size unit */
+    font-family: 'Inter', sans-serif;
+    top: 7vh; 
+}
+.guide-graph{
+    color: black;
+    font-size: 3vh; /* Specify font size unit */
+    font-family: 'Inter', sans-serif;
+    position: absolute; /* Position absolutely relative to the nearest positioned ancestor */
+    top: 4%; /* Adjust the top position as needed */
+    right: 9%; /* Adjust the right position as needed */
+}

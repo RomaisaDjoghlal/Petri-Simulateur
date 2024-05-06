@@ -18,7 +18,7 @@ export function Explication() {
 
   return (
     <div className="exp-container">
-      <h1 className="title">Livres</h1>
+      <h1 className="title">Explication</h1>
       <ul className="exp-list">
         {livresData.map((livre, index) => (
           <li key={index}>

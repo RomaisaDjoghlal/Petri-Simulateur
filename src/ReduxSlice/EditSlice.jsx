@@ -41,6 +41,7 @@ const initialState = {
     isSidebarVisible: false,
     elementToModify: {},
     placeSelection: {},
+    Quasivivant:'' , 
   
     
 }
@@ -50,7 +51,7 @@ export const  EditSlice = createSlice({
     initialState,
     reducers: {
         setSelectedTool: (state, action) => {
-            state.SelectedTool = action.payload
+            state.selectedTool = action.payload
         },
        
         setIsSelectable: (state, action) => {
@@ -108,8 +109,10 @@ export const  EditSlice = createSlice({
 
         setCopiedElement: (state,action) => {
             state.copiedElement = action.payload
+        },
+        setQuasivivant: (state,action) => {
+            state.Quasivivant = action.payload
         }
-       
        
       
     }
@@ -117,7 +120,7 @@ export const  EditSlice = createSlice({
 
 
 // selectors
-export const getSelectedTool = state => state.controls.SelectedTool
+export const getSelectedTool = state => state.controls.selectedTool
 export const getSelectMsg = state => state.controls.selectMsg
 export const getIsSelectable = state => state.controls.isSelectable
 export const getToastOpt = state => state.controls.toastOpt
@@ -126,6 +129,7 @@ export const getIsSidebarVisible = state => state.controls.isSidebarVisible
 export const getElementToModify = state => state.controls.elementToModify
 export const getCanvasOpt = state => state.controls.convasOpt
 export const getCopiedElement = state => state.controls.copiedElement
+export const getQuasivivant = state => state.controls.Quasivivant
 
-export const { setSelectedTool, setSelectMsg , setIsSelectable, setToastOpt, setModalOpt, setIsSidebarVisible, setElementToModify,  setPlaceSelection , setCanvasOpt,setCopiedElement } = EditSlice.actions;
+export const { setSelectedTool, setSelectMsg ,setQuasivivant, setIsSelectable, setToastOpt, setModalOpt, setIsSidebarVisible, setElementToModify,  setPlaceSelection , setCanvasOpt,setCopiedElement } = EditSlice.actions;
 export default EditSlice.reducer
