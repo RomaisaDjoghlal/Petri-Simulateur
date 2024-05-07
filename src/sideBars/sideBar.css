@@ -134,7 +134,7 @@ margin-top: 7vh;
 }
 
 .btn {
-  padding: 0.5rem 1rem;
+  padding: 0.2rem 0.7rem;
   border-radius: 4px;
   cursor: pointer;
 }
@@ -186,7 +186,7 @@ margin-top: 7vh;
   z-index: 9999; 
   top: 40vw; 
   
-  right: 40vw; 
+  right: 30vw; 
   background-color: #fff; 
   border: 1px solid #e2d7d7; 
   border-radius: 4px; 

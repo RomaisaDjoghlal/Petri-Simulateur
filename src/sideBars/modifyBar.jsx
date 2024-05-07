@@ -34,7 +34,7 @@ export const ModifyBar = ({isVisible, onDelete, onUpdate}) => {
                     { element && Object.keys(element).length !== 0 ? (
                         <>
                         <div className="modal-header">
-                            <h2 className="font-medium text-base mr-auto">Selected Element: {
+                            <h2 className="font-medium text-base mr-auto"> Élément sélectionné  {
                                 //element.type === 'place' ? 'Place '+element.data.label : (element.type === 'transition' ? 'Transition '+element.data.label : 'Edge'  )
                                 element.type === 'place' ? 'Place '+element.data.label : (element.type === 'transition' ? 'Transition '+element.data.label : element.type2 === 'arc' ? 'Edge '  :'textUpdater' )
                                 
@@ -45,7 +45,7 @@ export const ModifyBar = ({isVisible, onDelete, onUpdate}) => {
                             {
                                 element.type === 'place' || element.type === 'transition'  ? (
                                     <div>
-                                        <label htmlFor="new-label" className="form-label">New Label</label>
+                                        <label htmlFor="new-label" className="form-label"> Nouveau libellé </label>
                                         <input type="text" id="new-label" disabled={false}   readOnly={false}  className="form-control" value={element.data.label} onChange={(e) => dispatch(setElementToModify({field:'label',value:e.target.value}))} />
                                     </div>    
                                 ) : null
@@ -54,7 +54,7 @@ export const ModifyBar = ({isVisible, onDelete, onUpdate}) => {
                             {
                                 element.type2 ==='arc' ? (
                                     <div>
-                                        <label htmlFor="new-label" className="form-label">New poid</label>
+                                        <label htmlFor="new-label" className="form-label"> Nouveau poid </label>
                                         <input type="text" id="new-label" disabled={false}   readOnly={false}   className="form-control" value={element.label} onChange={(e) => dispatch(setElementToModify({field:'poidarc',value:e.target.value}))} />
                                     </div>    
                                 ) : null
@@ -63,7 +63,7 @@ export const ModifyBar = ({isVisible, onDelete, onUpdate}) => {
                             {
                                  element.type === 'transition' ? (
                                     <div>
-                                        <label htmlFor="new-poid" className="form-label">New Poid</label>
+                                        <label htmlFor="new-poid" className="form-label">Nouveau poid</label>
                                         <input type="text" id="new-poid" disabled={false}   readOnly={false}   className="form-control" value={element.data.poid} onChange={(e) => dispatch(setElementToModify({field:'poid',value:e.target.value}))} />
                                     </div>    
                                 ) : null
@@ -128,18 +128,18 @@ export const ModifyBar = ({isVisible, onDelete, onUpdate}) => {
                                 type="button"
                                 className="btn btn-outline-secondary mr-2 w-full md:w-max mb-2 md:mb-0"
                                 onClick={onCancelChanges}
-                            >Cancel changes</button>
+                            >Annuler </button>
                             <button
                                 type="button"
                                 className="btn btn-danger mr-2 w-full md:w-max mb-2 md:mb-0"
                                 onClick={() => onDelete(element)}
-                            >Delete element</button>
+                            >Supprimer élément</button>
                             <button
                                 type="button"
                                 className="btn btn-primary w-full md:w-max mb-2 md:mb-0"
                                 onClick={() => onUpdate(element)}
                                 
-                            >Confirm changes</button>
+                            >Confirmer </button>
                         </div>
                         </>
                     ) : null }

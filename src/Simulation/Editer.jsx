@@ -2844,7 +2844,7 @@ async function faireUneIteration(l, maxIterations, tabstep){
               context: 'pending',
               title: 'Important !',
              
-             msg:'Sauvgarder le réseau avant la simulation pour éviter les incohérences de données'
+             msg:'Sauvgarder le réseau avant la simulation pour générer le graphe de marquage une seule fois'
           }
           dispatch(setToastOpt(toast))
           setTimeout(() => {
@@ -3113,7 +3113,7 @@ async function faireUneIteration(l, maxIterations, tabstep){
                       context: 'pending',
                       title: 'Important !',
                      
-                     msg:'Sauvgarder le réseau avant la simulation pour éviter les incohérences de données'
+                     msg:'Sauvgarder le réseau avant la simulation pour générer le graphe de marquage une seule fois'
                   }
                   dispatch(setToastOpt(toast))
                   setTimeout(() => {
