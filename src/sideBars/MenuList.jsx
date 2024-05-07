@@ -16,7 +16,7 @@ export const MenuList = () => {
             <Menu.SubMenu key="simuler" icon={<MergeOutlined style={{ fontSize: '4vh' }} />} title="Simulation">
             <Menu.Item key="task1" ><Link to="/simulation/editeur">Editeur</Link></Menu.Item>
             <Menu.Item key="task2" ><Link to="/simulation/marquages">Marquages</Link></Menu.Item>
-            <Menu.Item key="task3" ><Link to="/simulation/propriete">Propriétés</Link></Menu.Item>
+            <Menu.Item key="task3" onClick={() => window.location.reload()}><Link to="/simulation/propriete">Propriétés</Link></Menu.Item>
             </Menu.SubMenu>
             <Menu.Item key="guide" icon={<HiOutlineNewspaper style={{ fontSize: '4vh' }}/> }><Link to="/guide">Guide</Link></Menu.Item>
             <Menu.Item key="documentation" icon={<AiOutlineFileSearch style={{ fontSize: '4vh' }}/> }><Link to="/documentation" >Documentation</Link></Menu.Item>

@@ -1166,7 +1166,10 @@ Renitiable(arc,tab){
     return false ;
    }
 }
-////////INFINI////////
+
+
+
+///////INFINI////////
 /// FRANCHISSABLE 
 Franchissable (M,Idtrans) {
     let franch = true ;
@@ -1258,60 +1261,47 @@ Franchissable (M,Idtrans) {
     return M;
     
     } 
-     infini(M, listM, cpt, archs,k,tran) {
+    ////EQUALS
+     tabEqual(arr1, arr2) {
+        // Check if arrays have the same length
+        if (arr1.length !== arr2.length) {
+            return false;
+        }
+    
+        // Check if each corresponding element is equal
+        for (let i = 0; i < arr1.length; i++) {
+            if (arr1[i] !== arr2[i]) {
+                return false;
+            }
+        }
+    
+        // If all elements are equal, arrays are equal
+        return true;
+    }
+    
+    
+    
+    
+     infini(M, listM, cpt, archs,k,tran,viv) {
         let couverture = false; // Declare couverture outside the if statement
         let exclude = [];
+        let egal = false;
           exclude = this.InibPure();
-          console.log('heere');
-          console.log(this.inhibReseau());
           if (!(this.inhibReseau())) {
             let k = cpt;
             let i = archs.length;
+            console.log('iii');
+            console.log(i);
             let Ma = [];
-            while ((!couverture) && (i >= 0)) {
+            while ((!egal)&&(!couverture) && (i >= 0)) {
                 Ma = listM[k];
-                let couverture1 = true;
-                let h = 0;
-                while ((h < this.NpPlaces) && (couverture1)) {
-                    if (M[h] < Ma[h]) {
-                        couverture1 = false;
-                    }
-                    h++;
-                }
-                if (couverture1) {
-                    couverture = false;
-                    let j = 0;
-                    while ((!couverture) && (j < this.NpPlaces)) {
-                        if (Ma[j] < M[j]) {
-                            couverture = true;
-                        }
-                        j++;
-                    }
-                }
-                if (!couverture) {
-                    i--;
-                    console.log('here in infini');
-                    let trouv = false;
-                    while ((!trouv) && (i >= 0)) {
-                        if (archs.des === k) {
-                            k = archs.src;
-                            trouv = true;
-                        }
-                        i--;
-                    }
-                }
-            }
-        }
-        else {
-            let k = cpt;
-            let i = archs.length;
-            let Ma = [];
-            let pile = [];
-            let couverture2 = false;
-            if (exclude.length===this.NpPlaces){couverture2=true}
-            else{
-            while ((!couverture2) && (i >= 0)) {
-                Ma = listM[k];
+                if(this.tabEqual(Ma,M)){egal=true}
+                console.log('here is M');
+                console.log(M);
+                console.log('here is Ma');
+                console.log(Ma);
+                console.log('egal',egal);
+               
                 let couverture1 = true;
                 let h = 0;
                 while ((h < this.NpPlaces) && (couverture1)) {
@@ -1319,11 +1309,81 @@ Franchissable (M,Idtrans) {
                          h++;
                           continue;
                        }
-    
+                       else{
                     if (M[h] < Ma[h]) {
                         couverture1 = false;
                     }
-                    h++;
+                    h++;}
+                }
+                if (couverture1) {
+                    couverture = false;
+                    let j = 0;
+                    while ((!couverture) && (j < this.NpPlaces)) {
+                        if (exclude.includes(j)) {
+                         j++;
+                          continue;
+                       }
+                       else{
+                        if (Ma[j] < M[j]) {
+                            couverture = true;
+                        }
+                        j++;}
+                    }
+                }
+                if((!couverture)&&(!egal)) {
+                    i--; console.log('dagi');
+                    console.log('here in infini');
+                    let trouv = false;
+                    let mytransition;
+                    while ((!trouv) && (i >= 0)) {
+                        if (archs[i].des === k) {
+                           
+                            mytransition=archs[i].t;
+                            console.log('mytransition');
+                            console.log(mytransition);
+                            if (!viv.includes(mytransition)) {
+                                viv.push(mytransition);
+                               }
+                            k = archs[i].src;
+                            trouv = true;
+                            i++;
+                        }
+                        i--;
+                    }
+                }
+            }
+        }
+        else {
+            
+            let k = cpt;
+            let i = archs.length;
+            let Ma = [];
+            let pile = [];
+            let couverture2 = false;
+            let egal=false;
+            if (exclude.length===this.NpPlaces){couverture2=true}
+            else{
+            while ((!egal)(!couverture2) && (i >= 0)) {
+                Ma = listM[k];
+                if(this.tabEqual(Ma,M)){egal=true}
+                console.log('here is M');
+                console.log(M);
+                console.log('here is Ma');
+                console.log(Ma);
+                console.log('egal',egal);
+    
+                let couverture1 = true;
+                let h = 0;
+                while ((h < this.NpPlaces) && (couverture1)) {
+                    if (exclude.includes(h)) {
+                         h++;
+                          continue;
+                       }
+                    else{
+                    if (M[h] < Ma[h]) {
+                        couverture1 = false;
+                    }
+                    h++;}
                 }
                 if (couverture1) {
                     couverture2 = false;
@@ -1333,21 +1393,28 @@ Franchissable (M,Idtrans) {
                          j++;
                           continue;
                        }
+                       else{
                         if (Ma[j] < M[j]) {
                             couverture2 = true;
                         }
-                        j++;
+                        j++;}
                     }
                 }
-                if (!couverture2) {
+                if ((!couverture2)&&(!egal)) {
                     i--;
                     console.log('here in infini');
                     let trouv = false;
+                    let mytransition;
                     while ((!trouv) && (i >= 0)) {
                         if (archs[i].des === k) {
+                            mytransition=archs[i].t;
+                            if (!viv.includes(mytransition)) {
+                                viv.push(mytransition);
+                               }
                             k = archs[i].src;
                             trouv = true;
                             pile.push(i);
+                            i++;
                         }
                        i--;
                     }
@@ -1415,7 +1482,7 @@ Franchissable (M,Idtrans) {
            couverture=fin;
          }
         }
-        return couverture;
+        return { infin:couverture, var2:viv,kif:egal };
     }
     
     
@@ -1424,16 +1491,19 @@ Franchissable (M,Idtrans) {
     marquageTillInfini(M0){
     
         //don t forget le traitement des places supprimme dans les marquages
+        let viv = [];
         let cpt=0;
         let k=1;
         let N = [];
         N=M0;
         let listM = [];
         let archs = [];
+        let { infin = false, var2 = [],kif=false } = {};
+    
         console.log('di la pricipal lenght ines');
         console.log(archs.length);
          listM.push(M0);
-         let infin = false;
+        
           let repe = false ;
          while ((cpt<listM.length)&& (!infin) && (!repe)){
              N = listM[cpt];
@@ -1441,7 +1511,6 @@ Franchissable (M,Idtrans) {
              console.log(N);
             let index = 0; 
             let stop=false;
-           
              while ((index<this.NpTrans)&& (!infin) && (!repe)&&(!stop) ){
                if ((!(this.Transitions[index].tsup)) && (this.Franchissable(N,this.Transitions[index].IdT)) &&(!stop))  {
                 console.log('franchi');
@@ -1453,8 +1522,9 @@ Franchissable (M,Idtrans) {
                 }
                 console.log('HERE IS M');
                 console.log(M);
-                let tran= this.Transitions[index];
-                infin =this.infini(M,listM,cpt,archs,k,tran);
+                let tran= this.Transitions[index]; 
+                viv.push(tran);
+               ({ infin , var2,kif } = this.infini(M,listM,cpt,archs,k,tran,viv));
                 repe=this.rep(M,listM);
                 console.log('infin');
                 console.log(infin);
@@ -1475,10 +1545,18 @@ Franchissable (M,Idtrans) {
             console.log(cpt);
             cpt++;
          }
-         return infin;
+         return infin ;
+    }
+    
+    transnonsup(){
+        let nonsup= [] ; 
+        for (let i = 0; i < this.Transitions.length; i++) {
+          if (this.Transitions[i].GetTranssup()===false){nonsup.push(this.Transitions[i])} ;
+    }
+    return nonsup;
     }
     //BLOQUAGE
-nonbloc(M0){
+   nonbloc(M0){
     //don t forget le traitement des places supprimme dans les marquages
     let cpt=0;
     let k=1;
@@ -1487,20 +1565,26 @@ nonbloc(M0){
     let listM = [];
     let archs = [];
      listM.push(M0);
-     let infin = false;
+     let vivacite = true;
+    
       let repe = false ;
       let nonBloquage= true;
+      let viv = [];
+      let { infin = false, var2 = [] ,kif=false } = {};
+    
      while ((cpt<listM.length)&& (nonBloquage)){
          N = listM[cpt];
          console.log('la mere');
          console.log(N);
         let index = 0;
         nonBloquage=false;
+        vivacite=false;
          while (index<this.NpTrans){
            if ((!(this.Transitions[index].tsup)) && (this.Franchissable(N,this.Transitions[index].IdT)))  {
             nonBloquage=true;
             console.log('nonbloc');
             console.log(nonBloquage);
+            vivacite=true;
             console.log('franchi');
             console.log(this.Transitions[index].GetTransId());
             let M = [];          
@@ -1508,10 +1592,23 @@ nonbloc(M0){
                M[i] = N[i] -this.Pre[i][this.Transitions[index].GetTransId()].poid + this.Post[i][this.Transitions[index].GetTransId()].poid;
                if (M[i]<0){ M[i]=0;}
             }
-            console.log('HERE IS M');
-            console.log(M);
+           // console.log('HERE IS M');
+            //console.log(M);
             let tran= this.Transitions[index];
-            infin =this.infini(M,listM,cpt,archs,k,tran);
+            viv = [];
+            viv.push(tran);
+            console.log('viv',viv);
+            ({ infin , var2,kif } =this.infini(M,listM,cpt,archs,k,tran,viv));
+          console.log('var2',var2);
+            //TRAITEMENT DE VIVACITE
+            console.log('kif',kif);
+            if ((vivacite)&&((infin)||(kif))){
+            let vivOfIds = var2.map(obj => obj.IdT);
+            let trannonsu =this.transnonsup();
+            let trOfIds= trannonsu.map(obj => obj.IdT);
+            let egal=this.arraysEqual(trOfIds,vivOfIds);
+            if (!egal){vivacite=false}}
+            ////////////////////////////////
             repe=this.rep(M,listM);
             console.log('infin');
             console.log(infin);
@@ -1532,6 +1629,71 @@ nonbloc(M0){
         console.log(cpt);
         cpt++;
      }
-     return nonBloquage;
+     return {var3:nonBloquage,var4:vivacite}
     }
+    arraysEqual(arr1, arr2) {
+        // Check if arrays have the same length
+        if (arr1.length !== arr2.length) {
+            return false;
+        }
+        arr1.sort();
+        arr2.sort();
+    
+        // Compare sorted arrays element by element
+        for (let i = 0; i < arr1.length; i++) {
+            if (arr1[i] !== arr2[i]) {
+                return false;
+            }
+        }
+    
+        // If all elements match, arrays are equal
+        return true;
+    }
+
+    per(tab,tab2)
+{
+  let i;
+  let ex;
+  let j;
+  let k=0;
+  let mir;
+  let per=true;
+  for(i=0;i<tab.length;i++)
+  {
+      ex=0;
+      for(j=0;j<this.Transitions.length;j++)
+      {
+         if(tab[i].fr[j]===1 && this.Transitions[j].tsup!==true )
+         {
+             ex++;
+         }
+      }
+      if(ex>1)
+      {
+          tab2.push(tab[i]);
+      }
+  }
+  for(i=0;i<tab2.length;i++)
+  {
+      k=0;
+      for(j=0;j<this.Transitions.length;j++)
+      {
+          if(k===0 && tab2[i].fr[j]===1)
+          {
+              mir=this.getNextState(j,tab2[i].mar);
+              k++;
+              console.log('mir',mir)
+          }
+          else if(tab2[i].fr[j]===1 && k>0)
+          {
+              if(this.getNextState(j,tab2[i].mar)!=mir)
+              {
+                 per=false;
+              }
+          }
+      }
+  }
+  return per;
+}
+
 }

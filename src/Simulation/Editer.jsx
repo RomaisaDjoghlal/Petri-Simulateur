@@ -127,7 +127,16 @@ setTimeout(() => {
     dispatch(setToastOpt({isVisible:false}))
 }, 1000)
 */
-  
+/*const toast = {
+  isVisible: true,
+  context: 'pending',
+  title: 'Important !',
+  msg:'Votre graphe de marquage est infini'
+}
+dispatch(setToastOpt(toast))
+setTimeout(() => {
+  dispatch(setToastOpt({isVisible:false}))
+}, 8000)*/
 
 const initialNodes = () => {
 
@@ -1522,10 +1531,18 @@ const DeleteAllCanvas = useCallback(() => {
 
 },[reactFlowInstance, dispatch])
 
-
+const blockage = (fr) => {
+  console.log('fr in bloc',fr)
+  let bloc = true  ;
+fr.forEach(element =>{
+  if(element !== -1){
+    bloc = false ;
+  }
+})
+return bloc ;
+}
 
 const onSaveCanvas = useCallback(() => {
-
   dispatch(setSelectedTool('save'))
   dispatch(setIsSelectable(false))
   k = 0 ;  pauseRequested = false ; stopsimul = false
@@ -1534,8 +1551,10 @@ const onSaveCanvas = useCallback(() => {
   let tab = [] ;
   let arc = [] ;
   let tab1 = [] ;  let arc1 = [] ;
+  let tab2 = [] ;
   console.log('savecanvas')
 if( can === true ){
+  console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
   let marquageInitiale = reseau.getmarqini() ;
   console.log('marquage initiale ')
   console.log(marquageInitiale)
@@ -1550,38 +1569,56 @@ if( can === true ){
   localStorage.setItem('renitiabilite',JSON.stringify(renitiabilite)) ;
   let qasivivant = reseau.Reseauquasivivant(reseau.Transitions,arc)
   console.log('qasivivant',qasivivant)
-  //dispatch(setQuasivivant(qasivivant))
-  //let Quasiviv = useSelector(getQuasivivant()) ; console.log('quasiviv',Quasiviv)
   localStorage.setItem('qasivivant',JSON.stringify(qasivivant)) ;
-
-  let infini = reseau.marquageTillInfini(reseau.getmarqini()); 
-
-  if(infini === true)
+  let infini = reseau.marquageTillInfini(reseau.getmarqini());
+  console.log('infini',infini);
+  localStorage.setItem('infini',JSON.stringify(infini)) ;
+  if(infini===true)
     {
       const toast = {
         isVisible: true,
         context: 'pending',
         title: 'Important !',
-        msg:'Votre Réseau est infini'
+        msg:'Graphe de marquage infini'
     }
     dispatch(setToastOpt(toast))
     setTimeout(() => {
         dispatch(setToastOpt({isVisible:false}))
     }, 8000)
     }
-                         /////// reseau if infni=vrai msg reseau infinie 
-  console.log('infini',infini);
-  localStorage.setItem('infini',JSON.stringify(infini)) ;
-  let nonbloc = reseau.nonbloc(reseau.getmarqini());
-  console.log('nonbloc',nonbloc);
-  localStorage.setItem('nonbloc',JSON.stringify(nonbloc)) ;
-  localStorage.setItem('listArc',JSON.stringify(arc))
-  localStorage.setItem('listMarquage',JSON.stringify(tab))
+  //let {b = false , v = false} = {} ;
+ //( {b = false , v = false} = reseau.nonbloc(reseau.getmarqini()));
+ let result = reseau.nonbloc(reseau.getmarqini()) ;
+  console.log('mooooooooooooo',reseau.getmarqini());
+  console.log('nonbloc',result.var3,'vivacite',result.var4);
+  localStorage.setItem('nonbloc',JSON.stringify(result.var3)) ;
+  localStorage.setItem('vivacite',JSON.stringify(result.var4)) ;
+  //let nonbloc = reseau.nonbloc(reseau.getmarqini());
+  
+  //console.log('nonbloc',nonbloc);
+  //localStorage.setItem('nonbloc',JSON.stringify(nonbloc)) ;
+  let persistance = reseau.per(tab,tab2);
+  console.log('persistance',persistance,'tab2',tab2);
+  localStorage.setItem('persistance',JSON.stringify(persistance)) ;
+  localStorage.setItem('conflittab',JSON.stringify(tab2)) ;
+
    reseau.ConstrGraphmarqre(tab,arc,tab1,arc1) ;
    console.log(' le tableau reduit ')
    console.log(tab1)
    console.log(' le tableau arc  reduit')
    console.log(arc1)
+   let nouveauTableau = tab1.filter(function(element) {
+    return element !== -1;
+     }); console.log('nouveauTableau',nouveauTableau)
+
+   if(nouveauTableau.length === 1 && blockage(nouveauTableau[0].fr)){
+    let index = tab1.indexOf(nouveauTableau[0]);
+    tab1[index]= -1  ;
+    tab[index].tempo = false ;
+   }
+   console.log('tab1 after ',tab1);
+   localStorage.setItem('listArc',JSON.stringify(arc))
+   localStorage.setItem('listMarquage',JSON.stringify(tab))
    localStorage.setItem('listArcreduit',JSON.stringify(arc1))
    localStorage.setItem('listMarquagereduit',JSON.stringify(tab1))
    marquageInit = reseau.getmarqini() ;
@@ -1590,8 +1627,73 @@ if( can === true ){
   console.log('tabstep outside',tabstep)
   console.log('tabtrans',tabtrans)
 }
+/*
+  k = 0 ; pauseRequested = false
+          lastIteration = 0 ;
+          let can = marquageallowed();
+          let tab = [] ;
+        let arc = [] ;
+        
+        if( can === true ){
+          let marquageInitiale = reseau.getmarqini() ;
+          console.log('marquage initiale ')
+          console.log(marquageInitiale)
+         
+          reseau.ConstrGraphmarq(marquageInitiale,0,tab,arc)
+          console.log(' le tableau ')
+          console.log(tab)
+          console.log(' le tableau arc  ')
+          console.log(arc)
+          localStorage.setItem('listArc',JSON.stringify(arc))
+          localStorage.setItem('listMarquage',JSON.stringify(tab))
+        
+           marquageInit = reseau.getmarqini() ;
+          console.log('avant simul')
+          tabstep = reseau.simulation(tab,arc,marquageInit,tabtrans)
+          console.log('tabstep outside',tabstep)
+          console.log('tabtrans',tabtrans)
+        }
 
- 
+  */
+  let toast = {}
+
+
+  /*dispatch(saveNet({nodes:reactFlowInstance.getNodes(),edges:reactFlowInstance.getEdges()}))
+
+  
+  const currentNodes = reactFlowInstance.getNodes().map(n => n.data.label)
+  const checkDuplicated = currentNodes.filter((n,i) => currentNodes.indexOf(n) !== i)
+  if (checkDuplicated.length) {
+      toast = {
+          isVisible: true,
+          context: 'pending',
+          title: 'Erreur !',
+          msg: "Il n'est pas possible d'avoir deux nœuds ou plus avec le même libellé ( "+checkDuplicated+" )."
+      }
+
+  } else {*/
+
+
+      dispatch(saveNet({nodes:reactFlowInstance.getNodes(),edges:reactFlowInstance.getEdges()}))
+      toast = {
+          isVisible: true,
+          context: 'success',
+          title: 'succès!',
+          msg: 'Opération terminée avec succès. Vous pouvez maintenant naviguer sur les pages et garder votre réseau de Petri en sécurité !'
+      }  
+  //}
+  dispatch(setToastOpt(toast))
+  setTimeout(() => {
+      dispatch(setSelectedTool('place'))
+  }, 100)
+  setTimeout(() => {
+      dispatch(setToastOpt({isVisible:false}))
+  }, 10000)
+  
+
+},[reactFlowInstance, dispatch])
+
+ /*
   let toast = {}
 
       dispatch(saveNet({nodes:reactFlowInstance.getNodes(),edges:reactFlowInstance.getEdges()}))
@@ -1612,7 +1714,7 @@ if( can === true ){
   
 
 },[reactFlowInstance, dispatch])
-
+*/
 
 
 

@@ -2,20 +2,27 @@ import React from 'react'
 import { useEffect, useState } from 'react'
 import './Propriete.css'
 import {props} from './Data'
-
-
+import { FaCheckCircle, FaTimesCircle } from 'react-icons/fa';
+//import  {useHistory } from 'react-router-dom'
 
 export const Propriete = () => {
-    useEffect(() => {
-        // Perform any actions you want to happen when the component is mounted or when it's re-rendered
-        console.log('Propriete component mounted or re-rendered');
-    }, []);
     const [popupcont , setpopupcont] = useState([]);
     const [popuptogle , setpopuptogle] = useState(false);
+   // const history = useHistory();
     const changecontent = (prop) => {
         setpopupcont([prop]);
         setpopuptogle(!popuptogle);
     }
+    const Icon = ({ value }) => {
+        if (value === 'oui') {
+            return <FaCheckCircle className='icon' style={{ color: 'green',  fontSize: '7vh',marginLeft: '6VW',marginTop: '4vh' }} />;
+        } else if (value === 'non') {
+            return <FaTimesCircle className='icon' style={{ color: 'red', fontSize: '7vh',marginLeft: '6VW',marginTop: '4vh'}} />;
+        } else {
+            return null;
+        }
+    };
+  //  history.push("/simulation/propriete")
     return (
         
         <>
@@ -23,17 +30,10 @@ export const Propriete = () => {
         <h1 className='prop'>Propriétés</h1>
          <div className='content-container'>
             {
-               /* props.map((prop)=>{
+                props.map((prop)=>{
                     return(
                         <div className="content_card" onClick={()=> changecontent(prop)}>
                             <p className='titre' >{prop.type}</p>
-                        </div>
-                    )
-                })*/
-                props.map((prop) => {
-                    return (
-                        <div key={prop.index} className="content_card" onClick={() => changecontent(prop)}>
-                            <p className='titre'>{prop.type}</p>
                         </div>
                     )
                 })
@@ -50,7 +50,9 @@ export const Propriete = () => {
                         <div className="pop_up_card">
                             <h1 className='pop_titre' >{pop.type}</h1>
                             <p className='def'> {pop.definition}</p>
-                            <p className='val'> {pop.value}</p>
+                            <p className='rep'>
+                        <Icon value={pop.value} /> {pop.description}
+                         </p>
                         </div>
                     )
                 })}
