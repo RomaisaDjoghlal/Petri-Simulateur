@@ -1,11 +1,7 @@
 import React,{useCallback,useState,useRef,useMemo,memo,} from 'react'
 import ReactFlow, {MiniMap,addEdge, BezierEdge,Controls, useReactFlow ,Background ,useNodesState, useEdgesState, ReactFlowProvider, MarkerType } from 'reactflow';
-//import { CircleEdge } from './Components/CircleEdge.tsx'
 import { CustomEdge} from './CustomEdge.tsx'
 import './Graphmenu.css'
-//import  from 'react-flow/edge-path';
-
-
 
 
 export const GraphMarquage = ({ choix }) => { 
@@ -32,7 +28,6 @@ const arcString = localStorage.getItem('listArcreduit');
 console.log(arcString);
   listarc = JSON.parse(arcString);
 const preString = localStorage.getItem('listMarquagereduit');
-//const preString = localStorage.getItem('listMarquage');
  listMarquage = JSON.parse(preString);
  const presautString = localStorage.getItem('listMarquage');
  listMarquagesaut = JSON.parse(presautString);
@@ -41,26 +36,11 @@ const preString = localStorage.getItem('listMarquagereduit');
 
 console.log('listmarquage',listMarquage);
 console.log('listarc',listarc);
-//console.log('listarc.j1',listarc.length);
-//console.log(listMarquage[0].mar)
-/*
-const MemoizedarcNode = memo(CircleEdge);
 
-
-const edgeTypes = useMemo(
-() => ({
-  CircleEdge : MemoizedarcNode 
-}),
-[]
-);*/
 const edgeTypes = useMemo(() => ({
-  //CircleEdge: CircleEdge,
   CustomEdge : CustomEdge 
 }), []);
-/*
-const tabString = localStorage.getItem('longeur');
-let  longeur = JSON.parse(tabString);
-console.log('a = ',longeur) */
+
 let initialedges = [];
 let initialNodes = [];
 if(listMarquage !== null){
@@ -114,11 +94,53 @@ const tabnivsaut  = tabniveausaut();
 console.log('tabnivsaut = ',tabnivsaut)
 let maxniveau = tabniv.length;
 console.log(tabniv)
+let listbloc = [] , renitialtab = [];
+let find = false ;
+for(let  i =0 ; i< listMarquage.length ; i++){
+  find = false ;
+  for(let  j = 0 ; j< listarc.length ; j++){
+  if(listarc[j].ji === i  || listarc[j].jf === i ){
+   find = true ;   
+    break 
+  } if (listarc[j].ji === i  && listarc[j].jf === i){
+    renitialtab.push(i) ;
+  }
+} if(find === false && listMarquage[i] !== -1 ){
+  listbloc.push(i);
+}
+}
+
+listbloc.forEach(element =>{  // les element bloquée + inifi
+  initialedges.push({
+  id: getIdarc(),
+  label: 'T|1', // Utilisez listarc[j] au lieu de listarc[0]
+  source: element.toString(),
+  target: element.toString(),
+ // type: 'CircleEdge',
+  type : 'CustomEdge',
+  data: {
+    label: 'T|1', position : 25
+  },
+  markerEnd: {type: MarkerType.ArrowClosed,
+    width: 20,
+    height: 20,
+    color: '#118C7E' },  })
+})
+find = false ;
+listMarquage.forEach(element =>{
+if(element !== -1){
+  find = true ;
+}
+})
+if(find === false){
+         initialNodes.push(    {id: getId() , position: { x: 290, y: 200 }, data: { label: 'le graph des marquages de votre reseau n admet pas un graph des marquage réduit'} ,style : { width: 300,height: 80,backgroundColor: ' #f0fdfb' ,  borderRadius: '5px'   } } )
+
+}
 
 
 
 let k = 0 ;
-//const s = listMarquage[0].mar.length
+
 const plusGrand = Math.max(...tabniv);
 console.log("grand ",plusGrand)
 for (let j = 0; j <  tabniv.length ; j++) {
@@ -131,7 +153,6 @@ for (let j = 0; j <  tabniv.length ; j++) {
       k++ ; getId()
     }
       
-    //console.log('listMarquage[0].mar[0]',listMarquage[0].mar[0])
     let marquage = '[' ;
     let s = listMarquage[k].mar.length ;
     for(let g = 0 ; g < s ;  g++){
@@ -173,8 +194,8 @@ for (let j = 0; j <  tabniv.length ; j++) {
 let s = -1 ;
 
 for (let j = 0 ; j < listarc.length ; j++) {
-  let g = listarc[j].ji; // Utilisez listarc[j] au lieu de listarc[0]
-  let f = listarc[j].jf; // Utilisez listarc[j] au lieu de listarc[0]
+  let g = listarc[j].ji; 
+  let f = listarc[j].jf; 
   let h = listarc[j].j1 ; // la trans franchit
   let p = listarc[j].propa ; // la proba de franchissement 
   p = p.toFixed(2);
@@ -208,20 +229,7 @@ for (let j = 0 ; j < listarc.length ; j++) {
     label: trans , // Utilisez listarc[j] au lieu de listarc[0]
     source: g.toString(),
     target: f.toString(),
-    //type : 'CustomEdge',
-    //type : 'bezier',
     type:'straight',
-    //labelStyle: { fontSize: '12px', fontWeight: 'bold', color: 'red', position: 'relative', left: '100%' , },
-    /*labelStyle: { 
-      fontSize: '12px', 
-      fontWeight: 'bold', 
-      backgroundColor: 'transparent' ,
-      color: 'red', 
-      position: 'absolute', 
-      left: '100%',  // Adjust this value to position the label horizontally
-      top: '50%',    // Adjust this value to position the label vertically
-      transform: 'translate(-0%, -0%)' // Adjust this value to fine-tune the label position
-    },*/
     labelStyle: { 
       fontSize: '12px', 
       fontWeight: 'bold', 
@@ -229,56 +237,60 @@ for (let j = 0 ; j < listarc.length ; j++) {
       color: 'red', 
       fill: 'gray' ,
       position: 'absolute', 
-
-      transform:'' //`translate(${markerEndPosition.x}px, ${markerEndPosition.y}px)`,
-     // left: `${initialNodes.find(element => element.id === f.toString()).position.x}px`,  // Set label's X position
-      //top: `${ initialNodes.find(element => element.id === f.toString()).position.y}px`,    // Set label's Y position
     }, 
     style: {
               stroke: '' } ,
-   
-   // transform:{`translate(-50%, 0%) translate(${sourceX}px,${sourceY}px)`}  ,                  
+              
                                                  
   });
- // initialedges[j].transform = `translate(-240%, -40%) translate(${initialedges[j].position+100}px,${initialedges[j].position+10}px)` ;
 }else{
     const index = initialedges.indexOf(searchelement);
-    let trans = searchelement.label ; trans = trans.concat('_T')
+    let trans = searchelement.label ; 
+    let combine = false ;
+    let parties = trans.split('_');let i = 0 ;let newparte = ''
+    console.log('parties',parties)
+    while(  i< parties.length && combine === false ){
+    let transpartie = parties[i].substring(i,parties[i].indexOf('|'))
+    let trans1 = 'T' ; trans1 = trans1.concat(h.toString()) ;
+    if(trans1 === transpartie){
+      console.log('holla')
+      combine = true 
+      let probapartie = parties[i].substring(parties[i].indexOf('|')+1,parties[i].length);
+       let  prob = parseFloat(probapartie) +parseFloat(p) ; console.log('prob',prob,' parseInt(probapartie)', parseFloat(probapartie));
+       if(prob <= 1){
+       prob = prob.toString();
+       newparte = newparte.concat(transpartie) ;newparte= newparte.concat('|');
+      newparte= newparte.concat(prob);
+    }else{
+     // newparte = '' ;
+     break 
+    }
+      console.log('newparte',newparte)
+    }
+    i++
+  }
+  if(combine === false ){
+    trans = trans.concat('_T')
     trans = trans.concat(h.toString()) ; trans = trans.concat('|')
     trans = trans.concat(p.toString()); 
-    console.log('trans 2',trans)
-     if( index !== -1 ){
-         initialedges[index].label = trans ; 
-         initialedges[index].data.label = trans ; 
-     }else{console.log('element n existe pas ')}
-  }
-
-  console.log('g = ',g.toString())
-  console.log('f = ',f.toString())
-   //initialedges[s].labelStyle.transform =  `translate(${initialedges[s].markerEndPosition.x}px, ${initialedges[s].markerEndPosition.y}px)` 
-}/*
-const customArrowHead = {
-  markerWidth: 10,
-  markerHeight: 10,
-  path: `M 0,0 L 10,5 L 0,10 z`, // Change the path to create a circle
-};*/
-
-if(initialNodes.length == 1 && initialedges.length == 1 ){
-  let element = initialedges[0] ; let proba = 0 , label  ;
-  let trans = ''
-  for(let i = 0 ; i< listarc.length ;i++ ){
-    let h = listarc[i].j1 ; // la trans franchit
-  let p = listarc[i].propa 
-    if( proba < 1){
-    proba = listarc[i].propa + proba ; trans = trans.concat('_T')
-    trans = trans.concat(h.toString()) ; trans = trans.concat('|')
-    trans = trans.concat(p.toString()) ; 
+  }else{
+    trans = trans.concat(newparte) ;
+     trans = trans.replace(parties[i-1], "");console.log(' trans replace', trans)
     
   }
-    else { break }
-  }
- // listarc.slice(i);
- // let label = element.label 
+  console.log('trans 2',trans)
+
+  if( index !== -1 ){
+    initialedges[index].label = trans ; 
+    initialedges[index].data.label = trans ; 
+    }else{console.log('element n existe pas ')}
+  console.log('g = ',g.toString())
+  console.log('f = ',f.toString())
+  }}
+ 
+if(initialNodes.length == 1 && initialedges.length == 1 ){
+  let element = initialedges[0] ; 
+  let trans =  element.label ;   
   initialedges[0] = {
     id: getIdarc(),
     label: trans, // Utilisez listarc[j] au lieu de listarc[0]
@@ -286,11 +298,8 @@ if(initialNodes.length == 1 && initialedges.length == 1 ){
     target: element.target,
    // type: 'CircleEdge',
     type : 'CustomEdge',
-    //type :'step',
-    //type: 'bezier',
-    
     data: {
-      label: trans,
+      label: trans, position : 27
     },
     markerEnd: {type: MarkerType.ArrowClosed,
       width: 20,
@@ -298,9 +307,9 @@ if(initialNodes.length == 1 && initialedges.length == 1 ){
       color: '#118C7E' },                          
   } 
 }
-}
 
-for( let i = 0 ; i< initialedges.length ; i++ ){
+console.log("initialedges befor for ",initialedges)
+for( let i = 0 ; i< initialedges.length ; i++ ){  // les arcs croiss
   let element = initialedges[i]
   let source = element.source , target = element.target , id = element.id ; ;
   for( let j = i+1 ; j< initialedges.length ; j++ ){
@@ -309,11 +318,11 @@ for( let i = 0 ; i< initialedges.length ; i++ ){
         if(target === element2.source && source === element2.target ){
           element2.labelStyle.fill = 'gray' 
           element.labelStyle.fill = '#0eac8d'
-          let space ='' 
-        //  let trans = element2.label.concat(';'+element.label)   
+          let space =''  
         let trans = element.label//.concat('___________________________');
         for(let g = 0 ; g< element2.label.length ; g++ ){
           trans = trans.concat('___')
+          console.log('hello') ;
         }
         let trans2 = space.concat(element2.label);
 
@@ -323,68 +332,56 @@ for( let i = 0 ; i< initialedges.length ; i++ ){
           element.label =trans;
           initialedges[j] = element2 ;
           initialedges[i] = element ;
-          
-          
-          //initialedges[j].label = <CustomLabel element={element} element2={element2} />;
-          //initialedges[i].label = '';
+          console.log('element.label',element.label,'element1.id',element.id)
      }
    }
   }
-}
+}}
 
- let g = getId() , f = getId() ;
+ let g = getId() ; g = getId() ; let  f = getId() ;
   initialNodes.push(    {id: g , position: { x: 930, y: 10 }, data: { label: 'marquage initiale'} ,style : { width: 160,height: 35 ,backgroundColor: ' #0fa9a6' ,  borderRadius: '5px'  }}) ;
   initialNodes.push(    {id: f , position: { x: 930, y: 110 }, data: { label: 'marquage accessible'} ,style : { width: 160,height: 35 ,backgroundColor: ' #f0fdfb' ,  borderRadius: '5px'} } );
   initialNodes.push(    {id: getId() , position: { x: 930, y: 160}, data: { label: 'marquage tangible'} ,style : { width: 160,height: 35 ,backgroundColor: ' #f0fdfb' ,  borderRadius: '5px', border: '3px solid #555'   } } )
+  let l = getId() ;
+  initialNodes.push(    {id: l , position: { x: 930, y: 250}, data: { label: 'marquage bloqué'} ,style : { width: 160,height: 35 ,backgroundColor: ' #f0fdfb' ,  borderRadius: '5px', border: '3px solid #555'   } } )
   initialedges.push(    { id: getIdarc(),
     data: {
-      label: 'transition Ti | sa probabilite ',
-    },
+      label: 'transition Ti | sa probabilite ', },
     markerEnd: {type: MarkerType.ArrowClosed,
-      width: 20,
-      height: 20,
-      color: '#118C7E', 
-     },
+      width: 20,height: 20,color: '#118C7E',  },
     label: 'transition Ti | sa probabilite ' , // Utilisez listarc[j] au lieu de listarc[0]
     source: g.toString(),
     target: f.toString(),
     //type : 'bezier',
     type:'straight',
     labelStyle: { 
-      fontSize: '12px', 
-      fontWeight: 'bold', 
-      backgroundColor: 'transparent' ,
-      color: 'red', 
-      fill: 'gray' ,
-      position: 'absolute', 
-    }, 
+      fontSize: '12px', fontWeight: 'bold', backgroundColor: 'transparent' ,color: 'red', fill: 'gray' ,position: 'absolute', }, 
     style: {
               stroke: '' } ,})
+     initialedges.push(    { id: getIdarc(),
+    data: {
+      label: 'transition T | probabilite = 1 ', position : 80},
+    markerEnd: {type: MarkerType.ArrowClosed,
+      width: 20,height: 20,color: '#118C7E',  },
+    label: 'transition T | probabilite = 1 ' , // Utilisez listarc[j] au lieu de listarc[0]
+    source: l,
+    target: l,
+    //type : 'bezier',
+    type:'CustomEdge',
+    labelStyle: { 
+      fontSize: '12px', fontWeight: 'bold', backgroundColor: 'transparent' ,color: 'red', fill: 'gray' ,position: 'absolute', }, 
+    style: {
+              stroke: '' } ,})
+                     
 
 console.log('initialnodes',initialNodes)
 console.log('initialedges',initialedges)
-/*const initialNodes = [
-    {id: '0', position: { x: 0, y: 0 }, data: { label: listMarquage[0].mar} }
-];*/
+
 const reactFlowWrapper = useRef(null)
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes)
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialedges)
   const [reactFlowInstance, setReactFlowInstance] = useState(null)
-/*
-  onNodesChange = useCallback((e,node) => {
-    let searchelement = edges.find(element => element.target === node.id ) ;
-    let labelX = node.position.x , labelY = node.position.y ;
-    searchelement.labelStyle.transform = `translate(${labelX}px, ${labelY}px)` ;
-    
-  })*/
-/*
-//let i1 = getId1() ;
-      const element = {
-          id:1 ,
-          data: { label: 'N1' },
-      }
-      setNodes((nds) => nds.concat(element))
-  */ 
+
       return (
       
         <ReactFlowProvider>

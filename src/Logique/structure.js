@@ -643,7 +643,7 @@ ConstrGraphmarq(m,idm,tab,arc) {
     fr=tabi;
     tr=tabt;
     lv=idm;
-    if(this.existemarquage(tab,m)===-1 && tab.length<60)
+    if(this.existemarquage(tab,m)===-1 && tab.length<200)
     {   
     kse= {fr,tr,mar,lv,w,tempo};
     tab.push(kse);

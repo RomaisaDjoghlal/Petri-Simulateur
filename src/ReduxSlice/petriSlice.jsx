@@ -79,68 +79,59 @@ export const petriSlice = createSlice({
      
         deleteElement: (state, action) => {
           switch (action.payload.type) {
-              case 'place':
-                  state.places.forEach((p,i) => {
-                      if (p.id === action.payload.element.id) {
-                          state.places.splice(i,1)
-                         
+            
+            case 'place':
+                state.places.forEach((p,i) => {
+                    if (p.id === action.payload.element.id) {
+                      
+                      state.places[i] = { ...p, data: '', position: '' };
 
-                          /*state.places.forEach((place) => {
-                            const idNumber = parseInt(place.id.slice(1)); // Extract numeric part and convert to number
-                            const deletedIdNumber = parseInt(action.payload.element.id.slice(1)); // Extract numeric part of the deleted ID
-                            if (idNumber > deletedIdNumber) {
-                                place.id = `P${idNumber - 1}`; // Decrement ID and construct new ID
-                                console.log("rr", place.id);
-                            }
-                        });*/
                         
-                       
-                      }
-                  })
+                      
+                     
+                    }
+                })
 
-                  
-              break
-              case 'transition':
-                  state.transitions.forEach((p,i) => {
-                      if (p.id === action.payload.element.id) {
-                          state.transitions.splice(i,1)
-
-                           /*
-                    state.transitions.forEach((transition) => {
-                        if (transition.id > action.payload.element.id) {
-                            transition.id--; // Decrement ID
-                        }
-                    });*/
-                      }
-                  })
-              break
-             case 'textUpdater':
-              
-                console.log("Action payload element ID:", action.payload.element.id);
-                console.log("TextUpdater IDs in state:", state.textUpdaters.map(p => p.id));
-
-                  state.textUpdaters.forEach((p,i) => {
-                    console.log("yes",p.id)
-                   
-                      if (p.id === action.payload.element.id) {
-                        console.log("yes")
-                       
-
-                       //   state.textUpdaters.split('_')[i,1]
-                       state.textUpdaters.splice(i, 1);
                 
-                      }
-                  })
-                  
+            break
+                
+            case 'transition':
+                state.transitions.forEach((p,i) => {
+                    if (p.id === action.payload.element.id) {
+                      state.transitions[i] = { ...p, data: '', position: '' };
 
-              break
-              case 'timed-transition':
-                  state.transitions.forEach((p,i) => {
-                      if (p.id === action.payload.element.id) {
-                          state.transitions.splice(i,1)
-                      }
-                  })
-              break
+                
+                    }
+                })
+            break
+            case 'textUpdater':
+              
+            console.log("Action payload element ID:", action.payload.element.id);
+            console.log("TextUpdater IDs in state:", state.textUpdaters.map(p => p.id));
+
+              state.textUpdaters.forEach((p,i) => {
+                console.log("yes",p.id)
+               
+                  if (p.id === action.payload.element.id) {
+                    console.log("yes")
+                   
+
+                   //   state.textUpdaters.split('_')[i,1]
+                   state.textUpdaters.splice(i, 1);
+            
+                  }
+              })
+              
+
+          break
+          case 'timed-transition':
+              state.transitions.forEach((p,i) => {
+                  if (p.id === action.payload.element.id) {
+                    state.transitions[i] = { ...p, data: '', position: '' };
+                     
+                  }
+              })
+          break
               
           
               default:

@@ -39,6 +39,7 @@ export const Guide = () => {
 
   return (
     <div className='guide-container'>
+      <h1 className='t'>Guide</h1>
       {/* Affiche l'image actuelle en fonction de l'index actuel */}
       <img className='guide-image' src={imageUrls[currentImageIndex]} alt="pic" />
 

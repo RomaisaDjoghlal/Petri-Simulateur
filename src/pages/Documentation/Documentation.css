@@ -21,11 +21,11 @@ body{
 
 h1.title {
     color: black !important;
-    font-size: 6vh; /* Specify font size unit */
+    font-size: 3vw; /* Specify font size unit */
     font-family: 'Inter', sans-serif;
     font-weight: bolder;
     margin-left: 4vw;
-    margin-top: 7vh;
+    
 }
 
 .sous-doc a {
@@ -67,7 +67,7 @@ section:last-child {
 
 h2.titre {
     color: black;
-    font-size: 6vh; /* Specify font size unit */
+    font-size: 2.5vw; /* Specify font size unit */
     font-family: 'Inter', sans-serif;
     font-weight: 500;
     display: block;

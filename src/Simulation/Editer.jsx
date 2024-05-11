@@ -23,9 +23,6 @@ import html2canvas from 'html2canvas';
 
 
 
-
-
-
 let starthistory = 0 , indexhistory = -1 , hislong = 0;
 let apdatedhistoryelement = '' ;
 
@@ -90,9 +87,6 @@ const incrementk = (k) => {
 
 export const Editer = () => {
 
- 
-
-
   const dispatch = useDispatch()
   const SelectedTool = useSelector(getSelectedTool)
   const isSelectable = useSelector(getIsSelectable)
@@ -103,30 +97,9 @@ export const Editer = () => {
   const arcs = useSelector(getArcs)
   const canvasOpt = useSelector(getCanvasOpt)
 
-  
-   
-
 
   //==============================
 
- 
-  
-
-
- 
-  
-  /*const toast1 = {
-    isVisible: true,
-    context: 'dark',
-    title: 'Indice !',
-   
-   msg:'Veuillez consulter le guide pour connaître la fonction de chaque bouton.'
-}
-dispatch(setToastOpt(toast1))
-setTimeout(() => {
-    dispatch(setToastOpt({isVisible:false}))
-}, 1000)
-*/
 /*const toast = {
   isVisible: true,
   context: 'pending',
@@ -273,80 +246,7 @@ const handleDownloadPDF = () => {
   });
 };
 
-/*
-const saveGraph = (fileType) => {
-        const flowData = { nodes, edges };
 
-        let blob;
-        let fileName;
-
-        if (fileType === 'pdf') {
-          
-          handleDownloadPDF(); 
-          fileName = 'myGraph.pdf';
-          let toast = {}
-          toast = {
-              isVisible: true,
-              context: 'success',
-              title: 'succès!',
-              msg: 'Opération terminée avec succès. Vous avez sauvegardé votre réseau sous forme PDF !'
-            }  
-      
-        dispatch(setToastOpt(toast))
-        setTimeout(() => {
-          dispatch(setSelectedTool('place'))
-          }, 100)
-        setTimeout(() => {
-          dispatch(setToastOpt({isVisible:false}))
-        }, 10000)
-
-
-        } else if (fileType === 'json') {
-          blob = new Blob([JSON.stringify(flowData)], { type: 'application/json' });
-          fileName = 'myGraph.json';
-
-            let toast1 = {}
-          toast1 = {
-              isVisible: true,
-              context: 'success',
-              title: 'succès!',
-              msg: 'Opération terminée avec succès. Vous avez sauvegardé votre réseau sous forme JSON !'
-            }  
-      
-        dispatch(setToastOpt(toast1))
-        setTimeout(() => {
-          dispatch(setSelectedTool('place'))
-          }, 100)
-        setTimeout(() => {
-          dispatch(setToastOpt({isVisible:false}))
-        }, 10000)
-  
-        } else if (fileType === 'png') {
-          saveGraphAsPng(); 
-          let toast = {}
-          toast = {
-              isVisible: true,
-              context: 'success',
-              title: 'succès!',
-              msg: 'Opération terminée avec succès. Vous avez sauvegardé votre réseau sous forme PNG !'
-            }  
-      
-        dispatch(setToastOpt(toast))
-        setTimeout(() => {
-          dispatch(setSelectedTool('place'))
-          }, 100)
-        setTimeout(() => {
-          dispatch(setToastOpt({isVisible:false}))
-        }, 10000)
-          return; 
-        } else {
-          console.error('Invalid file type specified.');
-          return;
-        }
-
-        saveAs(blob, fileName);
-      };
-*/
 
 const saveGraph = (fileType) => {
   const filteredNodes = nodes.filter(node => node.type === 'place' || node.type === 'transition' || node.type === 'group');
@@ -365,13 +265,61 @@ const saveGraph = (fileType) => {
   if (fileType === 'pdf') {
     // Handle PDF saving
     handleDownloadPDF();
+    let toast = {}
+    toast = {
+        isVisible: true,
+        context: 'success',
+        title: 'succès!',
+        msg: 'Opération terminée avec succès. Vous avez sauvegardé votre réseau sous forme PDF !'
+      }  
+
+  dispatch(setToastOpt(toast))
+  setTimeout(() => {
+    dispatch(setSelectedTool('place'))
+    }, 100)
+  setTimeout(() => {
+    dispatch(setToastOpt({isVisible:false}))
+  }, 9000)
+
     fileName = 'myGraph.pdf';
   } else if (fileType === 'json') {
     blob = new Blob([JSON.stringify(flowData)], { type: 'application/json' });
     fileName = 'myGraph.json';
+
+    let toast1 = {}
+    toast1 = {
+        isVisible: true,
+        context: 'success',
+        title: 'succès!',
+        msg: 'Opération terminée avec succès. Vous avez sauvegardé votre réseau sous forme JSON !'
+      }  
+
+  dispatch(setToastOpt(toast1))
+  setTimeout(() => {
+    dispatch(setSelectedTool('place'))
+    }, 100)
+  setTimeout(() => {
+    dispatch(setToastOpt({isVisible:false}))
+  }, 9000)
+
   } else if (fileType === 'png') {
     // Handle PNG saving
     saveGraphAsPng();
+    let toast2 = {}
+    toast2 = {
+        isVisible: true,
+        context: 'success',
+        title: 'succès!',
+        msg: 'Opération terminée avec succès. Vous avez sauvegardé votre réseau sous forme PNG !'
+      }  
+
+  dispatch(setToastOpt(toast2))
+  setTimeout(() => {
+    dispatch(setSelectedTool('place'))
+    }, 100)
+  setTimeout(() => {
+    dispatch(setToastOpt({isVisible:false}))
+  }, 9000)
     return; // Exit the function after saving PNG
   } else {
     console.error('Invalid file type specified.');
@@ -412,13 +360,25 @@ const handleSaveGraph = (fileType) => {
   saveGraph(fileType);
 };
 
- const handleLoadGraph = async (event) => {
+ /*const handleLoadGraph = async (event) => {
+ 
   const file = event.target.files[0];
 
   const data = await loadGraph(file);
  if (data && data.nodes && data.edges) {
     setNodes(data.nodes);
     setEdges(data.edges);
+  }
+  initializeReseau();
+};*/
+
+const handleLoadGraph = async (event) => {
+  const file = event.target.files[0];
+  const data = await loadGraph(file);
+  if (data && data.nodes && data.edges) {
+    setNodes(data.nodes);
+    setEdges(data.edges);
+    initializeReseau(data.nodes); // Pass data.nodes as argument
   }
 };
 
@@ -427,6 +387,7 @@ const handleSaveGraph = (fileType) => {
 
 
 const initializeReseau = useCallback((nodes) => {
+  
 
           const storedPlaces = nodes.filter(node => node.type === 'place');
           console.log("tab",storedPlaces);
@@ -463,7 +424,13 @@ const initializeReseau = useCallback((nodes) => {
           console.log(" reseau.NpPlacesexist ", reseau.NpPlaces );
           
           storedTransitions.forEach(transitionData => {
-            reseau.creetrans();
+             if(transitionData.data.mode=='imediate')
+              {
+            reseau.creetrans();}
+            else
+            {
+              reseau.creetransTimed();
+            }
           });
 
           reseau.Affichertrans();
@@ -506,10 +473,12 @@ useEffect(() => {
 }, [initializeReseau]);
 
 
+const [toastShown, setToastShown] = useState(false);
+
 
 
 const onPaneClick = useCallback((e) => {
-
+      
         e.preventDefault()
         const reactFlowBounds = reactFlowWrapper.current.getBoundingClientRect()
         const position = reactFlowInstance.screenToFlowPosition({
@@ -525,8 +494,9 @@ const onPaneClick = useCallback((e) => {
       
         const textUpdaterId = existingTextUpdaters.length === 0 ? 0 : Math.max(...existingTextUpdaters.map(textUpdater => parseInt(textUpdater.id.split('_')[1]))) + 1 ;
 
-        if(SelectedTool === 'place' || SelectedTool === 'transition' || SelectedTool === 'timed-transition' || SelectedTool === 'textUpdater' )
+        if(!toastShown &&(SelectedTool === 'place' || SelectedTool === 'transition' || SelectedTool === 'timed-transition' || SelectedTool === 'textUpdater' ))
         {
+          setToastShown(true);
           const toast = {
             isVisible: true,
             context: 'dark',
@@ -1338,7 +1308,7 @@ const onUpdateEl = useCallback((element) => {
   const indice  = parseInt(element.id.slice(1)); 
   console.log("indice = "+ indice)
   console.log("element.data.poid = "+element.data.poid)
-  reseau.Transitions[indice].SetPoids(element.data.poid)
+  reseau.Transitions[indice].SetPoids(parseInt(element.data.poid))
   }
   //reseau.Transitions[indice].SetPoids(2)
    reseau.Affichertrans() ;
@@ -1506,7 +1476,8 @@ const onDeleteEl = useCallback((element) => {
 
 */
 
-
+console.log("placeback",reseau.places);
+console.log("transback",reseau.Transitions);
 
 
 console.log("placeredux",places);
@@ -1542,9 +1513,13 @@ fr.forEach(element =>{
 return bloc ;
 }
 
+
+
 const onSaveCanvas = useCallback(() => {
+
   dispatch(setSelectedTool('save'))
   dispatch(setIsSelectable(false))
+  let infini=false;
   k = 0 ;  pauseRequested = false ; stopsimul = false
   lastIteration = 0 ; existpause = false ;pausebefor = false
   let can = marquageallowed();
@@ -1554,7 +1529,7 @@ const onSaveCanvas = useCallback(() => {
   let tab2 = [] ;
   console.log('savecanvas')
 if( can === true ){
-  console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+
   let marquageInitiale = reseau.getmarqini() ;
   console.log('marquage initiale ')
   console.log(marquageInitiale)
@@ -1570,9 +1545,10 @@ if( can === true ){
   let qasivivant = reseau.Reseauquasivivant(reseau.Transitions,arc)
   console.log('qasivivant',qasivivant)
   localStorage.setItem('qasivivant',JSON.stringify(qasivivant)) ;
-  let infini = reseau.marquageTillInfini(reseau.getmarqini());
+   infini = reseau.marquageTillInfini(reseau.getmarqini());
   console.log('infini',infini);
   localStorage.setItem('infini',JSON.stringify(infini)) ;
+
   if(infini===true)
     {
       const toast = {
@@ -1586,6 +1562,8 @@ if( can === true ){
         dispatch(setToastOpt({isVisible:false}))
     }, 8000)
     }
+
+ 
   //let {b = false , v = false} = {} ;
  //( {b = false , v = false} = reseau.nonbloc(reseau.getmarqini()));
  let result = reseau.nonbloc(reseau.getmarqini()) ;
@@ -1627,77 +1605,13 @@ if( can === true ){
   console.log('tabstep outside',tabstep)
   console.log('tabtrans',tabtrans)
 }
-/*
-  k = 0 ; pauseRequested = false
-          lastIteration = 0 ;
-          let can = marquageallowed();
-          let tab = [] ;
-        let arc = [] ;
-        
-        if( can === true ){
-          let marquageInitiale = reseau.getmarqini() ;
-          console.log('marquage initiale ')
-          console.log(marquageInitiale)
-         
-          reseau.ConstrGraphmarq(marquageInitiale,0,tab,arc)
-          console.log(' le tableau ')
-          console.log(tab)
-          console.log(' le tableau arc  ')
-          console.log(arc)
-          localStorage.setItem('listArc',JSON.stringify(arc))
-          localStorage.setItem('listMarquage',JSON.stringify(tab))
-        
-           marquageInit = reseau.getmarqini() ;
-          console.log('avant simul')
-          tabstep = reseau.simulation(tab,arc,marquageInit,tabtrans)
-          console.log('tabstep outside',tabstep)
-          console.log('tabtrans',tabtrans)
-        }
 
-  */
   let toast = {}
 
 
-  /*dispatch(saveNet({nodes:reactFlowInstance.getNodes(),edges:reactFlowInstance.getEdges()}))
-
-  
-  const currentNodes = reactFlowInstance.getNodes().map(n => n.data.label)
-  const checkDuplicated = currentNodes.filter((n,i) => currentNodes.indexOf(n) !== i)
-  if (checkDuplicated.length) {
-      toast = {
-          isVisible: true,
-          context: 'pending',
-          title: 'Erreur !',
-          msg: "Il n'est pas possible d'avoir deux nœuds ou plus avec le même libellé ( "+checkDuplicated+" )."
-      }
-
-  } else {*/
-
-
       dispatch(saveNet({nodes:reactFlowInstance.getNodes(),edges:reactFlowInstance.getEdges()}))
-      toast = {
-          isVisible: true,
-          context: 'success',
-          title: 'succès!',
-          msg: 'Opération terminée avec succès. Vous pouvez maintenant naviguer sur les pages et garder votre réseau de Petri en sécurité !'
-      }  
-  //}
-  dispatch(setToastOpt(toast))
-  setTimeout(() => {
-      dispatch(setSelectedTool('place'))
-  }, 100)
-  setTimeout(() => {
-      dispatch(setToastOpt({isVisible:false}))
-  }, 10000)
-  
-
-},[reactFlowInstance, dispatch])
-
- /*
-  let toast = {}
-
-      dispatch(saveNet({nodes:reactFlowInstance.getNodes(),edges:reactFlowInstance.getEdges()}))
-      toast = {
+     if(infini===false){
+     toast = {
           isVisible: true,
           context: 'success',
           title: 'succès!',
@@ -1707,15 +1621,15 @@ if( can === true ){
   dispatch(setToastOpt(toast))
   setTimeout(() => {
       dispatch(setSelectedTool('place'))
-  }, 100)
+  }, 100) 
   setTimeout(() => {
       dispatch(setToastOpt({isVisible:false}))
   }, 8000)
-  
+}
+
+ 
 
 },[reactFlowInstance, dispatch])
-*/
-
 
 
 const idToken =()=>{
@@ -2267,7 +2181,8 @@ const paste = () => {
                 }else{
                   if(juste.elementnew.type === 'place' ){
                     const idplace  = parseInt(juste.elementnew.id.slice(1)); 
-                      reseau.places[idplace].SetPlacesup(false) 
+                      reseau.places[idplace].SetPlacesup(false) ;
+                      reseau.places[idplace].SetJetons(parseInt(juste.elementnew.data.tokens))
                       console.log('reseau.places',reseau.places) ;
                   }else{
                     const idtrans  = parseInt(juste.elementnew.id.slice(1)); 
@@ -2569,374 +2484,11 @@ const paste = () => {
         let can = marquageallowed();
 
         
-/*
-        const handlesimulationbystep = (tabstep,tabtrans,l) => {
-           
-           const toast = {
-            isVisible: true,
-            context: 'pending',
-            title: 'Important !',
-           
-           msg:'Sauvgarder le réseau avant la simulation pour éviter les incohérences de données'
-        }
-        dispatch(setToastOpt(toast))
-        setTimeout(() => {
-            dispatch(setToastOpt({isVisible:false}))
-        }, 10000)
 
-        if(k===0)
-          {
-            const toast2 = {
-              isVisible: true,
-              context: 'dark',
-              title: 'Indice !',
-             
-             msg:'Vous ne pouvez pas changer le réseau pendant la simulation',
-          }
-          dispatch(setToastOpt(toast2))
-          setTimeout(() => {
-              dispatch(setToastOpt({isVisible:false}))
-          }, 10000)
-          }
-          let nbplaces = reseau.NpPlaces 
-          console.log('nbplaces ',nbplaces)
-        //for(let k= 0 ; k<tabstep.length ; k++){
-          console.log('k = ',l)
-          console.log('nodes inside hndlsim',nodes)
-          console.log('tabtrans en simul ',tabtrans)
-          if( l < tabstep.length ){ 
-            if( l> 0 ){
-           if( tabtrans[l] !== tabtrans[l-1]){
-              console.log('prevtrans',prevtrans) ;
-            setNodes((prevNodes) => prevNodes.map((n) => (n.id === 'T'+tabtrans[l-1] ? prevtrans : n)));
-            let element = prevtrans ;
-            dispatch(updateElement({type:element.type,element}))
-            let id = 'T'+tabtrans[l] ;
-           let trans =  nodes.find(node => node.id === id);
-           const newtran = {
-            ...trans, 
-           // position : position ,
-            data: {
-            ...trans.data,  classestyle : "centered-label-franchit",}};
-            setNodes((prevNodes) => prevNodes.map((n) => (n.id === trans.id ? newtran : n)));
-            element = trans ;
-            dispatch(updateElement({type:element.type,element}))
-            prevtrans = trans ;
-          }else{
-        
-          }}else{ // l = 0 
-           let id = 'T'+tabtrans[l] ;
-               let trans =  nodes.find(node => node.id === id);
-           const newtran = {
-            ...trans, 
-           // position : position ,
-            data: {
-            ...trans.data,  classestyle : "centered-label-franchit",}};
-            setNodes((prevNodes) => prevNodes.map((n) => (n.id === trans.id ? newtran : n)));
-            let element = trans ;
-            dispatch(updateElement({type:element.type,element}))
-             prevtrans = trans ;
-          }
-            let id = 'T'+tabtrans[l] ;
-           let trans =  nodes.find(node => node.id === id);
-           const newtran = {
-            ...trans, 
-           // position : position ,
-            data: {
-            ...trans.data,  classestyle : "centered-label-franchit",}};
-            setNodes((prevNodes) => prevNodes.map((n) => (n.id === trans.id ? newtran : n)));
-            let element = trans ;
-            dispatch(updateElement({type:element.type,element}))
-           for(let g = 0 ; g < nbplaces ; g++){
-            console.log('tabstep[k][g]',tabstep[l][g])
-            if(tabstep[l][g] !== -1){
-              let idplace = 'P'+g ;
-              console.log('idplace ',idplace)
-              let node =   nodes.find(node => node.id === idplace);
-              console.log('node ',node);
-              const idsToDelete = [node.data.Idtoken1, node.data.Idtoken2,node.data.Idtoken3,node.data.Idtoken4,node.data.Idtoken5];
-              console.log(idsToDelete);
-              deleteNodesById(idsToDelete);
-             let element = drawtokens(node,tabstep[l][g].toString()) ;
-             reseau.places[g].SetJetons(tabstep[l][g]) ;
-              console.log('reseau.places',reseau.places)
-             console.log('element',element) 
-            // setNodes((nds) =>
-               // nodes.map((node) => (node.id === element.id ? { ...node, data: { ...node.data, tokens: element.data.tokens , Idtoken1 :element.data.Idtoken1 , Idtoken2 :element.data.Idtoken2 , Idtoken3 :element.data.Idtoken3, Idtoken4 :element.data.Idtoken4 , Idtoken5 :element.data.Idtoken5} } : node))
-             // );
-            // const updatedNodes = nodes.map((node) =>
-              //node.id === id  ? { ...node, data: { ...node.data, tokens: element.data.tokens , Idtoken1 :element.data.Idtoken1 , Idtoken2 :element.data.Idtoken2 , Idtoken3 :element.data.Idtoken3, Idtoken4 :element.data.Idtoken4 , Idtoken5 :element.data.Idtoken5} } : node
-            //);
-            //setNodes(updatedNodes);
-            //setNodes((nodes) => nodes.map((n) =>(n.id === node.id ? element : n)));
-            setNodes((prevNodes) => prevNodes.map((n) => (n.id === node.id ? element : n)));
-           
-        
-        //     setNodes((nds) => nds.concat(element));
-         
-           // setNodes((nodes) => [...nodes, element]);
-            console.log('nodes',nodes)
-            }
-           }
-          // setNodes((prevNodes) => prevNodes.map((n) => (n.id === newtran.id ? trans : n)));
-        
-          k = incrementk(k) ;
-        //}
-          }else{
-            // console.log('prevtrans',prevtrans) ;
-            //setNodes((prevNodes) => prevNodes.map((n) => (n.id === 'T'+tabtrans[l-1] ? prevtrans : n)));
-            //element = prevtrans;
-            //dispatch(updateElement({type:element.type,element}))
-          }
-        }
-        */
         const button = document.getElementById("monBouton");
 
 
-
-
-        
-/*const handlesimulationbystep = (tabstep,tabtrans,l) => {
-
-  if(tabstep.length===0 ) {
-    const toast = {
-      isVisible: true,
-      context: 'pending',
-      title: 'Important !',
-     
-     msg:'Sauvgarder le réseau avant la simulation pour éviter les incohérences de données'
-  }
-  dispatch(setToastOpt(toast))
-  setTimeout(() => {
-      dispatch(setToastOpt({isVisible:false}))
-  }, 10000)
-  }
-  let nbplaces = reseau.NpPlaces 
-  console.log('nbplaces ',nbplaces)
-//for(let k= 0 ; k<tabstep.length ; k++){
-  console.log('k = ',l)
-  console.log('nodes inside hndlsim',nodes)
-  console.log('tabtrans en simul ',tabtrans)
-  if( l < tabstep.length ){ 
-    if( l> 0 ){
-      const toast = {
-        isVisible: true,
-        context: 'dark',
-        title: 'Indice !',
-       
-        msg:'Appuyez sur Réinitialiser pour revenir au réseau avant la simulation ou vous pouvez le modifier '
-    }
-    dispatch(setToastOpt(toast))
-    setTimeout(() => {
-        dispatch(setToastOpt({isVisible:false}))
-    }, 100000)
-   if( tabtrans[l] !== tabtrans[l-1]){
-      console.log('prevtrans',prevtrans) ;
-    setNodes((prevNodes) => prevNodes.map((n) => (n.id === 'T'+tabtrans[l-1] ? prevtrans : n)));
-    let id = 'T'+tabtrans[l] ;
-   let trans =  nodes.find(node => node.id === id);
-   const newtran = {
-    ...trans, 
-   // position : position ,
-    data: {
-    ...trans.data,  classestyle : "centered-label-franchit",}};
-    setNodes((prevNodes) => prevNodes.map((n) => (n.id === trans.id ? newtran : n)));
-    prevtrans = trans ;
-  }else{
-
-  }}else{
-   let id = 'T'+tabtrans[l] ;
-       let trans =  nodes.find(node => node.id === id);
-   const newtran = {
-    ...trans, 
-   // position : position ,
-    data: {
-    ...trans.data,  classestyle : "centered-label-franchit",}};
-    setNodes((prevNodes) => prevNodes.map((n) => (n.id === trans.id ? newtran : n)));
-     prevtrans = trans ;
-  }
-   
-
-   for(let g = 0 ; g < nbplaces ; g++){
-    console.log('tabstep[k][g]',tabstep[l][g])
-    if(tabstep[l][g] !== -1){
-      let idplace = 'P'+g ;
-      console.log('idplace ',idplace)
-      let node =   nodes.find(node => node.id === idplace);
-      console.log('node ',node);
-      const idsToDelete = [node.data.Idtoken1, node.data.Idtoken2,node.data.Idtoken3,node.data.Idtoken4,node.data.Idtoken5];
-      console.log(idsToDelete);
-      deleteNodesById(idsToDelete);
-     let element = drawtokens(node,tabstep[l][g].toString()) ;
-     reseau.places[g].SetJetons(tabstep[l][g]) ;
-      console.log('reseau.places',reseau.places)
-     console.log('element',element) 
-    // setNodes((nds) =>
-       // nodes.map((node) => (node.id === element.id ? { ...node, data: { ...node.data, tokens: element.data.tokens , Idtoken1 :element.data.Idtoken1 , Idtoken2 :element.data.Idtoken2 , Idtoken3 :element.data.Idtoken3, Idtoken4 :element.data.Idtoken4 , Idtoken5 :element.data.Idtoken5} } : node))
-     // );
-   
-    setNodes((prevNodes) => prevNodes.map((n) => (n.id === node.id ? element : n)));
-    dispatch(updateElement({type:element.type,element}))
-
-//     setNodes((nds) => nds.concat(element));
- 
-   // setNodes((nodes) => [...nodes, element]);
-    console.log('nodes',nodes)
-    }
-   }
-  // setNodes((prevNodes) => prevNodes.map((n) => (n.id === newtran.id ? trans : n)));
-
-  k = incrementk(k) ;
-//}
-  }else{
-    //console.log('prevtrans',prevtrans) ;
-   // setNodes((prevNodes) => prevNodes.map((n) => (n.id === 'T'+tabtrans[l-1] ? prevtrans : n)));
-  }
-}
-      
-     
-          
-        
-        
-
-   
-        
-        let timeoutId ; 
-        const pause = () => {
-          const toast2 = {
-            isVisible: true,
-            context: 'dark',
-            title: 'Indice !',
-           
-           msg:'Vous ne pouvez pas changer le réseau en pause ',
-        }
-        dispatch(setToastOpt(toast2))
-        setTimeout(() => {
-            dispatch(setToastOpt({isVisible:false}))
-        }, 100000)
-        
-          pauseRequested = !pauseRequested;
-         
-        };
-
-       
-async function faireUneIteration(l, maxIterations, tabstep){
-  if (l < maxIterations) {
-    console.log('pause in faire Iter = ', pauseRequested);
-    if (!pauseRequested) {
-      //await new Promise(resolve => setTimeout(resolve, 1500)); // Attendre 1.5 secondes
-    console.log('tabtrans[',l,'] in faire ',tabtrans[l])
-      button.click();
-     // console.log('tabtrans[k-1]',tabtrans[k-1]);console.log('pravtrans inside faire ',prevtrans)
-      //setNodes((prevNodes) => prevNodes.map((n) => (n.id === tabtrans[k-1] ? prevtrans : n)));
-      let id = 'T'+tabtrans[l] ;
-      let trans =  nodes.find(node => node.id === id);
-      if(trans.data.mode === 'imediate'){
-      await new Promise(resolve => {
-        timeoutId = setTimeout(resolve, 1500); // Attendre 1.5 secondes
-    });}else{
-      let temps = 2 * (1 / parseInt(trans.data.poid));
-      console.log('temps ',temps)
-      await new Promise(resolve => {
-        timeoutId = setTimeout(resolve, 1500 * (1+temps)); // Attendre 1.5 secondes
-    }); 
-    }
-      console.log('nodes inside faire Iteration ', nodes);
-      console.log("Iteration " + l);
-      lastIteration = l; // Met à jour lastIteration avec l'itération actuelle
-      return faireUneIteration(l + 1, maxIterations, tabstep); // Appel récursif avec les mêmes paramètres
-    } else {
-      ///// !!!!!!!!!!!!!!!!!!! important : afficher une erreur quand le nombre des appels dans pause depasse un certain nombre 
-      //await new Promise(resolve => setTimeout(resolve, 1500)); // Attendre 1.5 secondes
-      await new Promise(resolve => {
-            timeoutId = setTimeout(resolve, 1500); // Attendre 1.5 secondes
-        });
-      return faireUneIteration(lastIteration, maxIterations, tabstep); // Reprendre à partir de la dernière itération où p était égal à 0
-    }
-  } else {
-    console.log('prevtrans',prevtrans) ;
-    prevtrans = nodes.find(node => node.id === 'T'+tabtrans[l-1] )
-    setNodes((prevNodes) => prevNodes.map((n) => (n.id === 'T'+tabtrans[l-1] ? prevtrans : n)));
-    return 0;
-  }
-}
-
-
-        
-          const handlesimulation = (tabstep) => {
-          let k = 0;
-          if(tabstep.length===0 || k!=0) {
-            const toast = {
-              isVisible: true,
-              context: 'pending',
-              title: 'Important !',
-             
-             msg:'Sauvgarder le réseau avant la simulation pour éviter les incohérences de données'
-          }
-          dispatch(setToastOpt(toast))
-          setTimeout(() => {
-              dispatch(setToastOpt({isVisible:false}))
-          }, 10000)
-          }
-          
-        else{
-          //cmnt you can not change
-        faireUneIteration( k,tabstep.length, tabstep);
-
-        
-         
-        }
-
-        }
-
-
-        const handleReInitialiserReseau  = () =>{
-
-          //let placesinit = nodes.filter(node => node.type === 'place')
-         // let nbplaces = ;
-         // prevtrans = {} ;
-         //console.log('placeinit',placesinit)
-         if(marquageInit.length !== 0 ){
-          for(let g = 0 ; g < marquageInit.length ; g++){
-        
-            if(marquageInit[g] !== -1 ){
-              let idplace = 'P'+g ;
-              console.log('idplace ',idplace)
-              let node =   nodes.find(node => node.id === idplace);
-              console.log('node ',node);
-              const idsToDelete = [node.data.Idtoken1, node.data.Idtoken2,node.data.Idtoken3,node.data.Idtoken4,node.data.Idtoken5];
-              console.log(idsToDelete);
-              deleteNodesById(idsToDelete);
-             let element = drawtokens(node, marquageInit[g].toString()) ;
-             reseau.places[g].SetJetons(marquageInit[g]) ;
-              console.log('reseau.places',reseau.places)
-             console.log('element',element) 
-            setNodes((prevNodes) => prevNodes.map((n) => (n.id === node.id ? element : n)));
-            dispatch(updateElement({type:element.type,element}))
-            console.log('nodes',nodes)
-            }
-           }}
-           //setNodes((prevNodes) => prevNodes.map((n) => (n.id === 'T'+tabtrans[l-1] ? prevtrans : n)));
-           for (let i = 0; i < nodes.length; i++) {
-            // Vérifier si l'ID correspond
-            if (nodes[i].type === 'transition') {
-                // Mettre à jour le champ 'style'
-                 let trans =  nodes[i];
-           const newtran = {
-            ...trans, 
-           // position : position ,
-            data: {
-            ...trans.data,  classestyle : "centered-label",}};
-            setNodes((prevNodes) => prevNodes.map((n) => (n.id === trans.id ? newtran : n)));
-            
-            }
-        }
-        }
-        console.log(' marquageInit outside', marquageInit)*/
-
-
-
-
+        const [toastsimShown, setToastsimShown] = useState(false);
 
         const handlesimulationbystep = (tabstep,tabtrans,l) => {
 
@@ -2951,7 +2503,7 @@ async function faireUneIteration(l, maxIterations, tabstep){
           dispatch(setToastOpt(toast))
           setTimeout(() => {
               dispatch(setToastOpt({isVisible:false}))
-          }, 10000)
+          }, 8000)
           }
 
           let nbplaces = reseau.NpPlaces 
@@ -2962,8 +2514,9 @@ async function faireUneIteration(l, maxIterations, tabstep){
           console.log('nodes inside hndlsim',nodes)
           console.log('tabtrans en simul ',tabtrans)
          
-          if( l < tabstep.length ){ 
-            if( l> 0 ){
+          if(!toastsimShown)
+            {
+              setToastsimShown(true);
               const toast = {
                 isVisible: true,
                 context: 'dark',
@@ -2974,7 +2527,11 @@ async function faireUneIteration(l, maxIterations, tabstep){
             dispatch(setToastOpt(toast))
             setTimeout(() => {
                 dispatch(setToastOpt({isVisible:false}))
-            }, 100000)
+            }, 8000)
+            }
+          if( l < tabstep.length ){ 
+            if( l> 0 ){
+            
            if( tabtrans[l] !== tabtrans[l-1]){
             console.log('tabtrans[',l-1,']',tabtrans[l-1]);
               console.log('prevtrans',prevtrans) ;  prevtrans2 = prevtrans ;
@@ -3007,14 +2564,7 @@ async function faireUneIteration(l, maxIterations, tabstep){
             setNodes((prevNodes) => prevNodes.map((n) => (n.id === trans.id ? newtran : n)));
              prevtrans = trans ; prevtrans2 = prevtrans ;
           }
-            /*let id = 'T'+tabtrans[l] ;
-           let trans =  nodes.find(node => node.id === id);
-           const newtran = {
-            ...trans, 
-           // position : position ,
-            data: {
-            ...trans.data,  classestyle : "centered-label-franchit",}};
-            setNodes((prevNodes) => prevNodes.map((n) => (n.id === trans.id ? newtran : n)));*/
+           
         
            for(let g = 0 ; g < nbplaces ; g++){
             console.log('tabstep[',l,'][',g,']',tabstep[l][g])
@@ -3030,20 +2580,11 @@ async function faireUneIteration(l, maxIterations, tabstep){
              reseau.places[g].SetJetons(tabstep[l][g]) ;
               console.log('reseau.places',reseau.places)
              console.log('element',element) 
-             // setNodes((nds) =>
-               // nodes.map((node) => (node.id === element.id ? { ...node, data: { ...node.data, tokens: element.data.tokens , Idtoken1 :element.data.Idtoken1 , Idtoken2 :element.data.Idtoken2 , Idtoken3 :element.data.Idtoken3, Idtoken4 :element.data.Idtoken4 , Idtoken5 :element.data.Idtoken5} } : node))
-             // );
-             /*  const updatedNodes = nodes.map((node) =>
-              node.id === id  ? { ...node, data: { ...node.data, tokens: element.data.tokens , Idtoken1 :element.data.Idtoken1 , Idtoken2 :element.data.Idtoken2 , Idtoken3 :element.data.Idtoken3, Idtoken4 :element.data.Idtoken4 , Idtoken5 :element.data.Idtoken5} } : node
-             );
-             setNodes(updatedNodes);*/
-             //setNodes((nodes) => nodes.map((n) =>(n.id === node.id ? element : n)));
+           
              setNodes((prevNodes) => prevNodes.map((n) => (n.id === node.id ? element : n)));
              dispatch(updateElement({type:element.type,element}))
         
-        //setNodes((nds) => nds.concat(element));
-         
-           // setNodes((nodes) => [...nodes, element]);
+      
             console.log('nodes',nodes)
             }
            }
@@ -3077,18 +2618,7 @@ async function faireUneIteration(l, maxIterations, tabstep){
               return newNodes; // Return the updated copy
             });
           }}
-        /*  let id = 'T'+tabtrans[k-1] ;
-          let trans =  nodes.find(node => node.id === id);
-          console.log('trans in faire ',trans,'existpause',existpause);
-         if(trans.data.mode === 'imediate'){
-            if(existpause === false){   delay2(1500);}
-             else { delay2(4500);}
-        }else{
-          let temps = 2 * (1 / parseInt(trans.data.poid));
-          console.log('temps ',temps)
-        if(existpause === false){    delay2(1500 * (1+temps) );}
-        else {delay2(4500 * ( 1+temps ) );} 
-        }  */
+       
           if(k===tabstep.length){
             prevtrans = nodes.find(node => node.id === 'T'+tabtrans[k-1] )
             setNodes((prevNodes) => prevNodes.map((n) => (n.id === 'T'+tabtrans[k-1] ? prevtrans : n)));
@@ -3110,7 +2640,7 @@ async function faireUneIteration(l, maxIterations, tabstep){
                 dispatch(setToastOpt(toast2))
                 setTimeout(() => {
                     dispatch(setToastOpt({isVisible:false}))
-                }, 10000)
+                }, 8000)
                   existpause = true ;
                   pauseRequested = !pauseRequested
                   //pauseRequested = !pauseRequested;
@@ -3178,16 +2708,10 @@ async function faireUneIteration(l, maxIterations, tabstep){
               lastIteration = k; // Met à jour lastIteration avec l'itération actuelle
               return faireUneIteration( maxIterations, tabstep); // Appel récursif avec les mêmes paramètres
             } else {
-              ///// !!!!!!!!!!!!!!!!!!! important : afficher une erreur quand le nombre des appels dans pause depasse un certain nombre 
-              //await new Promise(resolve => setTimeout(resolve, 1500)); // Attendre 1.5 secondes
-             // setTimeout(() => {
-                //return faireUneIteration( maxIterations, tabstep); // Reprendre à partir de la dernière itération où p était égal à 0
-              //}, 2000)
+             
               pausebefor = true ;
               console.log('pause k = ',k,'prevtrans',prevtrans,'prevtrans2',prevtrans2,'lastIteration',lastIteration);
-              //prevtrans = nodes.find(node => node.id === 'T'+tabtrans[k-1] )
-             // setNodes((prevNodes) => prevNodes.map((n) => (n.id === 'T'+tabtrans[k-1] ? prevtrans2 : n)));
-              //prevtrans = prevtrans2 ;
+            
               k = lastIteration ;
               if(k + 1  < tabstep.length){
              k = lastIteration + 1 ;}

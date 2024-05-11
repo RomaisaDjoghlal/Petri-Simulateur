@@ -2,19 +2,19 @@
     margin: 0;
     padding: 0;
 }
+
 h1.titre{
     color: black;
     font-size: 6vh; /* Specify font size unit */
     font-family: 'Inter', sans-serif;
     font-weight: bolder;
     margin-left: 2.5vw;
-    margin-top: 7vh;
-    
+    padding-top: 7vh;    
 }
 .home-container{
     width: 100vw;
     height: 100vh;
-    background-color: rgba(5, 5, 5, 0.02)    ;
+    background-color: rgba(5, 5, 5, 0.03)    ;
     
 }
 .contenu-container{
