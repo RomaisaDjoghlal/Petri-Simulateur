@@ -100,16 +100,7 @@ export const Editer = () => {
 
   //==============================
 
-/*const toast = {
-  isVisible: true,
-  context: 'pending',
-  title: 'Important !',
-  msg:'Votre graphe de marquage est infini'
-}
-dispatch(setToastOpt(toast))
-setTimeout(() => {
-  dispatch(setToastOpt({isVisible:false}))
-}, 8000)*/
+
 
 const initialNodes = () => {
 
@@ -360,17 +351,7 @@ const handleSaveGraph = (fileType) => {
   saveGraph(fileType);
 };
 
- /*const handleLoadGraph = async (event) => {
  
-  const file = event.target.files[0];
-
-  const data = await loadGraph(file);
- if (data && data.nodes && data.edges) {
-    setNodes(data.nodes);
-    setEdges(data.edges);
-  }
-  initializeReseau();
-};*/
 
 const handleLoadGraph = async (event) => {
   const file = event.target.files[0];
@@ -1400,81 +1381,7 @@ const onDeleteEl = useCallback((element) => {
 },[reactFlowInstance, dispatch])
 
 console.log("placelengthhhfront",places.length);
-/*
-const onDeleteEl = useCallback((element) => {
-  
-  if (element.type === 'place' || element.type === 'transition' || element.type === 'textUpdater') {
-    let idToRemove = null;
 
-    if (element.type === 'place') {
-        idToRemove = parseInt(element.id.slice(1));
-        console.log("iddd", element.id);
-        reseau.SuppPlace(idToRemove);
-    } else if (element.type === 'transition') {
-        idToRemove = parseInt(element.id.slice(1));
-        console.log(" idtrans = " + idToRemove);
-        reseau.SuppTrans(idToRemove);
-    } else if (element.type === 'textUpdater') {
-        idToRemove = parseInt(element.id.split('_')[1]); 
-
-        console.log("idddsupp", element.id);
-        // Handle the removal of textUpdater here
-    }
-
-    reactFlowInstance.deleteElements({ nodes: [element], edges: [] });
-
-    setNodes(prevNodes => {
-      return prevNodes
-        .map(node => {
-          const nodeId = parseInt(node.id.slice(1));
-          if (node.type === 'place' && nodeId > idToRemove) {
-          
-            node.id = `P${nodeId - 1}`;
-          } else if (node.type === 'transition' && nodeId > idToRemove) {
-            node.id = `T${nodeId - 1}`;
-          }
-          return node;
-        })
-        .filter(node => node.id !== element.id);
-    });
-    
-
-    
-
-    
-  } else {
-    reactFlowInstance.deleteElements({ nodes: [], edges: [element] });
-    setNodes(prevNodes => prevNodes.filter(node => node.id !== element.id));
-    reseau.AfficherPre();
-    let p = element.source[0];
-    console.log("p = " + p);
-    let t = element.target[0];
-    console.log("t = " + t);
-    if ((p === 'P') && (t === 'T')) {
-      let Idplace = parseInt(element.source.slice(1));
-      let Idtrans = parseInt(element.target.slice(1));
-      reseau.Pre[Idplace][Idtrans] = 0;
-    }
-    if ((p === 'T') && (t === 'P')) {
-      let Idplace = parseInt(element.target.slice(1));
-      let Idtrans = parseInt(element.source.slice(1));
-      reseau.Post[Idplace][Idtrans] = 0;
-    }
-    reseau.AfficherPre();
-  }
-
-  console.log("placesafterdelte",places);
-  
-  reseau.Afficherplaces();
-  reseau.Affichertrans();
-  console.log("elmid",element.type);
-  dispatch(deleteElement({ type: element.type, element: element }));
-  dispatch(setIsSidebarVisible(false));
-  dispatch(setElementToModify({}));
-
-}, [reactFlowInstance, dispatch]);
-
-*/
 
 console.log("placeback",reseau.places);
 console.log("transback",reseau.Transitions);
