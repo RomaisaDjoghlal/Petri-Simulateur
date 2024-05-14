@@ -12,12 +12,8 @@
 <li> Propriétés du réseau </li>
 
 # Auteurs
- <li>[RomaisaDjoghlal](https://github.com/RomaisaDjoghlal)
- <li>[AnaiaMeziane](https://github.com/RomaisaDjoghlal) 
- <li>[AmiraBouderbala](https://github.com/RomaisaDjoghlal) 
- [ChahrazedMendjel](https://github.com/RomaisaDjoghlal) 
- [yassinBoutta](https://github.com/RomaisaDjoghlal) 
- [AmiraLakehal](https://github.com/RomaisaDjoghlal) 
+
+RomaisaDjoghlal ([GitHub](https://github.com/RomaisaDjoghlal)), AnaiaMeziane ([GitHub](https://github.com/AnaiaMeziane)), AmiraBouderbala ([GitHub](https://github.com/AmiraBouderbala)), ChahrazedMendjel ([GitHub](https://github.com/ChahrazedMendjel)), yassinBoutta ([GitHub](https://github.com/yassinBoutta)), AmiraLakehal ([GitHub](https://github.com/AmiraLakehal))
 
 
 
