@@ -1,9 +1,9 @@
 * {
     margin: 0;
-    
+    padding: 0;
 }
-.Doc{
-    background-image: url(./background.svg);
+.graph{
+    background-image: url(../Documentation/background.svg);
     background-size: cover;
     background-repeat: no-repeat;
     position: absolute;
@@ -19,45 +19,43 @@ body{
     width:80vw;
 }
 
-h1.title {
+h1.titleg {
     color: black !important;
-    font-size: 3vw; /* Specify font size unit */
+    font-size: 6vh; /* Specify font size unit */
     font-family: 'Inter', sans-serif;
     font-weight: bolder;
-    margin-left: 4vw;
+    margin-left: 3vw;
+    margin-top: 6vh;
     
 }
 
-.sous-doc a {
-    color: inherit; /* Utilise la couleur par défaut du texte */
-    text-decoration: none; /* Supprime le soulignement par défaut */
-  }
-.sections-doc {
+
+.sections-graph {
    
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     text-align: center;
-    margin-top: 18vh;
-    gap: 7vw;
+    margin-top: 20vh;
+    gap: 4vw;
 }
 
-section.sous-doc {
+section.sous-graph {
     background-color: rgba(252, 250, 250, 0.5);
     cursor: pointer;
     text-align: center;
     border: 2px solid #2AD7D2;
     padding: 20px;
-    width: 18vw;
-    height: 37vh;
+    width: 60vw;
+    height: 17vh;
     border-radius: 40px;
     transition: background-color 0.3s;
-    
+    box-shadow: rgba(0, 0, 0, 0.9);
 }
 
 section:hover {
-    background-color: rgba(42, 215, 210, 0.6);
+    background-color: rgba(42, 215, 210, 0.9);
 }
 
 section:last-child {
@@ -65,20 +63,24 @@ section:last-child {
 }
 
 
-h2.titre {
+h2.titreg {
     color: black;
-    font-size: 2.5vw; /* Specify font size unit */
+    font-size: 6vh; /* Specify font size unit */
     font-family: 'Inter', sans-serif;
     font-weight: 500;
     display: block;
 }
-
-p.description {
+.titre-graph{
     color: black;
-    display: block;
-    margin-top: 5vh;
-    letter-spacing: 0.1vw;
-    font-size: 3.2vh; /* Specify font size unit */
+    font-size: 5vh; /* Specify font size unit */
     font-family: 'Inter', sans-serif;
-    font-weight: light;
+    top: 7vh; 
+}
+.guide-graph{
+    color: black;
+    font-size: 3vh; /* Specify font size unit */
+    font-family: 'Inter', sans-serif;
+    position: absolute; /* Position absolutely relative to the nearest positioned ancestor */
+    top: 4%; /* Adjust the top position as needed */
+    right: 9%; /* Adjust the right position as needed */
 }

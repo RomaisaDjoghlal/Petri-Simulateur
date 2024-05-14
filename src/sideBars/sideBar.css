@@ -90,8 +90,8 @@ margin-top: 7vh;
 
 .sidebar-close {
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: 3px;
+  right: 3px;
   cursor: pointer;
 }
 
@@ -134,7 +134,7 @@ margin-top: 7vh;
 }
 
 .btn {
-  padding: 0.5rem 1rem;
+  padding: 0.2rem 0.7rem;
   border-radius: 4px;
   cursor: pointer;
 }
@@ -175,7 +175,7 @@ margin-top: 7vh;
 
 .toastify.on{
   transform: translate(0px, 0px);
-  left:160px;
+  left:17vw;
   /*top: 30px;*/
  /* bottom: 50px;*/
   /*right :300px;*/
@@ -184,9 +184,9 @@ margin-top: 7vh;
 .toastify {
   position: fixed;
   z-index: 9999; 
-  top: 500px; 
+  top: 40vw; 
   
-  right: 400px; 
+  right: 30vw; 
   background-color: #fff; 
   border: 1px solid #e2d7d7; 
   border-radius: 4px; 
@@ -199,7 +199,7 @@ margin-top: 7vh;
 .toastify-content {
   display: flex;
   align-items: center;
-  padding: 10px; /* Adjust padding as needed */
+  padding: 0.7vw; /* Adjust padding as needed */
 }
 
 /* Hide the toast if it's not visible */

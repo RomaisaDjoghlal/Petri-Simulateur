@@ -6,7 +6,7 @@ const DropMenu = forwardRef(({ handleLoadGraph, handleSaveGraph, isOpen, onClose
       <div className={`dropdown-content ${isOpen ? 'open' : ''}`} ref={ref}>
        
         <div className="file-input-container">
-  <label htmlFor="file-input" className="small-gray-button-load" >Importer </label>
+  <label htmlFor="file-input" className="small-gray-button-load" >Ouvrir </label>
   <input
     id="file-input"
     type="file"
@@ -24,3 +24,6 @@ const DropMenu = forwardRef(({ handleLoadGraph, handleSaveGraph, isOpen, onClose
   });
 
 export default DropMenu;
+
+
+

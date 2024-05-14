@@ -6,7 +6,7 @@ export class Place {
        this.psup = false; 
     }
     GetPlaceId(){
-        return this.Id ;
+        return this.IdP ;
     }
     SetPlaceId(IdP){
         this.Id = IdP ;
@@ -36,7 +36,7 @@ export class Transition {
        this.listplaces = []; 
     }
     GetTransId(){
-        return this.Id ;
+        return this.IdT ;
     }
     SetTransId(IdP){
         this.Id = IdP ;
@@ -311,7 +311,7 @@ for (let k = 0; k < this.Pre.length; k++) {
         }
       let lie = false;
         for(let i = 0 ; i< this.NpPlaces ;i++){
-        if(  this.Pre[i][id].poid > 0){  // add this !!!!!!!!!!!!!!!!!!!!!!!!
+        if(  this.Pre[i][id].poid > 0 || this.Post[i][id].poid > 0 ){  // add this !!!!!!!!!!!!!!!!!!!!!!!!
             console.log('ffffffffffffffff')
             lie = true; 
          }   }
@@ -607,8 +607,7 @@ ConstrGraphmarq(m,idm,tab,arc) {
             {
                 eximm=1;
                 poidt=poidt+this.Transitions[i].Poid;
-            }
-            
+            }         
        }
        else{tabi[i]=-1;tabt[i]=-1;}
        
@@ -644,7 +643,7 @@ ConstrGraphmarq(m,idm,tab,arc) {
     fr=tabi;
     tr=tabt;
     lv=idm;
-    if(this.existemarquage(tab,m)===-1 && tab.length<30)
+    if(this.existemarquage(tab,m)===-1 && tab.length<50)
     {   
     kse= {fr,tr,mar,lv,w,tempo};
     tab.push(kse);
@@ -661,7 +660,7 @@ ConstrGraphmarq(m,idm,tab,arc) {
         {
           stop=true;
           tab[j].tr[k]=1;
-          m=tab[j].mar;
+           m=tab[j].mar;
            j1=k;
            l=tab[j].lv;
            ji=j;
@@ -693,7 +692,200 @@ ConstrGraphmarq(m,idm,tab,arc) {
     this.ConstrGraphmarq(m1,l,tab,arc);
     }  
 }
+ConstrGraphmarqre(tab,arc,tab1,arc1)
+    {
+        let i;
+        let t=[];
+        let t1=[];
+        let kse;
+        let j1;
+        let ji;
+        let jf;
+        let propa;
+        let j;
+        let r;
+        
+         for(i=0;i<tab.length;i++)
+        {
+           if(tab[i].tempo===true)
+           {
+            tab1.push(tab[i]);
+           }
+           else
+           {
+             tab1.push(-1);
+           }
+        }
+        for(i=0;i<tab.length;i++)
+        {
+            t=[];
+            t1=[];
+            if(tab[i].tempo===false)
+            {
+                let visited = new Array(tab.length).fill(false);
+                this.trouva(i,arc,tab,t,visited,1);
+                this.trouvb(i,arc,tab,t1,visited,1);
+                for(j=0;j<t1.length;j++)
+                {
+                    for(r=0;r<t.length;r++)
+                    {
+                       ji=t1[j].k;
+                       jf=t[r].k
+                       j1=t1[j].j1;
+                       propa=t1[j].propa*t[r].propa;
+                       kse={ji,jf,j1,propa};
+                       arc1.push(kse);
+                    }
 
+                }
+            }
+        }
+        for(i=0;i<arc.length;i++)
+        {
+            if(tab[arc[i].ji].tempo===true && tab[arc[i].jf].tempo===true)
+            {
+                arc1.push(arc[i]);
+            }
+        }
+    }
+    /*trouvb(i,arc,tab,tib,visited)
+    {
+        let i1;
+        let k;
+        let propa;
+        let kse;
+        let j1;
+        visited[i] = true;
+        if (visited.every(v => v)) {
+            return; 
+        }
+        for(i1=0;i1<arc.length;i1++)
+        {
+            k=arc[i1].ji;
+            if(arc[i1].jf===i && k<tab.length )
+            {
+                if( tab[k].tempo===true)
+                {
+                    j1=arc[i1].j1;
+                    propa=arc[i1].propa;
+                    kse={k,propa,j1};
+                    tib.push(kse);
+                }
+                else if (!visited[k])
+                {
+                    this.trouvb(k,arc,tab,tib,visited);
+                }
+            }
+
+        }
+
+    }
+    trouva(i,arc,tab,tub,visited)
+    {
+        let i1;
+        let k;
+        let propa;
+        let kse;
+        visited[i] = true;
+        if (visited.every(v => v)) {
+            return; 
+        }
+        for(i1=0;i1<arc.length;i1++)
+        {
+            k=arc[i1].jf;
+            if(arc[i1].ji===i && k<tab.length )
+            {
+                if(tab[k].tempo===true)
+                {
+                    
+                    propa=arc[i1].propa;
+                    kse={k,propa};
+                    tub.push(kse);
+                }
+                else if (!visited[k])
+                {
+                    this.trouva(k,arc,tab,tub,visited);
+                }
+            }
+        }
+
+    }*/
+
+trouvb(i,arc,tab,tib,visited,propa)
+    {
+        let i1;
+        let k;
+        //let propa = 1;
+        let kse;
+        let j1;
+        let propa1 ;
+        visited[i] = true;
+        if (visited.every(v => v)) {
+            return; 
+        }
+        for(i1=0;i1<arc.length;i1++)
+        {
+            k=arc[i1].ji;
+            if(arc[i1].jf===i && k<tab.length )
+            {
+                if( tab[k].tempo===true)
+                {
+                    j1=arc[i1].j1;
+                    propa=arc[i1].propa*propa;
+                    kse={k,propa,j1};
+                    tib.push(kse);
+                    propa = propa/arc[i1].propa
+                }
+                else if (!visited[k])
+                {
+                    propa= arc[i1].propa*propa ;
+                    propa1= arc[i1].propa ;
+                    this.trouvb(k,arc,tab,tib,visited);
+                    propa=propa/propa1 ;
+                }
+            }
+
+        }
+
+    }
+    trouva(i,arc,tab,tub,visited,propa)
+    {
+        let i1;
+        let k;
+       // let propa = 1;
+        let kse;
+        let j1;
+        visited[i] = true;
+        let propa1 ;
+        if (visited.every(v => v)) {
+            return; 
+        }
+        for(i1=0;i1<arc.length;i1++)
+        {
+            k=arc[i1].jf;
+            if(arc[i1].ji===i && k<tab.length )
+            {
+                if(tab[k].tempo===true)
+                {
+                    j1=arc[i1].j1; 
+                    propa=arc[i1].propa;
+                    kse={k,propa};
+                    tub.push(kse);
+                    propa = propa/arc[i1].propa
+                }
+                else if (!visited[k])
+                {   
+                    propa= arc[i1].propa*propa ;
+                    propa1= arc[i1].propa ;
+                    this.trouva(k,arc,tab,tub,visited);
+                    propa=propa/propa1 ;
+                }
+            }
+        }
+
+    }
+
+/*
 ConstrGraphmarqre(tab,arc,tab1,arc1)
 {
     let i;
@@ -806,7 +998,7 @@ trouva(i,arc,tab,tub)
     }
 
 }
-
+*/
 simulation(tab,arc,marquageinit,tabtrans){
     console.log('arcsim ',arc)
     console.log('tabsim',tab)
@@ -938,7 +1130,7 @@ quasiVivante(Idtrans, arc) {
    let Qvivant = true ;
   for(let i=0;i<liste_trans.length;i++)
   {
- 
+     if(liste_trans[i].tsup === false){
     if(this.quasiVivante(liste_trans[i].IdT,arc)==false)
     {
        
@@ -947,9 +1139,9 @@ quasiVivante(Idtrans, arc) {
     } 
     
   }
- 
-  return Qvivant ; 
 }
+  return Qvivant ; 
+}/*
 TransitionVivante(Idtrans, arc){
    let   vivante  = true; 
    for (let i = 0; i < arc.length; i++) {
@@ -992,25 +1184,668 @@ TransitionVivante(Idtrans, arc){
    }
 
    return true;
-}
-Renitiable(arc,marquage_initiale){
+}*/
+Renitiable(arc,tab){
    let R=false ;
-   for(let i=1;i<arc.length;i++)
-   {
-       
-     if( (arc[i].jf)  == 0 ) 
-     {
-       R= true ; 
-       break ; 
-     }
+  // let tabf = []
+   let tabf = new Array(tab.length).fill(-1);
+  // let m = 0 , n = 0  , cpt = 0 ;
+   for( let m = 0 ; m< arc.length ; m++   ){
+    console.log('holla')
+    if ( tabf[arc[m].ji] === -1  ){
+        tabf[arc[m].ji] = [];
+        tabf[arc[m].ji].push(arc[m].jf) ; 
+       // console.log('tabf inside ',tabf);
+    }else{ 
+        //console.log('tabf[arc[',m,'].ji]',tabf[arc[m].ji])
+        if(! tabf[arc[m].ji].includes(arc[m].jf) ){
+        tabf[arc[m].ji].push(arc[m].jf) ; }
+   }}
+   console.log('tabf',tabf) ;
+   let trouv = false , m = 0 ;  let tab0 = []
+   while(  m< tabf.length    ){
+    let element = tabf[m] ;
+    console.log('element',element)
+    if(element === -1){
+        R = false ;  
+        trouv = true ;
+    }else if ( element.includes(0)){
+        tab0.push(m); // les element qui ont des marquages fils = 0  
+        R = true ;
+        trouv = true ;
+    } 
+    m++ ;
    }
+
+   if (trouv === true ){
+     if( R === false){
+    return false ;
+   }else{ // le traitement du tabf 
+      tab0.forEach(element1 =>{
+        arc.forEach(element2 =>{
+            if(element2.jf === element1 ){
+                if( !tab0.includes(element2.jf)){
+                tab0.push(element2.jf)}
+            }
+        })
+      })
+      console.log('tab0',tab0);
+      tab.forEach( element3 =>{
+        if (!tab0.includes(tab.indexOf(element3))){
+               return false 
+        }
+      })
+      return true ; 
+   }
+   }else{
+    return false ;
+   }
+}
+
+
+
+///////INFINI////////
+/// FRANCHISSABLE 
+Franchissable (M,Idtrans) {
+    let franch = true ;
+    let i = 0;
+    while(franch===true && i < this.NpPlaces){
+    let element = this.Pre[i][Idtrans];
+    if (element !== 0){
+        //LE CAS D UN ARC INHIBITEUR
+        if(element.type === true){
+            if (M[i] >= element.poid){
+                franch=false;
+            }
+        }
+        else {
+           if (M[i] < element.poid) {
+            franch = false;
+           } 
+        }
+    }
+    i++;
+    }
    
-return R ;
+    return franch;
+    }
+     inhibReseau() {
+        let inhib = false;
+        let i =0;
+        for (let i = 0; i < this.Pre.length; i++) {
+        for (let j = 0; j < this.Pre[i].length; j++) {
+           if (this.Pre[i][j].type === true){return true}
+        }
+    }
+    return false;
+    }
+    InibPure(){
+        let i = 0;
+        let PlaceExclude = [] ;
+        while (i < this.NpPlaces){
+            let j = 0;
+            let kifkif = true;
+        while ((j < this.NpTrans)&&(kifkif)) {
+           if ((this.Pre[i][j].type===false)){
+            kifkif=false}
+            j++;
+        }
+        if (kifkif===true){ PlaceExclude.push(i)}
+        i++
+    }
+    for (let k = 0; k < this.NpPlaces; k++){
+        if (this.places[k].psup===true){
+            if (!PlaceExclude.includes(k)){
+                PlaceExclude.push(k) }  
+        }
+    }
+    
+    return PlaceExclude;
+    }
+    
+    
+    rep(M,listM){
+        let i = 0;
+        let trouv=false;
+        let kifkif=true;
+        while( (i < listM.length) && (!trouv)) {
+            let j = 0; 
+            let kifkif=true;
+        while ( j < this.NpPlaces) {
+           if (listM[i][j]!=M[j]){kifkif=false}
+           j++;
+        }
+        if (kifkif===true){trouv=true}
+        i++;
+    }
+    return trouv;
+    }
+    inihbTrans(transi){
+        let ind = transi.GetTransId();
+        for (let i = 0; i < this.Pre.length; i++) {
+        if((this.Pre[i][ind]).type===true){return true}; 
+    }
+    return false;
+    }
+    getMarc(t,N){
+    let ind=t.GetTransId();
+    let M = [];
+                for (let i = 0; i < this.NpPlaces; i++) {
+                     M[i] = N[i] -this.Pre[i][t.GetTransId()].poid + this.Post[i][t.GetTransId()].poid;
+                     if (M[i]<0){ M[i]=0;}
+                }
+    return M;
+    
+    } 
+    ////EQUALS
+     tabEqual(arr1, arr2) {
+        // Check if arrays have the same length
+        if (arr1.length !== arr2.length) {
+            return false;
+        }
+    
+        // Check if each corresponding element is equal
+        for (let i = 0; i < arr1.length; i++) {
+            if (arr1[i] !== arr2[i]) {
+                return false;
+            }
+        }
+    
+        // If all elements are equal, arrays are equal
+        return true;
+    }
+    
+    
+    
+    
+     infini(M, listM, cpt, archs,k,tran,viv) {
+        let couverture = false; // Declare couverture outside the if statement
+        let exclude = [];
+        let egal = false;
+          exclude = this.InibPure();
+          if (!(this.inhibReseau())) {
+            let k = cpt;
+            let i = archs.length;
+            console.log('iii');
+            console.log(i);
+            let Ma = [];
+            while ((!egal)&&(!couverture) && (i >= 0)) {
+                Ma = listM[k];
+                if(this.tabEqual(Ma,M)){egal=true}
+                console.log('here is M');
+                console.log(M);
+                console.log('here is Ma');
+                console.log(Ma);
+                console.log('egal',egal);
+               
+                let couverture1 = true;
+                let h = 0;
+                while ((h < this.NpPlaces) && (couverture1)) {
+                    if (exclude.includes(h)) {
+                         h++;
+                          continue;
+                       }
+                       else{
+                    if (M[h] < Ma[h]) {
+                        couverture1 = false;
+                    }
+                    h++;}
+                }
+                if (couverture1) {
+                    couverture = false;
+                    let j = 0;
+                    while ((!couverture) && (j < this.NpPlaces)) {
+                        if (exclude.includes(j)) {
+                         j++;
+                          continue;
+                       }
+                       else{
+                        if (Ma[j] < M[j]) {
+                            couverture = true;
+                        }
+                        j++;}
+                    }
+                }
+                if((!couverture)&&(!egal)) {
+                    i--; console.log('dagi');
+                    console.log('here in infini');
+                    let trouv = false;
+                    let mytransition;
+                    while ((!trouv) && (i >= 0)) {
+                        if (archs[i].des === k) {
+                           
+                            mytransition=archs[i].t;
+                            console.log('mytransition');
+                            console.log(mytransition);
+                            if (!viv.includes(mytransition)) {
+                                viv.push(mytransition);
+                               }
+                            k = archs[i].src;
+                            trouv = true;
+                            i++;
+                        }
+                        i--;
+                    }
+                }
+            }
+        }
+        else {
+            
+            let k = cpt;
+            let i = archs.length;
+            let Ma = [];
+            let pile = [];
+            let couverture2 = false;
+            let egal=false;
+            if (exclude.length===this.NpPlaces){couverture2=true}
+            else{
+            while ((!egal)(!couverture2) && (i >= 0)) {
+                Ma = listM[k];
+                if(this.tabEqual(Ma,M)){egal=true}
+                console.log('here is M');
+                console.log(M);
+                console.log('here is Ma');
+                console.log(Ma);
+                console.log('egal',egal);
+    
+                let couverture1 = true;
+                let h = 0;
+                while ((h < this.NpPlaces) && (couverture1)) {
+                    if (exclude.includes(h)) {
+                         h++;
+                          continue;
+                       }
+                    else{
+                    if (M[h] < Ma[h]) {
+                        couverture1 = false;
+                    }
+                    h++;}
+                }
+                if (couverture1) {
+                    couverture2 = false;
+                    let j = 0;
+                    while ((!couverture2) && (j < this.NpPlaces)) {
+                        if (exclude.includes(j)) {
+                         j++;
+                          continue;
+                       }
+                       else{
+                        if (Ma[j] < M[j]) {
+                            couverture2 = true;
+                        }
+                        j++;}
+                    }
+                }
+                if ((!couverture2)&&(!egal)) {
+                    i--;
+                    console.log('here in infini');
+                    let trouv = false;
+                    let mytransition;
+                    while ((!trouv) && (i >= 0)) {
+                        if (archs[i].des === k) {
+                            mytransition=archs[i].t;
+                            if (!viv.includes(mytransition)) {
+                                viv.push(mytransition);
+                               }
+                            k = archs[i].src;
+                            trouv = true;
+                            pile.push(i);
+                            i++;
+                        }
+                       i--;
+                    }
+                }
+            }
+        }
+         if (!couverture2){ couverture = couverture2}
+         else {
+           let N=M;
+           let stop=false;
+           let fin= false;
+          
+            if(pile.lenght>0) {let s=pile.pop();}
+           else {
+            console.log('trans');
+            console.log(tran);
+            let lastinib=this.inihbTrans(tran);
+                    if (lastinib){
+                       let  lastfranc=this.Franchissable(N,tran.GetTransId());
+                        if (!lastfranc){stop=true; }
+                        else{N=this.getMarc(tran,N); fin=true}
+                     }
+                     else{N=this.getMarc(tran,N);
+                        ///PEUT VERIFIER SI LE NOUVEAU MARQUAGE EST M
+                        fin=true;
+                }
+    
+           }
+    
+           while((!stop)&&(!fin)){
+            console.log('s');
+            console.log(s);
+            let tra=archs[s].t;
+            console.log(idtran);
+            console.log(tra);
+    
+             let  inhib=this.inihbTrans(tra);
+              if (inhib){
+               let  franc=this.Franchissable(N,archs[s].t.GetTransId());
+                if (!franc){ stop = true;}
+                else{N=this.getMarc(archs[s].t,N);}
+              }
+              else{
+                N=this.getMarc(archs[s].t,N);
+              }
+              if ((!stop)&&(pile.lenght>0)){
+                s=pile.pop();
+              }
+              else{
+                if ((!stop)&&(pile.lenght===0)){
+                    let lastinib=this.inihbTrans(tran);
+                    if (lastinib){
+                        let lastfranc=this.Franchissable(N,tran.GetTransId());
+                        if (!lastfranc){stop=true; }
+                        else{N=this.getMarc(tran,N); fin=true}
+                     }
+                     else{N=this.getMarc(tran,N);
+                        ///PEUT VERIFIER SI LE NOUVEAU MARQUAGE EST M
+                        fin=true;
+                }
+                }
+              }
+    
+           }
+           couverture=fin;
+         }
+        }
+        return { infin:couverture, var2:viv,kif:egal };
+    }
+    
+    
+    
+    
+    marquageTillInfini(M0){
+    
+        //don t forget le traitement des places supprimme dans les marquages
+        let viv = [];
+        let cpt=0;
+        let k=1;
+        let N = [];
+        N=M0;
+        let listM = [];
+        let archs = [];
+        let { infin = false, var2 = [],kif=false } = {};
+    
+        console.log('di la pricipal lenght ines');
+        console.log(archs.length);
+         listM.push(M0);
+        
+          let repe = false ;
+         while ((cpt<listM.length)&& (!infin) && (!repe)){
+             N = listM[cpt];
+             console.log('la mere');
+             console.log(N);
+            let index = 0; 
+            let stop=false;
+             while ((index<this.NpTrans)&& (!infin) && (!repe)&&(!stop) ){
+               if ((!(this.Transitions[index].tsup)) && (this.Franchissable(N,this.Transitions[index].IdT)) &&(!stop))  {
+                console.log('franchi');
+                console.log(this.Transitions[index].GetTransId());
+                let M = [];          
+               for (let i = 0; i < this.NpPlaces; i++) {
+                   M[i] = N[i] -this.Pre[i][this.Transitions[index].GetTransId()].poid + this.Post[i][this.Transitions[index].GetTransId()].poid;
+                   if (M[i]<0){ M[i]=0;}
+                }
+                console.log('HERE IS M');
+                console.log(M);
+                let tran= this.Transitions[index]; 
+                viv.push(tran);
+               ({ infin , var2,kif } = this.infini(M,listM,cpt,archs,k,tran,viv));
+                repe=this.rep(M,listM);
+                console.log('infin');
+                console.log(infin);
+                console.log('repe');
+                console.log(repe);
+                if ((!infin) && (!repe)){
+                  listM.push(M) ;
+                  console.log('ListM');
+                  console.log(listM);
+                  archs.push({src:cpt,des:k,t:this.Transitions[index]}) ;
+                  k++;
+                }
+                else{stop = true;}
+               }
+              index++;
+             }
+             console.log('cpt');
+            console.log(cpt);
+            cpt++;
+         }
+         return infin ;
+    }
+    
+    transnonsup(){
+        let nonsup= [] ; 
+        for (let i = 0; i < this.Transitions.length; i++) {
+          if (this.Transitions[i].GetTranssup()===false){nonsup.push(this.Transitions[i])} ;
+    }
+    return nonsup;
+    }
+    //BLOQUAGE
+   nonbloc(M0){
+    //don t forget le traitement des places supprimme dans les marquages
+    let cpt=0;
+    let k=1;
+    let N = [];
+    N=M0;
+    let listM = [];
+    let archs = [];
+     listM.push(M0);
+     let vivacite = true;
+    
+      let repe = false ;
+      let nonBloquage= true;
+      let viv = [];
+      let { infin = false, var2 = [] ,kif=false } = {};
+    
+     while ((cpt<listM.length)&& (nonBloquage)){
+         N = listM[cpt];
+         console.log('la mere');
+         console.log(N);
+        let index = 0;
+        nonBloquage=false;
+         while (index<this.NpTrans){
+           if ((!(this.Transitions[index].tsup)) && (this.Franchissable(N,this.Transitions[index].IdT)))  {
+            nonBloquage=true;
+            console.log('nonbloc');
+            console.log(nonBloquage);
+            console.log('franchi');
+            console.log(this.Transitions[index].GetTransId());
+            let M = [];          
+           for (let i = 0; i < this.NpPlaces; i++) {
+               M[i] = N[i] -this.Pre[i][this.Transitions[index].GetTransId()].poid + this.Post[i][this.Transitions[index].GetTransId()].poid;
+               if (M[i]<0){ M[i]=0;}
+            }
+           // console.log('HERE IS M');
+            //console.log(M);
+            let tran= this.Transitions[index];
+            viv = [];
+            viv.push(tran);
+            console.log('viv',viv);
+            ({ infin , var2,kif } =this.infini(M,listM,cpt,archs,k,tran,viv));
+          console.log('var2',var2);
+            //TRAITEMENT DE VIVACITE
+            console.log('kif',kif);
+            if ((vivacite)&&((infin)||(kif))){
+            let vivOfIds = var2.map(obj => obj.IdT);
+            let trannonsu =this.transnonsup();
+            let trOfIds= trannonsu.map(obj => obj.IdT);
+            let egal=this.arraysEqual(trOfIds,vivOfIds);
+            if (!egal){vivacite=false}}
+            ////////////////////////////////
+            repe=this.rep(M,listM);
+            console.log('infin');
+            console.log(infin);
+            console.log('repe');
+            console.log(repe);
+            if ((!infin) && (!repe)){
+              listM.push(M) ;
+              console.log('ListM');
+              console.log(listM);
+              archs.push({src:cpt,des:k,t:this.Transitions[index]}) ;
+              k++;
+            }
+           
+           }
+          index++;
+         }
+         console.log('cpt');
+        console.log(cpt);
+        cpt++;
+     }
+     if(!nonBloquage){vivacite=false;}
+     return {var3:nonBloquage,var4:vivacite}
+    }
+    arraysEqual(arr1, arr2) {
+        // Check if arrays have the same length
+        if (arr1.length !== arr2.length) {
+            return false;
+        }
+        arr1.sort();
+        arr2.sort();
+    
+        // Compare sorted arrays element by element
+        for (let i = 0; i < arr1.length; i++) {
+            if (arr1[i] !== arr2[i]) {
+                return false;
+            }
+        }
+    
+        // If all elements match, arrays are equal
+        return true;
+    }
+/*
+    per(tab,tab2)
+{
+  let i;
+  let ex;
+  let j;
+  let k=0;
+  let mir;
+  let per=true;
+  for(i=0;i<tab.length;i++)
+  {
+      ex=0;
+      for(j=0;j<this.Transitions.length;j++)
+      {
+         if(tab[i].fr[j]===1 && this.Transitions[j].tsup!==true )
+         {
+             ex++;
+         }
+      }
+      if(ex>1)
+      {
+          tab2.push(tab[i]);
+      }
+  }
+  for(i=0;i<tab2.length;i++)
+  {
+      k=0;
+      for(j=0;j<this.Transitions.length;j++)
+      {
+          if(k===0 && tab2[i].fr[j]===1)
+          {
+              mir=this.getNextState(j,tab2[i].mar);
+              k++;
+              console.log('mir',mir)
+          }
+          else if(tab2[i].fr[j]===1 && k>0)
+          {
+              if(this.getNextState(j,tab2[i].mar)!=mir)
+              {
+                 per=false;
+              }
+          }
+      }
+  }
+  return per;
+}*/
+
+per(tab,arc){ // my old one 
+    let i;
+    let ex;
+    let j;
+    let tab2 = [] ;
+    for(i=0;i<tab.length;i++)
+    {
+        ex=0;
+        for(j=0;j<this.Transitions.length;j++)
+        {
+           if(tab[i].fr[j]===1 && this.Transitions[j].tsup!==true )
+           {
+               ex++;
+           }
+        }
+        if(ex>1)
+        {
+            tab2.push(tab[i]); // les marquages qui ont des transitions franchissables bloqué 
+        }
+    } 
+    console.log(" arc in per ",arc)
+    console.log('tab2 in persistance ',tab2,'tab2.lenght',tab2.length);
+    let tabtransfr = []; let tabt = [];   i = 0; 
+    let persistance = true ; let tabw = [] ;
+    while( i<tab2.length && persistance === true ){
+        console.log('hereee');
+        console.log('tab2[i].fr',tab2[i].fr) ;let k = 0;
+       for(let l =0 ; l< tab2[i].fr.length ; l++ ){
+        let element = tab2[i].fr[l] ;let id ; console.log('element',element)
+            if(element ===1){
+                console.log('here')
+                id = l ;
+            tabtransfr[k] = id;
+           tabt[k]=0;
+              k ++ ;
+        }} 
+       //tabtransetat = new Array(tabtransfr.length).fill(0);
+        // le tableau des transition franchit appartir de ce marquage
+            let m = 0 ;
+            console.log('tabtransfr start ',tabtransfr);console.log('tabtransetat start ',tabt);
+     while( m < tabtransfr.length && persistance === true ){ 
+       let t = tabtransfr[m] ;console.log("t ="+t,"tab.indexOf(tab2[i])",tab.indexOf(tab2[i]));
+       let index = arc.findIndex(element => (element.ji === tab.indexOf(tab2[i]) && element.j1 === t));
+    console.log('m = ',m)
+    //tabtransetat.splice(m,0,1) ;
+     console.log('index',index,"elemnt index ",tab[arc[index].jf]);
+    tabt[m] = 1 ;
+    console.log('tabt ',tabt);
+
+    
+      // while(index !== -1 && stopit === false ) { 
+        //let  filtertab =  tabtransfr.filter(element => tab[arc[index].jf].fr.includes(element));// l'intersection entre l'etat suivant des trans franchissable et l'etat precedent 
+        let filtertab = [] ;
+        tabtransfr.forEach(element =>{
+            if(tab[arc[index].jf].fr[element] !== -1){
+                console.log("i am in //////// element ",element)
+                filtertab.push(element)
+            }
+        })
+        console.log('filtertab',filtertab,'tabtransfr[',m,']',tabtransfr[m] ) ; 
+        if(filtertab.length !== 0){
+            for(let j = 0 ; j< tabtransfr.length ; j ++ ){ console.log('tabt[',j,']',tabt[j],'filtertab.includes(tabtransfr[j])',filtertab.includes(tabtransfr[j]))
+            // if(tabw[findIndex(element => ( element.ji=== tab.indexOf(tab2[i]) ))]] filtertab[j].idt)
+                if((tabt[j] === 0) && (filtertab.includes(tabtransfr[j]) === false)){
+                    persistance = false; 
+                    console.log('condition vérifié ')
+                }}
+            
+        }else{
+            persistance = false; 
+        }
+        tabt[m] = 0 ;
+   // }          
+    m ++ }  i++   }   
+    return persistance;          
+ }
+
 }
-}
-
-
-
-
-
-

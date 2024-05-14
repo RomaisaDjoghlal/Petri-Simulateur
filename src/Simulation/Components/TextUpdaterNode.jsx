@@ -1,52 +1,6 @@
-/*import { useCallback } from 'react';
-import { Handle, Position } from 'reactflow';
-
-const TextUpdaterNode = ({ data, isConnectable }) => {
-  const onChange = useCallback((evt) => {
-     
-  }, []);
-
-
-
-  return (
-    <div className="text-updater-node">
-    
-    <div>
-      <label htmlFor="text">comentaire:</label>
-      
-      <textarea
-          id="text"
-          name="text"
-          onChange={onChange}
-          className="nodrag"
-          rows={4}
-          style={{ resize: 'vertical', minHeight: '50px' }} // Preserve line breaks in displayed text
-        />
-    </div>
-    
-   
-    
-   
-  </div>
-);
-  
-  }
-
-
-export default TextUpdaterNode;*/
 
 import React, { useCallback ,useState , useEffect } from 'react';
 
-
-//import { setElementToModify } from '../../ReduxSlice/EditSlice';
-//import {  deleteElement } from '../../ReduxSlice/petriSlice';
-
-
-//import {deleteElement }from "../../ReduxSlice/petriSlice";
-//import  {reactFlowInstance } from 'reactflow';
-
-
- 
 const TextUpdaterNode = ({ id, onDeleteText })  => {
 
   console.log("Type of id:", typeof id);
@@ -55,15 +9,7 @@ const TextUpdaterNode = ({ id, onDeleteText })  => {
   const idt = typeof id === 'string' ? id.split('_')[1] : '';
   // Define a state to hold the text value
   const [text, setText] = useState('');
-  /*const onDeleteTxt = useCallback((el) => {
-    if (el.type === 'textUpdater') {
-      reactFlowInstance.deleteElements({ nodes: [el], edges: [] });
-      dispatch(deleteElement({ type: el.type, el }));
-      dispatch(setElementToModify({}));
-    }
-  }, [reactFlowInstance, dispatch]);*/
-
-  // Define the onChange handler to update the text state
+  
 
 
 
@@ -83,16 +29,7 @@ const TextUpdaterNode = ({ id, onDeleteText })  => {
     }
   }, [id]);
 
-  
 
-  
-  
-  
-
-  /*const handleDeleteClick = () => {
-    const element = { type: 'textUpdater', id: `textUpdater_${id}` };
-    onDeleteTxt(element);
-  };*/
 //<button onClick={handleDeleteClick}>Delete</button>
   return (
     <div className="text-updater-node">
@@ -119,4 +56,5 @@ const TextUpdaterNode = ({ id, onDeleteText })  => {
 export default TextUpdaterNode;
 
 
-//<button onClick={handleDeleteClick}>Delete</button>
+
+

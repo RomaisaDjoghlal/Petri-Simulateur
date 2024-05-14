@@ -1,10 +1,27 @@
+
+*{
+  margin: 0;
+  padding: 0;
+}
+h1.t{
+  color: black !important;
+    font-size: 3vw; /* Specify font size unit */
+    font-family: 'Inter', sans-serif;
+    font-weight: bolder;
+    padding-top: 1.5vw;
+    padding-left: 4vw;
+}
 .guide-container{
-    justify-content: center;
+ 
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(126, 125, 125, 0.1);
 }
 .guide-image{
-    margin-top: 5vh;
+    padding-top: 2vwvh;
     width: 80vw;
-    height: 80vh;
+    height: 32vW;
+    margin-left: 6vw;
 }
 
 button.nextbtn  {
@@ -23,7 +40,7 @@ button.nextbtn  {
     outline: none;
     margin-left: 60vw;
     border: 2px solid rgb(42, 215, 210);
-  }
+}
   
   button.nextbtn:hover {
     background-color: rgb(42, 215, 210);
@@ -67,7 +84,7 @@ button.prvsbtn {
     transform: translateY(-1px);
   }
 .navigation-buttons{
-    margin-left: 8vw;
-    margin-top: 3vh;
+    margin-left: 5vw;
+    margin-top: 1.5vw;
     width: 100vw;
 }

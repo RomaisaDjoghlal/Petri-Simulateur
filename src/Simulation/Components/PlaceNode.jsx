@@ -14,3 +14,4 @@ export const PlaceNode = ({data }  ) => {
         </div>
     )
 }
+

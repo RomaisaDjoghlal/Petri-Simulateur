@@ -147,3 +147,4 @@ const ToolBar = ({ isOpen, onClose, SelectedTool, onControlsClick }) => {
 };
 
 export default ToolBar;
+

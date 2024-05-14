@@ -5,6 +5,8 @@ import Frame2 from  './Frame2.png';
 import Frame3 from './Frame3.png';
 import Frame4 from './Frame4.png';
 import Frame5 from './Frame5.png';
+import Frame6 from './Frame6.png';
+import Frame7 from './Frame7.png';
 
 // Tableau des URL des images
 const imageUrls = [
@@ -13,6 +15,8 @@ const imageUrls = [
   Frame3,
   Frame4,
   Frame5,
+  Frame6,
+  Frame7,
   // Ajoutez plus d'URLs d'images selon vos besoins
 ];
 
@@ -35,14 +39,15 @@ export const Guide = () => {
 
   return (
     <div className='guide-container'>
-      {/* Affiche l'image actuelle en fonction de l'index actuel */}
+      <h1 className='t'>Guide</h1>
+      {}
       <img className='guide-image' src={imageUrls[currentImageIndex]} alt="pic" />
 
-      {/* Boutons "suivant" et "retour" */}
+      {}
       <div className='navigation-buttons'>
-        {/* Affiche le bouton "retour" uniquement si nous ne sommes pas à la première image */}
+        {}
         {currentImageIndex > 0 && <button className='prvsbtn' onClick={previousImage}>Retour</button>}
-        {/* Affiche le bouton "suivant" uniquement si nous ne sommes pas à la dernière image */}
+        {}
         {currentImageIndex < imageUrls.length - 1 && <button className='nextbtn' onClick={nextImage}>Suivant</button>}
       </div>
     </div>
@@ -50,4 +55,5 @@ export const Guide = () => {
 }
 
 export default Guide;
+
 
