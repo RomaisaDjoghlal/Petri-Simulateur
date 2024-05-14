@@ -1,7 +1,5 @@
 
-
-
-<img src="https://drive.google.com/file/d/1KQ7qHdvj395oSd5_cBNQwEPyD-KOhljQ/view?usp=sharing.png" alt="drawing" width="200"/>
+<img src="https://drive.google.com/file/d/1cQX2ryvmUEIH00Mv7BfDDELDfiHiTgao/view?usp=sharing" alt="drawing" width="200"/>
 
 
 # Projet 2CP Réalisation d’un éditeur graphique de réseaux de Petri
