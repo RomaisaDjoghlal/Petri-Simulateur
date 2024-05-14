@@ -18,7 +18,7 @@
  <a href="https://drive.google.com/file/d/1WH2cXQ0i8cVmwoVm82Lhwh5Ci5SHqsGo/view?usp=sharing "> Notice d'utilisation </a>
 
  # Guide d'instalation
- 
+ <a href="https://drive.google.com/file/d/1q7RTSzexcAu2Rjf2ev2UJ9Fg8ruO-Giw/view?usp=sharing"> Notice d'instalation </a> 
 
 
 
