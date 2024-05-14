@@ -54,27 +54,7 @@ export const MainToolbar = ({ onSaveCanvas,DeleteAllCanvas , handleLoadGraph, ha
 
   const toolbarItemRefs = useRef([]);
 
-  /*useEffect(() => {
-    calculateMessagePosition(); // Initial position calculation
-  }, [selectedShape]);
-
-  const calculateMessagePosition = () => {
-    toolbarItemRefs.current.forEach((ref, index) => {
-      if (ref) {
-        const rect = ref.getBoundingClientRect();
-      const top = rect.bottom + window.scrollY + 10;
-      const left = rect.left + window.scrollX;
-      console.log('Position of item', index, { top, left });
-      }
-    });
-  };
- 
-  const handleMouseEnter = () => {
-    calculateMessagePosition(); // Recalculate position on mouse enter
-  };*/
-
-
-
+  
 
   const dropMenuRef = useRef(null);
  
@@ -95,18 +75,7 @@ export const MainToolbar = ({ onSaveCanvas,DeleteAllCanvas , handleLoadGraph, ha
     setIsMenuOpen(false);
   };
 
-  /*useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (dropMenuRef.current && !dropMenuRef.current.contains(event.target)) {
-        setIsDropMenuOpen(false);
-      }
-    };
-
-    document.addEventListener('click', handleClickOutside);
-    return () => {
-      document.removeEventListener('click', handleClickOutside);
-    };
-  }, [dropMenuRef]);*/
+ 
 
   const onControlsClick = (target) => {
     dispatch(setSelectedTool(target));
@@ -350,7 +319,7 @@ export const MainToolbar = ({ onSaveCanvas,DeleteAllCanvas , handleLoadGraph, ha
                     </ul>
                      
         
-          {/* pour ajouter les autre*/}
+          {}
         </ul>
       </div>
       
@@ -374,3 +343,5 @@ export const MainToolbar = ({ onSaveCanvas,DeleteAllCanvas , handleLoadGraph, ha
     </div>
   );
 };
+
+

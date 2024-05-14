@@ -7,7 +7,7 @@ import { getSelectedTool,  getIsSelectable, getCanvasOpt, getQuasivivant ,getIsS
 import { addElement, getArcs, getPlaces, getTransitions, updateElement , deleteElement , DeleteAll, saveNet} from '../ReduxSlice/petriSlice';
 import { MainToolbar } from './MainToolbar';
 import { creereseau } from '../Logique/integrations';
-import { Place } from '../Logique/structure';
+import { Place , Transition} from '../Logique/structure';
 import { PlaceNode } from './Components/PlaceNode';
 import TextUpdaterNode from './Components/TextUpdaterNode';
 import { TransitionNode } from './Components/TransitionNode';
@@ -41,9 +41,6 @@ let id1 = 0;// place
     return `T${newId2}`;
   }
   
-
-
-
 
 let id3 = 0;// arc
 const getId3 = () => {
@@ -104,16 +101,16 @@ export const Editer = () => {
 
 const initialNodes = () => {
 
-         const toast = {
+        const toast = {
         isVisible: true,
         context: 'pending',
         title: 'Important !',
-        msg:'Sauvegardez votre réseau pour parcourir les pages en sécurité'
+        msg:'Sauvegardez votre réseau pour parcourir les pages en sécurité et même après avoir quitté le navigateur '
     }
     dispatch(setToastOpt(toast))
     setTimeout(() => {
         dispatch(setToastOpt({isVisible:false}))
-    }, 8000)
+    },2500)
 
       
         const storedPlaces = JSON.parse(localStorage.getItem('places')) || [];
@@ -270,7 +267,7 @@ const saveGraph = (fileType) => {
     }, 100)
   setTimeout(() => {
     dispatch(setToastOpt({isVisible:false}))
-  }, 9000)
+  }, 2500)
 
     fileName = 'myGraph.pdf';
   } else if (fileType === 'json') {
@@ -291,7 +288,7 @@ const saveGraph = (fileType) => {
     }, 100)
   setTimeout(() => {
     dispatch(setToastOpt({isVisible:false}))
-  }, 9000)
+  }, 2500)
 
   } else if (fileType === 'png') {
     // Handle PNG saving
@@ -310,7 +307,7 @@ const saveGraph = (fileType) => {
     }, 100)
   setTimeout(() => {
     dispatch(setToastOpt({isVisible:false}))
-  }, 9000)
+  }, 2500)
     return; // Exit the function after saving PNG
   } else {
     console.error('Invalid file type specified.');
@@ -359,7 +356,7 @@ const handleLoadGraph = async (event) => {
   if (data && data.nodes && data.edges) {
     setNodes(data.nodes);
     setEdges(data.edges);
-    initializeReseau(data.nodes); // Pass data.nodes as argument
+    initializeReseau(data.nodes,data.edges); // Pass data.nodes as argument
   }
 };
 
@@ -367,90 +364,239 @@ const handleLoadGraph = async (event) => {
 
 
 
-const initializeReseau = useCallback((nodes) => {
+/*const initializeReseau = useCallback((nodes,edges) => {
   
 
-          const storedPlaces = nodes.filter(node => node.type === 'place');
-          console.log("tab",storedPlaces);
-          const storedTransitions = nodes.filter(node => node.type === 'transition');
-          const storedTokens = nodes.filter(node => node.type === 'group');
-        
-          const idTokenMap = new Array(storedPlaces.length).fill(-1);
+  const storedPlaces = nodes.filter(node => node.type === 'place');
+  console.log("tab",storedPlaces);
+  const storedTransitions = nodes.filter(node => node.type === 'transition');
+  const storedTokens = nodes.filter(node => node.type === 'group');
 
-          storedPlaces.forEach(element => {
-            
-              const idd =element.id.slice(1) ;
-              idTokenMap[idd] = element.data.tokens;
-              dispatch(addElement({type:element.type,element}))
+  const idTokenMap = new Array(storedPlaces.length).fill(-1);
 
-          });
-          console.log("jjjj",idTokenMap )
-          
-          for (const id in idTokenMap) {
-            
-              
-              const nbjetons = idTokenMap[id] !== undefined ? idTokenMap[id] : -1;
-              
-              const newPlace = new Place(id, parseInt(nbjetons)); 
+  storedPlaces.forEach(element => {
+    
+      const idd =element.id.slice(1) ;
+      idTokenMap[idd] = element.data.tokens;
+      dispatch(addElement({type:element.type,element}))
 
-              if(nbjetons==-1)
-              {
-                newPlace.SetPlacesup(true);
-              }
-              reseau.AddPlace(newPlace);
-              
-              console.log("Created place:", newPlace);
-          }
+  });
+  storedTransitions.forEach(element => {
+    
+    //const idd =element.id.slice(1) ;
+    //idTokenMap[idd] = element.data.tokens;
+    dispatch(addElement({type:element.type,element}))
 
-          console.log(" reseau.NpPlacesexist ", reseau.NpPlaces );
-          
-          storedTransitions.forEach(transitionData => {
-             if(transitionData.data.mode=='imediate')
-              {
-            reseau.creetrans();}
-            else
-            {
-              reseau.creetransTimed();
-            }
-          });
+});
+  console.log("jjjj",idTokenMap )
+  
+  for (const id in idTokenMap) {
+    
+      
+      const nbjetons = idTokenMap[id] !== undefined ? idTokenMap[id] : -1;
+      
+      const newPlace = new Place(id, parseInt(nbjetons)); 
 
-          reseau.Affichertrans();
-          console.log('eddg',edges)
-        console.log('edges.length',edges.length)
-        edges.forEach(element => {
-          if (element && element.source && element.target) {
-            console.log("eeee", element);
-            let p = element.source[0];
-            console.log("p = " + p);
-            let t = element.target[0];
-            console.log("t = " + t);
-            let type = element.markerEnd === 'circleMarker';
-            
-            if (p === 'P' && t === 'T') {
-              let Idplace = parseInt(element.source.slice(1));
-              let Idtrans = parseInt(element.target.slice(1));
-              reseau.Addpre(Idplace, Idtrans, parseInt(element.label), type);
-            }
-            
-            if (p === 'T' && t === 'P') {
-              let Idplace = parseInt(element.target.slice(1));
-              let Idtrans = parseInt(element.source.slice(1));
-              reseau.Addpost(Idplace, Idtrans, parseInt(element.label), type);
-            }
-          } else {
-            console.log("Invalid edge element:", element);
-          }
-        });
+      if(nbjetons==-1)
+      {
+        newPlace.SetPlacesup(true);
+      }
+      reseau.AddPlace(newPlace);
+      
+      console.log("Created place:", newPlace);
+  }
 
-        
-        reseau.Afficherplaces();
+  console.log(" reseau.NpPlacesexist ", reseau.NpPlaces );
+  let idpres = -1 ;
+  console.log('storedTransitions',storedTransitions)
+  storedTransitions.forEach(transitionData => {
+    //if(transitionData.id  )
+      let id = parseInt(transitionData.id.slice(1)) ;
+      if (id === idpres +1 ) {
 
-        }, []);
+     if(transitionData.data.mode=='imediate')
+      {
+        const trans = new Transition(id,false,1)
+    reseau.AddTrans(trans);}
+    else
+    {   const trans = new Transition(id,true,1)
+      reseau.AddTrans(trans);
+    }
+    idpres ++ ;
+  }else{
+    if(transitionData.data.mode=='imediate')
+      {
+        const trans = new Transition(id,false,1)
+    reseau.AddTrans(trans);}
+    else
+    {   const trans = new Transition(id,true,1)
+      reseau.AddTrans(trans);
+    }
+    let i = 0 , id2 ;
+      while(i<(id - idpres)){
+        console.log("hi ")
+        id2 = i+idpres+1 ;
+        const trans = new Transition(id2,false,1)
+        reseau.AddTrans(trans);
+        trans.SetTranssup(true) ;
+        i ++ ;
+      }
+      idpres = id ; 
+  }
+  });
+
+  reseau.Affichertrans();
+  console.log('eddg',edges)
+console.log('edges.length',edges.length)
+edges.forEach(element => {
+  if (element && element.source && element.target) {
+    console.log("eeee", element);
+    let p = element.source[0];
+    console.log("p = " + p);
+    let t = element.target[0];
+    console.log("t = " + t);
+    let type = element.markerEnd === 'circleMarker';
+    
+    if (p === 'P' && t === 'T') {
+      let Idplace = parseInt(element.source.slice(1));
+      let Idtrans = parseInt(element.target.slice(1));
+      reseau.Addpre(Idplace, Idtrans, parseInt(element.label), type);
+    }
+    
+    if (p === 'T' && t === 'P') {
+      let Idplace = parseInt(element.target.slice(1));
+      let Idtrans = parseInt(element.source.slice(1));
+      reseau.Addpost(Idplace, Idtrans, parseInt(element.label), type);
+    }
+  } else {
+    console.log("Invalid edge element:", element);
+  }
+});
+
+
+reseau.Afficherplaces();
+
+}, []);*/
+
+const initializeReseau = useCallback((nodes,edges) => {
+  
+
+  const storedPlaces = nodes.filter(node => node.type === 'place');
+  console.log("tab",storedPlaces);
+  const storedTransitions = nodes.filter(node => node.type === 'transition');
+  const storedTokens = nodes.filter(node => node.type === 'group');
+
+  const idTokenMap = new Array(storedPlaces.length).fill(-1);
+
+  storedPlaces.forEach(element => {
+    
+      const idd =element.id.slice(1) ;
+      idTokenMap[idd] = element.data.tokens;
+      dispatch(addElement({type:element.type,element}))
+
+  });
+  storedTransitions.forEach(element => {
+    
+    //const idd =element.id.slice(1) ;
+    //idTokenMap[idd] = element.data.tokens;
+    dispatch(addElement({type:element.type,element}))
+
+});
+  console.log("jjjj",idTokenMap )
+  
+  for (const id in idTokenMap) {
+    
+      
+      const nbjetons = idTokenMap[id] !== undefined ? idTokenMap[id] : -1;
+      
+      const newPlace = new Place(id, parseInt(nbjetons)); 
+
+      if(nbjetons==-1)
+      {
+        newPlace.SetPlacesup(true);
+      }
+      reseau.AddPlace(newPlace);
+      
+      console.log("Created place:", newPlace);
+  }
+
+  console.log(" reseau.NpPlacesexist ", reseau.NpPlaces );
+  let idpres = -1 ;
+  console.log('storedTransitions',storedTransitions)
+  storedTransitions.forEach(transitionData => {
+    //if(transitionData.id  )
+      let id = parseInt(transitionData.id.slice(1)) ;
+      if (id === idpres +1 ) {
+
+     if(transitionData.data.mode=='imediate')
+      {
+        const trans = new Transition(id,false,1)
+    reseau.AddTrans(trans);}
+    else
+    {   const trans = new Transition(id,true,1)
+      reseau.AddTrans(trans);
+    }
+    idpres ++ ;
+  }else{
+   
+    let i = 0 , id2 ;
+      while(i<(id - idpres-1)){
+        console.log("hi ")
+        id2 = i+idpres+1 ;
+        const trans = new Transition(id2,false,1)
+        reseau.AddTrans(trans);
+        trans.SetTranssup(true) ;
+        i ++ ;
+      }
+      idpres = id ; 
+      if(transitionData.data.mode=='imediate')
+        {
+          const trans = new Transition(id,false,1)
+      reseau.AddTrans(trans);}
+      else
+      {   const trans = new Transition(id,true,1)
+        reseau.AddTrans(trans);
+      }
+  }
+  });
+
+  reseau.Affichertrans();
+  console.log('eddg',edges)
+console.log('edges.length',edges.length)
+edges.forEach(element => {
+  if (element && element.source && element.target) {
+    console.log("eeee", element);
+    let p = element.source[0];
+    console.log("p = " + p);
+    let t = element.target[0];
+    console.log("t = " + t);
+    let type = element.markerEnd === 'circleMarker';
+    
+    if (p === 'P' && t === 'T') {
+      let Idplace = parseInt(element.source.slice(1));
+      let Idtrans = parseInt(element.target.slice(1));
+      reseau.Addpre(Idplace, Idtrans, parseInt(element.label), type);
+    }
+    
+    if (p === 'T' && t === 'P') {
+      let Idplace = parseInt(element.target.slice(1));
+      let Idtrans = parseInt(element.source.slice(1));
+      reseau.Addpost(Idplace, Idtrans, parseInt(element.label), type);
+    }
+  } else {
+    console.log("Invalid edge element:", element);
+  }
+});
+
+
+reseau.Afficherplaces();
+
+}, []);
 
 useEffect(() => {
   if(reseau.Transitions.length === 0 && reseau.places.length=== 0 ){
     console.log('ffff')
-  initializeReseau(nodes); }
+  initializeReseau(nodes,edges); }
 }, [initializeReseau]);
 
 
@@ -487,7 +633,7 @@ const onPaneClick = useCallback((e) => {
         dispatch(setToastOpt(toast))
         setTimeout(() => {
             dispatch(setToastOpt({isVisible:false}))
-        }, 10000)
+        },2500)
         }
       
 
@@ -624,7 +770,7 @@ const onConnect = useCallback((params) => {
                     dispatch(setToastOpt(toast))
                     setTimeout(() => {
                         dispatch(setToastOpt({isVisible:false}))
-                    }, 10000)
+                    }, 2500)
                 }
 
         console.log("sourceType = "+sourceType)
@@ -673,7 +819,7 @@ const onConnect = useCallback((params) => {
         dispatch(setToastOpt(toast2))
         setTimeout(() => {
             dispatch(setToastOpt({isVisible:false}))
-        }, 40000)
+        }, 2500)
         }
 
           if ((sourceType === 'place' ) && (targetType === 'transition')){
@@ -741,6 +887,8 @@ const onConnect = useCallback((params) => {
           setEdges((eds) => eds.concat(element))
           dispatch(addElement({type:element.type,element}))
           integreArc(true,params)
+          sethistory((history) => history.concat({effect : 'add' , elementold : '' , elementnew : element }))
+
           }
 
           
@@ -793,16 +941,7 @@ const suppToken = (node) => {
 
 const onNodeClick = useCallback((event, node) => {
 
- /* const toast = {
-    isVisible: true,
-    context: 'dark',
-    title: 'Indice !',
-    msg:'En cliquant sur la Place  pour ajouter le nombre voulu de jetons.'
-}
-dispatch(setToastOpt(toast))
-setTimeout(() => {
-    dispatch(setToastOpt({isVisible:false}))
-}, 10000)*/
+ 
 
   const existingNodes = nodes.filter(node => node.type === 'group')
   const nodeId = existingNodes.length === 0 ? 0 : Math.max(...existingNodes.map( token=> parseInt(token.id.slice(1)))) + 1
@@ -1184,17 +1323,7 @@ setTimeout(() => {
               setNodes((nds) => nds.map((n) =>(n.id === node.id ? updatedNodee : n)));
               break 
              }
-             /* if (node.data.tokens !== '0'){
-             const newTokens = parseInt(node.data.tokens) - 1;
-             const updatedNode = { ...node, data: { ...node.data, tokens: newTokens.toString()  , Idtoken1 : node.data.Idtoken1 , Idtoken2 : node.data.Idtoken2 , Idtoken3 : node.data.Idtoken3 ,Idtoken4 : node.data.Idtoken4 , Idtoken5 : node.data.Idtoken5 } };
-             console.log(" l2 = "+newTokens);
-       
-             // Dispatch action to update Redux state
-             dispatch(updateElement({ type: node.type, element: updatedNode }));
-       
-             // Update local state after Redux state is updated
-             setNodes((nds) => nds.map((n) =>(n.id === node.id ? updatedNode : n)));
-              }*/
+            
       }
 
       else {
@@ -1207,7 +1336,7 @@ setTimeout(() => {
         dispatch(setToastOpt(toast))
         setTimeout(() => {
             dispatch(setToastOpt({isVisible:false}))
-        }, 10000)
+        }, 2500)
     }
   }   
   }    
@@ -1235,7 +1364,7 @@ const onEdgeClick = useCallback((event, edge) => {
     dispatch(setToastOpt(toast))
     setTimeout(() => {
         dispatch(setToastOpt({isVisible:false}))
-    }, 10000)
+    }, 2500)
 }
 },[SelectedTool, dispatch])
 
@@ -1409,16 +1538,7 @@ const DeleteAllCanvas = useCallback(() => {
 
 },[reactFlowInstance, dispatch])
 
-const blockage = (fr) => {
-  console.log('fr in bloc',fr)
-  let bloc = true  ;
-fr.forEach(element =>{
-  if(element !== -1){
-    bloc = false ;
-  }
-})
-return bloc ;
-}
+
 
 
 
@@ -1482,7 +1602,7 @@ if( can === true ){
   
   //console.log('nonbloc',nonbloc);
   //localStorage.setItem('nonbloc',JSON.stringify(nonbloc)) ;
-  let persistance = reseau.per(tab,tab2);
+  let persistance = reseau.per(tab,arc);
   console.log('persistance',persistance,'tab2',tab2);
   localStorage.setItem('persistance',JSON.stringify(persistance)) ;
   localStorage.setItem('conflittab',JSON.stringify(tab2)) ;
@@ -1496,11 +1616,7 @@ if( can === true ){
     return element !== -1;
      }); console.log('nouveauTableau',nouveauTableau)
 
-   if(nouveauTableau.length === 1 && blockage(nouveauTableau[0].fr)){
-    let index = tab1.indexOf(nouveauTableau[0]);
-    tab1[index]= -1  ;
-    tab[index].tempo = false ;
-   }
+  
    console.log('tab1 after ',tab1);
    localStorage.setItem('listArc',JSON.stringify(arc))
    localStorage.setItem('listMarquage',JSON.stringify(tab))
@@ -1531,7 +1647,7 @@ if( can === true ){
   }, 100) 
   setTimeout(() => {
       dispatch(setToastOpt({isVisible:false}))
-  }, 8000)
+  }, 2500)
 }
 
  
@@ -2410,11 +2526,11 @@ const paste = () => {
           dispatch(setToastOpt(toast))
           setTimeout(() => {
               dispatch(setToastOpt({isVisible:false}))
-          }, 8000)
+          }, 2500)
           }
 
           let nbplaces = reseau.NpPlaces 
-          console.log('button clicked !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+        
           console.log('nbplaces ',nbplaces)
         //for(let k= 0 ; k<tabstep.length ; k++){n
           console.log('k = ',l)
@@ -2434,7 +2550,7 @@ const paste = () => {
             dispatch(setToastOpt(toast))
             setTimeout(() => {
                 dispatch(setToastOpt({isVisible:false}))
-            }, 8000)
+            }, 2500)
             }
           if( l < tabstep.length ){ 
             if( l> 0 ){
@@ -2547,7 +2663,7 @@ const paste = () => {
                 dispatch(setToastOpt(toast2))
                 setTimeout(() => {
                     dispatch(setToastOpt({isVisible:false}))
-                }, 8000)
+                }, 2500)
                   existpause = true ;
                   pauseRequested = !pauseRequested
                   //pauseRequested = !pauseRequested;
@@ -2651,7 +2767,7 @@ const paste = () => {
                   dispatch(setToastOpt(toast))
                   setTimeout(() => {
                       dispatch(setToastOpt({isVisible:false}))
-                  }, 10000)
+                  }, 2500)
                   }
                   
                 else{

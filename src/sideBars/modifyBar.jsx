@@ -12,12 +12,7 @@ export const ModifyBar = ({isVisible, onDelete, onUpdate}) => {
 
 
     // traitement des jetons 
-   /* const onSpinner = useCallback((direction, target) => {
-        let num = 0
-        num = target === 'token' ? parseInt(el.data.tokens) : parseInt(el.label)
-        num = num === 0 && direction === 'down' ? 0 : direction === 'up' ? num + 1 : num - 1
-        dispatch(setElementToModify({field:target,value:num}))
-    },[el, dispatch])*/
+   
 
     const onCancelChanges = () => {
         dispatch(setElementToModify({}))
@@ -69,56 +64,7 @@ export const ModifyBar = ({isVisible, onDelete, onUpdate}) => {
                                 ) : null
                             }
                             {
-                              /*  el.type === 'place' ? (
-                                    <div className="mt-3">
-                                        <label htmlFor="token-spinner" className="form-label">Tokens</label>
-                                        <div className="input-group">
-                                            <button
-                                                type="button"
-                                                className="btn btn-default spinner-down"
-                                                onClick={() => onSpinner('down','token')}
-                                            >-</button>
-                                            <input
-                                                type="text"
-                                                id="token-spinner"
-                                                className="form-control text-center"
-                                                value={parseInt(el.data.tokens)}
-                                                readOnly
-                                            />
-                                            <button
-                                                type="button"
-                                                className="btn btn-default spinner-up"
-                                                onClick={() => onSpinner('up','token')}
-                                            >+</button>
-                                        </div>
-                                    </div>
-                                ) : null
-                            }
-                            {
-                                el.type !== 'place' && el.type !== 'transition' ? (
-                                    <div className="mt-3">
-                                        <label htmlFor="cardinality-spinner" className="form-label">Cardinality/Multiplicity</label>
-                                        <div className="input-group">
-                                            <button
-                                                type="button"
-                                                className="btn btn-default spinner-down"
-                                                onClick={() => onSpinner('down','cardinality')}
-                                            >-</button>
-                                            <input
-                                                type="text"
-                                                id="cardinality-spinner"
-                                                className="form-control text-center"
-                                                value={parseInt(el.label)}
-                                                readOnly
-                                            />
-                                            <button
-                                                type="button"
-                                                className="btn btn-default spinner-up"
-                                                onClick={() => onSpinner('up','cardinality')}
-                                            >+</button>
-                                        </div>
-                                    </div>
-                                ) : null*/
+                              
                             }
                         </div>
 

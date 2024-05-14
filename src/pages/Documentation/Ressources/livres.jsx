@@ -23,7 +23,7 @@ function Livres() {
       <ul className="Livres-list">
         {livresData.map((livre, index) => (
           <li key={index}>
-            {/* Utiliser le titre comme déclencheur de l'événement de clic */}
+            {}
             <div className='bookbox'>
             <h1 className='booktitle' onClick={() => toggleItem(index)}>
               {livre.title}
@@ -31,7 +31,7 @@ function Livres() {
 
             </div>
             
-            {/* Afficher le contenu si l'index est dans openIndexes */}
+            {}
             {openIndexes.includes(index) && (
               <div className="cont">
                 <p>Description : {livre.description}</p>
@@ -70,3 +70,4 @@ const livresData = [
 ];
 
 export default Livres;
+

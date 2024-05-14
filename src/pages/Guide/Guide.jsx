@@ -40,14 +40,14 @@ export const Guide = () => {
   return (
     <div className='guide-container'>
       <h1 className='t'>Guide</h1>
-      {/* Affiche l'image actuelle en fonction de l'index actuel */}
+      {}
       <img className='guide-image' src={imageUrls[currentImageIndex]} alt="pic" />
 
-      {/* Boutons "suivant" et "retour" */}
+      {}
       <div className='navigation-buttons'>
-        {/* Affiche le bouton "retour" uniquement si nous ne sommes pas à la première image */}
+        {}
         {currentImageIndex > 0 && <button className='prvsbtn' onClick={previousImage}>Retour</button>}
-        {/* Affiche le bouton "suivant" uniquement si nous ne sommes pas à la dernière image */}
+        {}
         {currentImageIndex < imageUrls.length - 1 && <button className='nextbtn' onClick={nextImage}>Suivant</button>}
       </div>
     </div>
@@ -55,4 +55,5 @@ export const Guide = () => {
 }
 
 export default Guide;
+
 

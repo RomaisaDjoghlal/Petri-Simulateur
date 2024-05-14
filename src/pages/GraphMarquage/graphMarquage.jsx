@@ -98,18 +98,21 @@ let listbloc = [] , renitialtab = [];
 let find = false ;
 for(let  i =0 ; i< listMarquage.length ; i++){
   find = false ;
+  console.log("i = ",i)
   for(let  j = 0 ; j< listarc.length ; j++){
+    console.log("listarc[",j,']',listarc[j])
   if(listarc[j].ji === i  || listarc[j].jf === i ){
    find = true ;   
-    break 
+   // break 
   } if (listarc[j].ji === i  && listarc[j].jf === i){
-    renitialtab.push(i) ;
+    console.log('bonjour')
+    renitialtab.push({id : i ,p:listarc[j].propa,T:listarc[j].j1}) ;
   }
 } if(find === false && listMarquage[i] !== -1 ){
   listbloc.push(i);
 }
 }
-
+console.log('renitialtab',renitialtab)
 listbloc.forEach(element =>{  // les element bloquée + inifi
   initialedges.push({
   id: getIdarc(),
@@ -121,6 +124,10 @@ listbloc.forEach(element =>{  // les element bloquée + inifi
   data: {
     label: 'T|1', position : 25
   },
+  labelStyle: { 
+    fontSize: '12px', 
+    fontWeight: 'bold', backgroundColor: 'transparent' , color: 'red', fill: 'gray' ,position: 'absolute', 
+  }, style: { stroke: '' } , 
   markerEnd: {type: MarkerType.ArrowClosed,
     width: 20,
     height: 20,
@@ -133,11 +140,32 @@ if(element !== -1){
 }
 })
 if(find === false){
-         initialNodes.push(    {id: getId() , position: { x: 290, y: 200 }, data: { label: 'le graph des marquages de votre reseau n admet pas un graph des marquage réduit'} ,style : { width: 300,height: 80,backgroundColor: ' #f0fdfb' ,  borderRadius: '5px'   } } )
+         initialNodes.push(    {id: getId() , position: { x: 290, y: 200 }, data: { label: 'Le graphe des marquages de votre réseau n\'admet pas un graphe des marquages réduit'} ,style : { width: 300,height: 80,backgroundColor: ' #f0fdfb' ,  borderRadius: '5px'   } } )
 
 }
 
-
+renitialtab.forEach(element =>{  // les element renitialisable qui ont plusieur arc 
+  let trans = 'T';trans = trans.concat(element.T.toString()) ; trans = trans.concat('|')
+  trans = trans.concat(element.p.toString()); 
+  initialedges.push({
+  id: getIdarc(),
+  label: trans, // Utilisez listarc[j] au lieu de listarc[0]
+  source: element.id.toString(),
+  target: element.id.toString(),
+ // type: 'CircleEdge',
+  type : 'CustomEdge',
+  data: {
+    label: trans, position : 25
+  },
+  labelStyle: { 
+    fontSize: '12px', 
+    fontWeight: 'bold', backgroundColor: 'transparent' , color: 'red', fill: 'gray' ,position: 'absolute', 
+  }, style: { stroke: '' } , 
+  markerEnd: {type: MarkerType.ArrowClosed,
+    width: 20,
+    height: 20,
+    color: '#118C7E' },  })
+})
 
 let k = 0 ;
 
@@ -200,6 +228,7 @@ for (let j = 0 ; j < listarc.length ; j++) {
   let p = listarc[j].propa ; // la proba de franchissement 
   p = p.toFixed(2);
   console.log('p = ',p);
+  if(g !== f){
   let searchelement = initialedges.find(element => element.source === g.toString() && element.target === f.toString()) ;
   console.log('searchelement',searchelement);
   if(searchelement === undefined){
@@ -238,10 +267,7 @@ for (let j = 0 ; j < listarc.length ; j++) {
       fill: 'gray' ,
       position: 'absolute', 
     }, 
-    style: {
-              stroke: '' } ,
-              
-                                                 
+    style: { stroke: '' } ,                                                
   });
 }else{
     const index = initialedges.indexOf(searchelement);
@@ -286,9 +312,9 @@ for (let j = 0 ; j < listarc.length ; j++) {
     }else{console.log('element n existe pas ')}
   console.log('g = ',g.toString())
   console.log('f = ',f.toString())
-  }}
+  }}}
  
-if(initialNodes.length == 1 && initialedges.length == 1 ){
+if(initialNodes.length == 1 && initialedges.length == 1 ){ // pour le cas d'un element infini 
   let element = initialedges[0] ; 
   let trans =  element.label ;   
   initialedges[0] = {
@@ -321,7 +347,7 @@ for( let i = 0 ; i< initialedges.length ; i++ ){  // les arcs croiss
           let space =''  
         let trans = element.label//.concat('___________________________');
         for(let g = 0 ; g< element2.label.length ; g++ ){
-          trans = trans.concat('___')
+          trans = trans.concat('____')
           console.log('hello') ;
         }
         let trans2 = space.concat(element2.label);

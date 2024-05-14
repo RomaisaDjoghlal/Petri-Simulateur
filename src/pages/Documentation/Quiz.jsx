@@ -116,25 +116,6 @@ export const Quiz = () => {
 }
 
 export default Quiz;
-/*
-{result ? (
-    <>
-   <h2 className="congratulations">Congratulations</h2>
 
-   <h2>Votre score finale est  {score} sur {data.length}</h2>
-   <h2>Temps écoulé : {elapsedTime} secondes</h2>
-   <button onClick={Retour}>Retour</button>
-   </>
-    ) : (
-  <>
-   <h2>{question.question}</h2>
-   <ul>
-       <li ref={option1} onClick={(e) => { checkans(e, 1) }} className="option">{question.Option1}</li>
-       <li ref={option2} onClick={(e) => { checkans(e, 2) }} className="option">{question.Option2}</li>
-       <li ref={option3} onClick={(e) => { checkans(e, 3) }} className="option">{question.Option3}</li>
-       <li ref={option4} onClick={(e) => { checkans(e, 4) }} className="option">{question.Option4}</li>
-   </ul>
-   <button onClick={Suivant}>Suivant</button>
-   <div className="index">{index + 1} sur {data.length} questions</div>
-    </>
-    )}*/
+
+

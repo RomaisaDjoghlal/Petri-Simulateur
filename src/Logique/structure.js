@@ -6,7 +6,7 @@ export class Place {
        this.psup = false; 
     }
     GetPlaceId(){
-        return this.Id ;
+        return this.IdP ;
     }
     SetPlaceId(IdP){
         this.Id = IdP ;
@@ -311,7 +311,7 @@ for (let k = 0; k < this.Pre.length; k++) {
         }
       let lie = false;
         for(let i = 0 ; i< this.NpPlaces ;i++){
-        if(  this.Pre[i][id].poid > 0){  // add this !!!!!!!!!!!!!!!!!!!!!!!!
+        if(  this.Pre[i][id].poid > 0 || this.Post[i][id].poid > 0 ){  // add this !!!!!!!!!!!!!!!!!!!!!!!!
             console.log('ffffffffffffffff')
             lie = true; 
          }   }
@@ -643,7 +643,7 @@ ConstrGraphmarq(m,idm,tab,arc) {
     fr=tabi;
     tr=tabt;
     lv=idm;
-    if(this.existemarquage(tab,m)===-1 && tab.length<200)
+    if(this.existemarquage(tab,m)===-1 && tab.length<50)
     {   
     kse= {fr,tr,mar,lv,w,tempo};
     tab.push(kse);
@@ -723,8 +723,8 @@ ConstrGraphmarqre(tab,arc,tab1,arc1)
             if(tab[i].tempo===false)
             {
                 let visited = new Array(tab.length).fill(false);
-                this.trouva(i,arc,tab,t,visited);
-                this.trouvb(i,arc,tab,t1,visited);
+                this.trouva(i,arc,tab,t,visited,1);
+                this.trouvb(i,arc,tab,t1,visited,1);
                 for(j=0;j<t1.length;j++)
                 {
                     for(r=0;r<t.length;r++)
@@ -748,7 +748,7 @@ ConstrGraphmarqre(tab,arc,tab1,arc1)
             }
         }
     }
-    trouvb(i,arc,tab,tib,visited)
+    /*trouvb(i,arc,tab,tib,visited)
     {
         let i1;
         let k;
@@ -809,7 +809,82 @@ ConstrGraphmarqre(tab,arc,tab1,arc1)
             }
         }
 
+    }*/
+
+trouvb(i,arc,tab,tib,visited,propa)
+    {
+        let i1;
+        let k;
+        //let propa = 1;
+        let kse;
+        let j1;
+        let propa1 ;
+        visited[i] = true;
+        if (visited.every(v => v)) {
+            return; 
+        }
+        for(i1=0;i1<arc.length;i1++)
+        {
+            k=arc[i1].ji;
+            if(arc[i1].jf===i && k<tab.length )
+            {
+                if( tab[k].tempo===true)
+                {
+                    j1=arc[i1].j1;
+                    propa=arc[i1].propa*propa;
+                    kse={k,propa,j1};
+                    tib.push(kse);
+                    propa = propa/arc[i1].propa
+                }
+                else if (!visited[k])
+                {
+                    propa= arc[i1].propa*propa ;
+                    propa1= arc[i1].propa ;
+                    this.trouvb(k,arc,tab,tib,visited);
+                    propa=propa/propa1 ;
+                }
+            }
+
+        }
+
     }
+    trouva(i,arc,tab,tub,visited,propa)
+    {
+        let i1;
+        let k;
+       // let propa = 1;
+        let kse;
+        let j1;
+        visited[i] = true;
+        let propa1 ;
+        if (visited.every(v => v)) {
+            return; 
+        }
+        for(i1=0;i1<arc.length;i1++)
+        {
+            k=arc[i1].jf;
+            if(arc[i1].ji===i && k<tab.length )
+            {
+                if(tab[k].tempo===true)
+                {
+                    j1=arc[i1].j1; 
+                    propa=arc[i1].propa;
+                    kse={k,propa};
+                    tub.push(kse);
+                    propa = propa/arc[i1].propa
+                }
+                else if (!visited[k])
+                {   
+                    propa= arc[i1].propa*propa ;
+                    propa1= arc[i1].propa ;
+                    this.trouva(k,arc,tab,tub,visited);
+                    propa=propa/propa1 ;
+                }
+            }
+        }
+
+    }
+
 /*
 ConstrGraphmarqre(tab,arc,tab1,arc1)
 {
@@ -1128,7 +1203,7 @@ Renitiable(arc,tab){
    }}
    console.log('tabf',tabf) ;
    let trouv = false , m = 0 ;  let tab0 = []
-   while(  m< tabf.length  && trouv === false  ){
+   while(  m< tabf.length    ){
     let element = tabf[m] ;
     console.log('element',element)
     if(element === -1){
@@ -1191,6 +1266,7 @@ Franchissable (M,Idtrans) {
     }
     i++;
     }
+   
     return franch;
     }
      inhibReseau() {
@@ -1578,13 +1654,11 @@ Franchissable (M,Idtrans) {
          console.log(N);
         let index = 0;
         nonBloquage=false;
-        vivacite=false;
          while (index<this.NpTrans){
            if ((!(this.Transitions[index].tsup)) && (this.Franchissable(N,this.Transitions[index].IdT)))  {
             nonBloquage=true;
             console.log('nonbloc');
             console.log(nonBloquage);
-            vivacite=true;
             console.log('franchi');
             console.log(this.Transitions[index].GetTransId());
             let M = [];          
@@ -1629,6 +1703,7 @@ Franchissable (M,Idtrans) {
         console.log(cpt);
         cpt++;
      }
+     if(!nonBloquage){vivacite=false;}
      return {var3:nonBloquage,var4:vivacite}
     }
     arraysEqual(arr1, arr2) {
@@ -1649,7 +1724,7 @@ Franchissable (M,Idtrans) {
         // If all elements match, arrays are equal
         return true;
     }
-
+/*
     per(tab,tab2)
 {
   let i;
@@ -1694,6 +1769,83 @@ Franchissable (M,Idtrans) {
       }
   }
   return per;
-}
+}*/
+
+per(tab,arc){ // my old one 
+    let i;
+    let ex;
+    let j;
+    let tab2 = [] ;
+    for(i=0;i<tab.length;i++)
+    {
+        ex=0;
+        for(j=0;j<this.Transitions.length;j++)
+        {
+           if(tab[i].fr[j]===1 && this.Transitions[j].tsup!==true )
+           {
+               ex++;
+           }
+        }
+        if(ex>1)
+        {
+            tab2.push(tab[i]); // les marquages qui ont des transitions franchissables bloqué 
+        }
+    } 
+    console.log(" arc in per ",arc)
+    console.log('tab2 in persistance ',tab2,'tab2.lenght',tab2.length);
+    let tabtransfr = []; let tabt = [];   i = 0; 
+    let persistance = true ; let tabw = [] ;
+    while( i<tab2.length && persistance === true ){
+        console.log('hereee');
+        console.log('tab2[i].fr',tab2[i].fr) ;let k = 0;
+       for(let l =0 ; l< tab2[i].fr.length ; l++ ){
+        let element = tab2[i].fr[l] ;let id ; console.log('element',element)
+            if(element ===1){
+                console.log('here')
+                id = l ;
+            tabtransfr[k] = id;
+           tabt[k]=0;
+              k ++ ;
+        }} 
+       //tabtransetat = new Array(tabtransfr.length).fill(0);
+        // le tableau des transition franchit appartir de ce marquage
+            let m = 0 ;
+            console.log('tabtransfr start ',tabtransfr);console.log('tabtransetat start ',tabt);
+     while( m < tabtransfr.length && persistance === true ){ 
+       let t = tabtransfr[m] ;console.log("t ="+t,"tab.indexOf(tab2[i])",tab.indexOf(tab2[i]));
+       let index = arc.findIndex(element => (element.ji === tab.indexOf(tab2[i]) && element.j1 === t));
+    console.log('m = ',m)
+    //tabtransetat.splice(m,0,1) ;
+     console.log('index',index,"elemnt index ",tab[arc[index].jf]);
+    tabt[m] = 1 ;
+    console.log('tabt ',tabt);
+
+    
+      // while(index !== -1 && stopit === false ) { 
+        //let  filtertab =  tabtransfr.filter(element => tab[arc[index].jf].fr.includes(element));// l'intersection entre l'etat suivant des trans franchissable et l'etat precedent 
+        let filtertab = [] ;
+        tabtransfr.forEach(element =>{
+            if(tab[arc[index].jf].fr[element] !== -1){
+                console.log("i am in //////// element ",element)
+                filtertab.push(element)
+            }
+        })
+        console.log('filtertab',filtertab,'tabtransfr[',m,']',tabtransfr[m] ) ; 
+        if(filtertab.length !== 0){
+            for(let j = 0 ; j< tabtransfr.length ; j ++ ){ console.log('tabt[',j,']',tabt[j],'filtertab.includes(tabtransfr[j])',filtertab.includes(tabtransfr[j]))
+            // if(tabw[findIndex(element => ( element.ji=== tab.indexOf(tab2[i]) ))]] filtertab[j].idt)
+                if((tabt[j] === 0) && (filtertab.includes(tabtransfr[j]) === false)){
+                    persistance = false; 
+                    console.log('condition vérifié ')
+                }}
+            
+        }else{
+            persistance = false; 
+        }
+        tabt[m] = 0 ;
+   // }          
+    m ++ }  i++   }   
+    return persistance;          
+ }
 
 }

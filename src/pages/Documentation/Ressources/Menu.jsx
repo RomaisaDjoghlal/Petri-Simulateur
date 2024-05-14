@@ -21,3 +21,4 @@ function Menu({ navigateTo }) {
 
 export default Menu;
 
+

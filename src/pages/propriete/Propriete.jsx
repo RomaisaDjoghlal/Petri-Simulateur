@@ -42,3 +42,4 @@ export const Propriete = () => {
 };
 
 export default Propriete;
+

@@ -141,7 +141,7 @@ export const petriSlice = createSlice({
                       }
                   })
               break
-          }  makeDataPersistent(state)
+          } // makeDataPersistent(state)
          
       },
     
@@ -152,68 +152,16 @@ export const petriSlice = createSlice({
         localStorage.clear()
     
     },
-   /* saveNet: (state, action) => {
-        const places = action.payload.nodes.filter(e => e.type === 'place')
-        const transitions = action.payload.nodes.filter(e => e.type === 'transition')
-        
-        const textUpdaters = action.payload.nodes.filter(e => e.type === 'textUpdater').map(node => ({
-            ...node,
-             id: parseInt(node.id.replace('textUpdater_', '')),
-            
-             //Include the text data from the node
-             text: localStorage.getItem(`textUpdater_${node.id}`) , // Retrieve the text data from localStorage
-             position :localStorage.getItem(`textUpdaterPosition_${node.id}`) ,
-               
-            
-            
-           
-          
-          }));
-          textUpdaters.forEach(node => {
-            console.log("Node ID:", node.id);
-            console.log("Position:", node.position);
-        });
-        const arcs = action.payload.edges;
-        state.places = places
-        state.transitions = transitions
-        state.textUpdaters=textUpdaters
-        state.arcs = arcs;
-      
-        localStorage.setItem('places', JSON.stringify(places));
-        localStorage.setItem('transitions', JSON.stringify(transitions));
-        localStorage.setItem('textUpdaters', JSON.stringify(textUpdaters));
-        localStorage.setItem('arcs', JSON.stringify(arcs));
-       
-        makeDataPersistent(state)
-        
-        
-      
-    }*/
+  
 
     
     saveNet: (state, action) => {
-        const places = action.payload.nodes.filter(e => e.type === 'place');
+       const places = action.payload.nodes.filter(e => e.type === 'place');
         const tokens = action.payload.nodes.filter(e => e.type === 'group');
 
         const transitions = action.payload.nodes.filter(e => e.type === 'transition');
         const textUpdaters = action.payload.nodes.filter(e => e.type === 'textUpdater');
-      /* const textUpdaters = action.payload.nodes.filter(e => e.type === 'textUpdater').map(node => {
-            const id = parseInt(node.id.replace('textUpdater_', ''));
-            const text = localStorage.getItem(`textUpdater_${node.id}`); // Retrieve the text data from localStorage
-            
-            // Here we're creating the position key for textUpdater nodes
-            const positionKey = `textUpdaterPosition_${id}`; // Corrected position key
-            
-            // Here we're storing the position in localStorage
-            localStorage.setItem(positionKey, JSON.stringify(node.position)); // Store the position in localStorage
-            
-            
-            return {
-                ...node,
-                id,
-                text,
-            };
-        });*/
+      
         
         const arcs = action.payload.edges;
     

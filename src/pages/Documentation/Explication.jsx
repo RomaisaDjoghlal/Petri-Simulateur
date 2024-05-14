@@ -21,7 +21,7 @@ export function Explication() {
             </div>
             {openIndex === index && (
               <div className="exp">
-                {/* Utilisez split pour diviser la description en lignes */}
+                {}
                 {livre.description.split('\n').map((line, i) => (
                   // Utilisez un fragment avec une clé unique pour chaque ligne
                   <React.Fragment key={i}>
@@ -46,3 +46,4 @@ const livresData = [
 ];
 
 export default Explication;
+
