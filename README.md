@@ -1,11 +1,4 @@
-
-
-
-
-
-
-
-</svg>ng Petrisim logo Vertical - Color.svg…]()
+![Petrisim logo Horizontal - Color](https://github.com/RomaisaDjoghlal/Petri/assets/162630029/3dc679e5-34ae-410e-8e65-4fbd8158bb3e)
 
 
 
