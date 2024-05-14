@@ -13,7 +13,8 @@
 
 # Auteurs
 
-RomaisaDjoghlal ([GitHub](https://github.com/RomaisaDjoghlal)), AnaiaMeziane ([GitHub](https://github.com/AnaiaMeziane)), AmiraBouderbala ([GitHub](https://github.com/AmiraBouderbala)), ChahrazedMendjel ([GitHub](https://github.com/ChahrazedMendjel)), yassinBoutta ([GitHub](https://github.com/yassinBoutta)), AmiraLakehal ([GitHub](https://github.com/AmiraLakehal))
+<a href="https://github.com/RomaisaDjoghlal">RomaisaDjoghlal</a>, <a href="https://github.com/AnaiaMeziane">AnaiaMeziane</a>, <a href="https://github.com/AmiraBouderbala">AmiraBouderbala</a>, <a href="https://github.com/ChahrazedMendjel">ChahrazedMendjel</a>, <a href="https://github.com/yassinBoutta">yassinBoutta</a>, <a href="https://github.com/AmiraLakehal">AmiraLakehal</a>
+
 
 
 
