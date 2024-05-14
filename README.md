@@ -1,6 +1,7 @@
 
 
-![Petrisim logo Symbol - Black](https://github.com/RomaisaDjoghlal/Petri/assets/162630029/de394686-a7ce-44a9-95ec-bace423a72ae)
+
+![Petrisim logo Horizontal - Color](https://github.com/RomaisaDjoghlal/Petri/assets/162630029/3dc679e5-34ae-410e-8e65-4fbd8158bb3e)
 
 
 
