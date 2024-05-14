@@ -20,7 +20,9 @@
  # Guide d'instalation
  <a href="https://drive.google.com/file/d/1q7RTSzexcAu2Rjf2ev2UJ9Fg8ruO-Giw/view?usp=sharing"> Notice d'instalation </a> 
 
-
+# Remerciement 
+<li> Nous souhaitons exprimer nos sincères remerciements à Mr  Dahamni F. et Mme Charabi L. pour leur encadrement  tout au long de ce projet. Leur expertise, leurs conseils et leur soutien nous ont permis de mener à bien notre travail.</li>
+<li> Nous adressons nos plus sincères remerciements à tous les utilisateurs de notre projet pour leur confiance et leur choix d'utiliser notre application Votre engagement et votre implication nous motivent à poursuivre nos efforts et à améliorer continuellement notre solution.</li>
 
 
 
