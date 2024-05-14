@@ -12,7 +12,7 @@
 <li> Propriétés du réseau </li>
 
 # Auteurs
-<li> [RomaisaDjoghlal](https://github.com/RomaisaDjoghlal) </li>
+ [RomaisaDjoghlal](https://github.com/RomaisaDjoghlal)
 <li> [AnaiaMeziane](https://github.com/RomaisaDjoghlal) </li>
 <li> [AmiraBouderbala](https://github.com/RomaisaDjoghlal) </li>
 <li> [ChahrazedMendjel](https://github.com/RomaisaDjoghlal) </li>
