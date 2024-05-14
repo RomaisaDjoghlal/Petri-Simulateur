@@ -1581,7 +1581,7 @@ Franchissable (M,Idtrans) {
          listM.push(M0);
         
           let repe = false ;
-         while ((cpt<listM.length)&& (!infin) && (!repe)){
+         while ((cpt<listM.length)&& (!infin) && (!repe)&&(cpt<100)){
              N = listM[cpt];
              console.log('la mere');
              console.log(N);
@@ -1648,7 +1648,7 @@ Franchissable (M,Idtrans) {
       let viv = [];
       let { infin = false, var2 = [] ,kif=false } = {};
     
-     while ((cpt<listM.length)&& (nonBloquage)){
+     while ((cpt<listM.length)&& (nonBloquage)&&(cpt<100)){
          N = listM[cpt];
          console.log('la mere');
          console.log(N);
