@@ -1,7 +1,7 @@
 
 
 
-![Petrisim logo Horizontal - Color ](https://github.com/RomaisaDjoghlal/Petri/assets/162630029/5c7f28dc-06b3-42ee-a1e6-674ae48bcc33) style="width: 200px;"
+![Petrisim logo Horizontal - Color ](https://github.com/RomaisaDjoghlal/Petri/assets/162630029/5c7f28dc-06b3-42ee-a1e6-674ae48bcc33) 
 
 
 # Projet 2CP Réalisation d’un éditeur graphique de réseaux de Petri
