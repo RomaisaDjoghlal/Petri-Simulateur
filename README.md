@@ -14,7 +14,7 @@
 
 # Auteurs
 
-<a href="https://github.com/ania36">AnaiaMeziane</a></br> <a href="https://github.com/RomaisaDjoghlal">RomaisaDjoghlal</a> </br> <a href="https://github.com/AmiraBouderbala">AmiraBouderbala</a></br> <a href="https://github.com/ChahrazedMendjel">ChahrazedMendjel</a></br> <a href="https://github.com/kse000">yassinBoutta</a></br> <a href="https://github.com/AmiraLakehal">AmiraLakehal</a></br>
+<a href="https://github.com/ania36">Meziane Anaia</a></br> <a href="https://github.com/RomaisaDjoghlal">Djoghlal Romaisa</a> </br> <a href="https://github.com/AmiraBouderbala">Bouderbala Amira</a></br> <a href="https://github.com/ChahrazedMendjel">Mendjel Chahrazed</a></br> <a href="https://github.com/kse000">Boutta yassin</a></br> <a href="https://github.com/AmiraLakehal">Lakehal Amira</a></br>
  # Guide d'utilisation
  <a href="https://drive.google.com/file/d/1WH2cXQ0i8cVmwoVm82Lhwh5Ci5SHqsGo/view?usp=sharing "> Notice d'utilisation </a>
 
