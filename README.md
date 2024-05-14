@@ -1,5 +1,5 @@
+![Petrisim logo Horizontal - Color ](https://drive.google.com/file/d/1cQX2ryvmUEIH00Mv7BfDDELDfiHiTgao/view?usp=sharing )
 
-<img src="https://drive.google.com/file/d/1cQX2ryvmUEIH00Mv7BfDDELDfiHiTgao/view?usp=sharing" alt="drawing" width="200"/>
 
 
 # Projet 2CP Réalisation d’un éditeur graphique de réseaux de Petri
