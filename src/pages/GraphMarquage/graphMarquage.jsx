@@ -146,7 +146,8 @@ if(find === false){
 
 renitialtab.forEach(element =>{  // les element renitialisable qui ont plusieur arc 
   let trans = 'T';trans = trans.concat(element.T.toString()) ; trans = trans.concat('|')
-  trans = trans.concat(element.p.toString()); 
+  let pr = element.p.toFixed(2) ; 
+  trans = trans.concat(pr.toString()); 
   initialedges.push({
   id: getIdarc(),
   label: trans, // Utilisez listarc[j] au lieu de listarc[0]
@@ -168,7 +169,7 @@ renitialtab.forEach(element =>{  // les element renitialisable qui ont plusieur 
 })
 
 let k = 0 ;
-
+let l = 0 ;
 const plusGrand = Math.max(...tabniv);
 console.log("grand ",plusGrand)
 for (let j = 0; j <  tabniv.length ; j++) {
@@ -189,8 +190,8 @@ for (let j = 0; j <  tabniv.length ; j++) {
     }
     marquage = marquage.slice(0,-1) ; marquage = marquage.concat(']')
     console.log('marquage',marquage)
-    let f = 70*j+70 ;    
-    let g = 150*i-75*(j+s)+640
+    let f = 70*l+70 ;    
+    let g = 150*i-75*(l+s)+640
     if ( j === 0 ){ g = 200*i-40*(plusGrand/2)+350+50*s}
     if(listMarquage[k].tempo){
     if(k === 0){
@@ -210,7 +211,7 @@ for (let j = 0; j <  tabniv.length ; j++) {
     k++ ; 
     
      
-  }}else{ 
+  } l ++ ;}else{ 
     if(tabnivsaut !== 0){
       k = k + tabnivsaut[j] ;
       console.log('tabnivsaut[',j,']',tabnivsaut[j])

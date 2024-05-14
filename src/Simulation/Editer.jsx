@@ -364,119 +364,7 @@ const handleLoadGraph = async (event) => {
 
 
 
-/*const initializeReseau = useCallback((nodes,edges) => {
-  
 
-  const storedPlaces = nodes.filter(node => node.type === 'place');
-  console.log("tab",storedPlaces);
-  const storedTransitions = nodes.filter(node => node.type === 'transition');
-  const storedTokens = nodes.filter(node => node.type === 'group');
-
-  const idTokenMap = new Array(storedPlaces.length).fill(-1);
-
-  storedPlaces.forEach(element => {
-    
-      const idd =element.id.slice(1) ;
-      idTokenMap[idd] = element.data.tokens;
-      dispatch(addElement({type:element.type,element}))
-
-  });
-  storedTransitions.forEach(element => {
-    
-    //const idd =element.id.slice(1) ;
-    //idTokenMap[idd] = element.data.tokens;
-    dispatch(addElement({type:element.type,element}))
-
-});
-  console.log("jjjj",idTokenMap )
-  
-  for (const id in idTokenMap) {
-    
-      
-      const nbjetons = idTokenMap[id] !== undefined ? idTokenMap[id] : -1;
-      
-      const newPlace = new Place(id, parseInt(nbjetons)); 
-
-      if(nbjetons==-1)
-      {
-        newPlace.SetPlacesup(true);
-      }
-      reseau.AddPlace(newPlace);
-      
-      console.log("Created place:", newPlace);
-  }
-
-  console.log(" reseau.NpPlacesexist ", reseau.NpPlaces );
-  let idpres = -1 ;
-  console.log('storedTransitions',storedTransitions)
-  storedTransitions.forEach(transitionData => {
-    //if(transitionData.id  )
-      let id = parseInt(transitionData.id.slice(1)) ;
-      if (id === idpres +1 ) {
-
-     if(transitionData.data.mode=='imediate')
-      {
-        const trans = new Transition(id,false,1)
-    reseau.AddTrans(trans);}
-    else
-    {   const trans = new Transition(id,true,1)
-      reseau.AddTrans(trans);
-    }
-    idpres ++ ;
-  }else{
-    if(transitionData.data.mode=='imediate')
-      {
-        const trans = new Transition(id,false,1)
-    reseau.AddTrans(trans);}
-    else
-    {   const trans = new Transition(id,true,1)
-      reseau.AddTrans(trans);
-    }
-    let i = 0 , id2 ;
-      while(i<(id - idpres)){
-        console.log("hi ")
-        id2 = i+idpres+1 ;
-        const trans = new Transition(id2,false,1)
-        reseau.AddTrans(trans);
-        trans.SetTranssup(true) ;
-        i ++ ;
-      }
-      idpres = id ; 
-  }
-  });
-
-  reseau.Affichertrans();
-  console.log('eddg',edges)
-console.log('edges.length',edges.length)
-edges.forEach(element => {
-  if (element && element.source && element.target) {
-    console.log("eeee", element);
-    let p = element.source[0];
-    console.log("p = " + p);
-    let t = element.target[0];
-    console.log("t = " + t);
-    let type = element.markerEnd === 'circleMarker';
-    
-    if (p === 'P' && t === 'T') {
-      let Idplace = parseInt(element.source.slice(1));
-      let Idtrans = parseInt(element.target.slice(1));
-      reseau.Addpre(Idplace, Idtrans, parseInt(element.label), type);
-    }
-    
-    if (p === 'T' && t === 'P') {
-      let Idplace = parseInt(element.target.slice(1));
-      let Idtrans = parseInt(element.source.slice(1));
-      reseau.Addpost(Idplace, Idtrans, parseInt(element.label), type);
-    }
-  } else {
-    console.log("Invalid edge element:", element);
-  }
-});
-
-
-reseau.Afficherplaces();
-
-}, []);*/
 
 const initializeReseau = useCallback((nodes,edges) => {
   
@@ -1587,7 +1475,7 @@ if( can === true ){
     dispatch(setToastOpt(toast))
     setTimeout(() => {
         dispatch(setToastOpt({isVisible:false}))
-    }, 8000)
+    }, 2500)
     }
 
  
