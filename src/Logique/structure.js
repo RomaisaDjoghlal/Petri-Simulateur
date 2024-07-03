@@ -811,7 +811,7 @@ ConstrGraphmarqre(tab,arc,tab1,arc1)
 
     }*/
 
-    trouvb(i,arc,tab,tib,visited,propa)
+   trouvb(i,arc,tab,tib,visited,propa)
     {
         let i1;
         let k;
@@ -840,7 +840,7 @@ ConstrGraphmarqre(tab,arc,tab1,arc1)
                 {
                     propa= arc[i1].propa*propa ;
                     propa1= arc[i1].propa ;
-                    this.trouvb(k,arc,tab,tib,visited,propa);
+   this.trouvb(k,arc,tab,tib,visited,propa);
                     propa=propa/propa1 ;
                 }
             }
@@ -877,7 +877,7 @@ ConstrGraphmarqre(tab,arc,tab1,arc1)
                 {   
                     propa= arc[i1].propa*propa ;
                     propa1= arc[i1].propa ;
-                    this.trouva(k,arc,tab,tub,visited,propa);
+  this.trouva(k,arc,tab,tub,visited,propa);
                     propa=propa/propa1 ;
                 }
             }
@@ -1439,7 +1439,7 @@ Franchissable (M,Idtrans) {
             let egal=false;
             if (exclude.length===this.NpPlaces){couverture2=true}
             else{
-            while ((!egal) && (!couverture2) && (i >= 0)) {
+    while ((!egal)&&(!couverture2) && (i >= 0)) {
                 Ma = listM[k];
                 if(this.tabEqual(Ma,M)){egal=true}
                 console.log('here is M');
@@ -1581,7 +1581,7 @@ Franchissable (M,Idtrans) {
          listM.push(M0);
         
           let repe = false ;
-         while ((cpt<listM.length)&& (!infin) && (!repe)&&(cpt<100)){
+   while ((cpt<listM.length)&& (!infin) && (!repe)&&(cpt<100) ){
              N = listM[cpt];
              console.log('la mere');
              console.log(N);
@@ -1648,7 +1648,7 @@ Franchissable (M,Idtrans) {
       let viv = [];
       let { infin = false, var2 = [] ,kif=false } = {};
     
-     while ((cpt<listM.length)&& (nonBloquage)&&(cpt<100)){
+  while ((cpt<listM.length)&& (nonBloquage)&&(cpt<100)){
          N = listM[cpt];
          console.log('la mere');
          console.log(N);
